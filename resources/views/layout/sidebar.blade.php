@@ -39,12 +39,20 @@
         </button>
       </div>
     </li>
-    <li class="nav-item {{ active_class(['/']) }}">
-      <a class="nav-link" href="{{ url('/') }}">
+    <li class="nav-item {{ active_class(['home']) }}">
+      <a class="nav-link" href="{{ url('/home') }}">
         <i class="menu-icon mdi mdi-television"></i>
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
+    <!-- -->
+    <li class="nav-item {{ active_class(['admin/employees']) }}">
+      <a class="nav-link" href="{{ url('/admin/employees') }}">
+        <i class="menu-icon mdi mdi-account"></i>
+        <span class="menu-title">Employees</span>
+      </a>
+    </li>
+    <!-- -->
     <li class="nav-item {{ active_class(['basic-ui/*']) }}">
       <a class="nav-link" data-toggle="collapse" href="#basic-ui" aria-expanded="{{ is_active_route(['basic-ui/*']) }}" aria-controls="basic-ui">
         <i class="menu-icon mdi mdi-dna"></i>

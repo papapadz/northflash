@@ -14,6 +14,7 @@
   <!-- plugin css -->
   {!! Html::style('assets/plugins/@mdi/font/css/materialdesignicons.min.css') !!}
   {!! Html::style('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') !!}
+  {!! Html::style('assets/datatable/datatables.css') !!}
   <!-- end plugin css -->
 
   @stack('plugin-styles')
@@ -46,6 +47,7 @@
 
   <!-- plugin js -->
   @stack('plugin-scripts')
+  {!! Html::script('assets/datatable/datatables.js') !!}
   <!-- end plugin js -->
 
   <!-- common js -->
