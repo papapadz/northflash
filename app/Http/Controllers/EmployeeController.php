@@ -11,6 +11,6 @@ class EmployeeController extends Controller
 
         $employees = Employee::ALL();
 
-        return view('pages.admin.employee.index')->with('$employees');
+        return view('pages.admin.employee.index')->with('employees',$employees);
     }
 }
