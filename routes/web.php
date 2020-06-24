@@ -146,4 +146,7 @@ Route::get('/home','DashboardController@index')->name('home')->middleware('auth'
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::get('employees', 'EmployeeController@index');
     Route::post('employee/add','EmployeeController@store');
+
+    Route::get('positions', 'PositionController@index');
+    Route::post('position/add','PositionController@store');
 });

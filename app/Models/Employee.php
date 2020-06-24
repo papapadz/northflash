@@ -8,6 +8,7 @@ class Employee extends Model
 {
 
     protected $primaryKey = 'employee_id';
+    protected $casts = ['employee_id'=>'text']; 
 
     protected $fillable = [
         'employee_id',
