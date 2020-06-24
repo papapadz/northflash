@@ -52,6 +52,12 @@
         <span class="menu-title">Employees</span>
       </a>
     </li>
+    <li class="nav-item {{ active_class(['admin/positions']) }}">
+      <a class="nav-link" href="{{ url('/admin/positions') }}">
+        <i class="menu-icon mdi mdi-briefcase"></i>
+        <span class="menu-title">Positions</span>
+      </a>
+    </li>
     <!-- -->
     <li class="nav-item {{ active_class(['basic-ui/*']) }}">
       <a class="nav-link" data-toggle="collapse" href="#basic-ui" aria-expanded="{{ is_active_route(['basic-ui/*']) }}" aria-controls="basic-ui">

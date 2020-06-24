@@ -8,8 +8,6 @@ class Position extends Model
 {
     protected $fillable = [
         'title',
-        'salary_id',
-    
     ];
     
     
