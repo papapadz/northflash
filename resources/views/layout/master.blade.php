@@ -15,6 +15,7 @@
   {!! Html::style('assets/plugins/@mdi/font/css/materialdesignicons.min.css') !!}
   {!! Html::style('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') !!}
   {!! Html::style('assets/datatable/datatables.css') !!}
+  {!! Html::style('assets/select2/css/select2.css') !!}
   <!-- end plugin css -->
 
   @stack('plugin-styles')
@@ -56,6 +57,7 @@
   {!! Html::script('assets/js/misc.js') !!}
   {!! Html::script('assets/js/settings.js') !!}
   {!! Html::script('assets/js/todolist.js') !!}
+  {!! Html::script('assets/select2/js/select2.js') !!}
   <!-- end common js -->
 
   @stack('custom-scripts')
