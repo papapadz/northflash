@@ -43,4 +43,8 @@ class Employee extends Model
     {
         return url('/admin/employees/'.$this->getKey());
     }
+
+    public function payroll() {
+        return $this->hasMany('App\Models\Payroll','employee_id','employee_id');
+    }
 }

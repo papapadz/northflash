@@ -144,9 +144,20 @@ Route::get('/', function () {
 Route::get('/home','DashboardController@index')->name('home')->middleware('auth');
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
+
     Route::get('employees', 'EmployeeController@index');
     Route::post('employee/add','EmployeeController@store');
 
-    Route::get('positions', 'PositionController@index');
-    Route::post('position/add','PositionController@store');
+    Route::get('payrolls', 'PayrollController@index');
+    Route::post('payroll/add','PayrollController@store');
+
+    Route::group(['prefix'=>'variables'], function() {
+
+        Route::get('positions', 'PositionController@index');
+        Route::post('position/add','PositionController@store');
+
+        Route::get('payroll-items', 'PayrollItemController@index');
+        Route::post('payroll-item/add','PayrollItemController@store');
+    });
 });
+

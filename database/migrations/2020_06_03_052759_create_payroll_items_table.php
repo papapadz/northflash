@@ -16,7 +16,8 @@ class CreatePayrollItemsTable extends Migration
         Schema::create('payroll_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('item');
-            $table->decimal('amount');
+            $table->decimal('amount')->default(0);
+            $table->decimal('percentage')->default(0);
             $table->integer('type');
             $table->date('date_effective');
             $table->timestamps();

@@ -9,6 +9,7 @@ class PayrollItem extends Model
     protected $fillable = [
         'item',
         'amount',
+        'percentage',
         'type',
         'date_effective',
     
