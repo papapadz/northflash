@@ -11,9 +11,23 @@ class PayrollController extends Controller
 {
     public static function index() {
 
-        $employeePayrolls = Employee::select()
+        $employeePayrolls = Employee::select(
+                'employees.employee_id',
+                'last_name',
+                'first_name',
+                'middle_name',
+                'payroll_date_start',
+                'payroll_date_end'
+            )
             ->join('payroll','payroll.employee_id','=','employees.employee_id')
-            ->join('payroll_items','payroll_items.id','=','payroll.payroll_item')
+            ->groupBy(
+                    'employees.employee_id',
+                    'last_name',
+                    'first_name',
+                    'middle_name',
+                    'payroll_date_start',
+                    'payroll_date_end'
+                )
             ->get();
 
         $payrollItems = PayrollItem::select('id','item')->orderBy('item')->get();

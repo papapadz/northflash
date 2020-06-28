@@ -11,8 +11,8 @@ class PayrollItem extends Model
         'amount',
         'percentage',
         'type',
+        'flexirate',
         'date_effective',
-    
     ];
     
     

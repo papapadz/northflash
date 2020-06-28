@@ -16,21 +16,42 @@
               <tr>
                 <th> ID </th>
                 <th> Name </th>
-                <th> Date </th>
                 <th> Payroll </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-            @foreach($employeePayrolls as $payroll)
+            @foreach($employeePayrolls as $e)
               <tr class="py-1">
-                <td>{{ $payroll->employee_id }}</td>
-                <td>{{ $payroll->last_name }}, {{ $payroll->first_name }} {{ $payroll->middle_name[0] }}</td>
-                <td>{{ Carbon\Carbon::parse($payroll->payroll_date_start)->format('F y') }}</td>
-                <td>
-                  @foreach($employeePayrolls->where('employee_id','=',$payroll->employee_id) as $item)
-                    {{$item->item}}<br>
-                  @endforeach
+                <td>{{ $e->employee_id }}</td>
+                <td>{{ $e->last_name }}, {{ $e->first_name }} {{ $e->middle_name[0] ?? ''}}</td>
+                <td class="row">
+                  <div class="col-6">
+                    <span class="text-success">Additions (+)</span>
+                    <div class="row">
+                      <div class="col-6">Salary:</div>
+                      <div class="col-6">@php echo number_format($e->employment->amount, 2, '.', ',') @endphp</div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <span class="text-danger">Deductions (-)</span>
+                      @foreach($e->payroll as $payroll)
+                        <div class="row">
+                          <div class="col-6">
+                          {{ $payroll->item }}:
+                          </div>
+                          <div class="col-6">
+                          @if($payroll->flexirate)
+                            @include('include.payroll.flexirate')
+                          @elseif($payroll->percentage>0)
+                            {{($payroll->percentage*100)}}% 
+                          @else
+                            {{number_format($payroll->amount, 2, '.', ',')}}
+                          @endif
+                          </div>
+                        </div>
+                      @endforeach
+                  </div>
                 </td>
                 <td>
                   <div class="btn-group dropdown">

@@ -30,10 +30,10 @@
                   <img src="{{ url('assets/images/faces-clipart/pic-1.png') }}" alt="image" />
                 </td>
                 <td>{{ $emp->employee_id }}</td>
-                <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] }}</td>
-                <td>{{ $emp->title }}</td>
-                <td>{{ $emp->amount }}</td>
-                <td>{{ $emp->status }}</td>
+                <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</td>
+                <td>{{ $emp->employment->title }}</td>
+                <td>{{ $emp->employment->amount }}</td>
+                <td>{{ $emp->employment->status }}</td>
                 <td>
                   <div class="btn-group dropdown">
                     <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Manage </button>

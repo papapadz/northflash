@@ -12,10 +12,7 @@ class EmployeeController extends Controller
 {
     public static function index() {
 
-        $employees = Employment::select()
-            ->join('employees','employees.employee_id','=','employments.employee_id')
-            ->join('salary','salary.id','=','employments.salary_id')
-            ->join('positions','positions.id','=','salary.position_id')
+        $employees = Employee::select()
             ->orderBy('last_name')
             ->get();
         $positions = Position::orderBy('title')->get();
@@ -45,11 +42,13 @@ class EmployeeController extends Controller
             
             if($employee) {
 
-                $salary = Salary::create([
-                    'position_id' => $request->position,
-                    'amount' => $request->salary,
-                    'date_effective' => $request->date_hired
-                ]);
+                $salary = Salary::firstOrCreate(
+                    [
+                        'position_id' => $request->position,
+                        'amount' => $request->salary,
+                        'date_effective' => $request->date_hired
+                    ]
+                );
                 
                 $employment = Employment::create([
                     'employee_id' => $request->employee_id,

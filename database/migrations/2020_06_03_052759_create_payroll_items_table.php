@@ -19,6 +19,7 @@ class CreatePayrollItemsTable extends Migration
             $table->decimal('amount')->default(0);
             $table->decimal('percentage')->default(0);
             $table->integer('type');
+            $table->boolean('flexirate')->default(false);
             $table->date('date_effective');
             $table->timestamps();
         });

@@ -7,10 +7,10 @@
             <img src="{{ url('assets/images/faces/face8.jpg') }}" alt="profile image">
           </div>
           <div class="text-wrapper">
-            <p class="profile-name">Richard V.Welsh</p>
+            <p class="profile-name">{{ Auth::user()->name }}</p>
             <div class="dropdown" data-display="static">
               <a href="#" class="nav-link d-flex user-switch-dropdown-toggler" id="UsersettingsDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <small class="designation text-muted">Manager</small>
+                <small class="designation text-muted">Administrator</small>
                 <span class="status-indicator online"></span>
               </a>
               <div class="dropdown-menu" aria-labelledby="UsersettingsDropdown">
@@ -35,7 +35,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success btn-block">New Project <i class="mdi mdi-plus"></i>
+        <!-- <button class="btn btn-success btn-block">New Project <i class="mdi mdi-plus"></i> -->
         </button>
       </div>
     </li>
@@ -59,6 +59,9 @@
       </a>
     </li>
     <!-- -->
+    <div class="progress">
+      <div class="progress-bar bg-disabled progress-bar" role="progressbar" style="width: 100%"  aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
     <li class="nav-item {{ active_class(['admin/variables/*']) }}">
       <a class="nav-link" data-toggle="collapse" href="#basic-ui" aria-expanded="{{ is_active_route(['basic-ui/*']) }}" aria-controls="basic-ui">
         <i class="menu-icon mdi mdi-dna"></i>

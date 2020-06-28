@@ -45,6 +45,15 @@ class Employee extends Model
     }
 
     public function payroll() {
-        return $this->hasMany('App\Models\Payroll','employee_id','employee_id');
+        return $this->hasMany('App\Models\Payroll','employee_id','employee_id')
+            ->join('payroll_items','payroll_items.id','=','payroll_item')
+            ->orderBy('payroll_items.id');
+    }
+
+    public function employment() {
+        return $this->hasOne('App\Models\Employment','employee_id','employee_id')
+            ->join('salary','salary.id','=','salary_id')
+            ->join('positions','positions.id','=','salary.position_id')
+            ->orderBy('employments.created_at','desc');
     }
 }
