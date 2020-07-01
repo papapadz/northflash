@@ -42,20 +42,20 @@ class EmployeeController extends Controller
             
             if($employee) {
 
-                $salary = Salary::firstOrCreate(
+                $employment = Employment::firstOrCreate([
+                    'employee_id' => $request->employee_id,
+                    'position_id' => $request->position,
+                    'status' => $request->status,
+                    'date_hired' => $request->date_hired
+                ]);
+
+                $salary = Salary::create(
                     [
-                        'position_id' => $request->position,
+                        'employment_id' => $employment->id,
                         'amount' => $request->salary,
                         'date_effective' => $request->date_hired
                     ]
                 );
-                
-                $employment = Employment::create([
-                    'employee_id' => $request->employee_id,
-                    'salary_id' => $salary->id,
-                    'status' => $request->status,
-                    'date_hired' => $request->date_hired
-                ]);
 
                 return redirect()->back()->with('success','Employee added!');
             }

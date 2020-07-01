@@ -20,7 +20,7 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount,$ot_days,$
                               switch($deduction_id) {
 
                                 case 1:
-                                  $annualIncome = ($employee_salary * 12);
+                                  $annualIncome = $employee_salary * 12;
                                   if($annualIncome<=250000)
                                     $amount = 0.00;
                                   elseif($annualIncome<=400000)
@@ -114,12 +114,12 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount,$ot_days,$
                                       $amount = ($employee_salary*.03)/2;
                                   break;
 
-                                  case 4:
-                                    if($employee_salary>1500)
-                                      $amount = ($employee_salary*.02);
-                                    else
-                                      $amount = ($employee_salary*.01);
-                                  break;
+                                  // case 4:
+                                  //   if($employee_salary>1500)
+                                  //     $amount = ($employee_salary*.02);
+                                  //   else
+                                  //     $amount = ($employee_salary*.01);
+                                  // break;
 
                                   case 5:
                                     $amount = $deduction_amount * $ot_days;

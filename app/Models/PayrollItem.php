@@ -22,6 +22,10 @@ class PayrollItem extends Model
         'updated_at',
     
     ];
+
+    protected $casts = [
+        'amount' => 'decimal'
+    ];
     
     protected $appends = ['resource_url'];
 

@@ -8,7 +8,7 @@ class Employment extends Model
 {
     protected $fillable = [
         'employee_id',
-        'salary_id',
+        'position_id',
         'status',
         'date_hired',
         'date_expired'

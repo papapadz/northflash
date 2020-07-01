@@ -9,7 +9,7 @@ class Salary extends Model
     protected $table = 'salary';
 
     protected $fillable = [
-        'position_id',
+        'employment_id',
         'amount',
         'date_effective',
     
@@ -21,6 +21,10 @@ class Salary extends Model
         'created_at',
         'updated_at',
     
+    ];
+
+    protected $casts = [
+        'amount' => 'decimal'
     ];
     
     protected $appends = ['resource_url'];

@@ -19,6 +19,7 @@
                 <th> Name </th>
                 <th> Position </th>
                 <th> Salary </th>
+                <th> Date Hired </th>
                 <th> Status </th>
                 <th></th>
               </tr>
@@ -32,7 +33,8 @@
                 <td>{{ $emp->employee_id }}</td>
                 <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</td>
                 <td>{{ $emp->employment->title }}</td>
-                <td>{{ $emp->employment->amount }}</td>
+                <td>{{ number_format($emp->employment->amount,2,'.',',') }}</td>
+                <td>{{ Carbon\Carbon::parse($emp->employment->date_hired)->toFormattedDateString() }}</td>
                 <td>{{ $emp->employment->status }}</td>
                 <td>
                   <div class="btn-group dropdown">
