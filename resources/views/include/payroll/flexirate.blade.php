@@ -1,9 +1,9 @@
 @php
                               $amount = 0.00;
-                              switch($deductions->id) {
+                              switch($deduction_id) {
 
                                 case 1:
-                                  $annualIncome = ($e->employment->amount * 12);
+                                  $annualIncome = ($employee_salary * 12);
                                   if($annualIncome<=250000)
                                     $amount = 0.00;
                                   elseif($annualIncome<=400000)
@@ -11,97 +11,111 @@
                                   break;
 
                                 case 2:
-                                  if($e->employment->amount>=19750)
+                                  if($employee_salary>=19750)
                                     $msc=20000;
-                                  elseif($e->employment->amount>=19250)
+                                  elseif($employee_salary>=19250)
                                     $msc=19500;
-                                  elseif($e->employment->amount>=18750)
+                                  elseif($employee_salary>=18750)
                                     $msc=19000;
-                                  elseif($e->employment->amount>=18250)
+                                  elseif($employee_salary>=18250)
                                     $msc=18500;
-                                  elseif($e->employment->amount>=17750)
+                                  elseif($employee_salary>=17750)
                                     $msc=18000;
-                                  elseif($e->employment->amount>=17250)
+                                  elseif($employee_salary>=17250)
                                     $msc=17500;
-                                  elseif($e->employment->amount>=16750)
+                                  elseif($employee_salary>=16750)
                                     $msc=17000;
-                                  elseif($e->employment->amount>=16250)
+                                  elseif($employee_salary>=16250)
                                     $msc=16500;
-                                  elseif($e->employment->amount>=15750)
+                                  elseif($employee_salary>=15750)
                                     $msc=16000;
-                                  elseif($e->employment->amount>=15250)
+                                  elseif($employee_salary>=15250)
                                     $msc=15500;
-                                  elseif($e->employment->amount>=14750)
+                                  elseif($employee_salary>=14750)
                                     $msc=15000;
-                                  elseif($e->employment->amount>=14250)
+                                  elseif($employee_salary>=14250)
                                     $msc=14500;
-                                  elseif($e->employment->amount>=13750)
+                                  elseif($employee_salary>=13750)
                                     $msc=14000;
-                                  elseif($e->employment->amount>=13250)
+                                  elseif($employee_salary>=13250)
                                     $msc=13500;
-                                  elseif($e->employment->amount>=12750)
+                                  elseif($employee_salary>=12750)
                                     $msc=13000;
-                                  elseif($e->employment->amount>=12250)
+                                  elseif($employee_salary>=12250)
                                     $msc=12500;
-                                  elseif($e->employment->amount>=11750)
+                                  elseif($employee_salary>=11750)
                                     $msc=12000;
-                                  elseif($e->employment->amount>=11250)
+                                  elseif($employee_salary>=11250)
                                     $msc=11500;
-                                  elseif($e->employment->amount>=10750)
+                                  elseif($employee_salary>=10750)
                                     $msc=11000;
-                                  elseif($e->employment->amount>=10250)
+                                  elseif($employee_salary>=10250)
                                     $msc=10500;
-                                  elseif($e->employment->amount>=9750)
+                                  elseif($employee_salary>=9750)
                                     $msc=10000;
-                                  elseif($e->employment->amount>=9250)
+                                  elseif($employee_salary>=9250)
                                     $msc=9500;
-                                  elseif($e->employment->amount>=8750)
+                                  elseif($employee_salary>=8750)
                                     $msc=9000;
-                                  elseif($e->employment->amount>=8250)
+                                  elseif($employee_salary>=8250)
                                     $msc=8500;
-                                  elseif($e->employment->amount>=7750)
+                                  elseif($employee_salary>=7750)
                                     $msc=8000;
-                                  elseif($e->employment->amount>=7250)
+                                  elseif($employee_salary>=7250)
                                     $msc=7500;
-                                  elseif($e->employment->amount>=6750)
+                                  elseif($employee_salary>=6750)
                                     $msc=7000;
-                                  elseif($e->employment->amount>=6250)
+                                  elseif($employee_salary>=6250)
                                     $msc=6500;
-                                  elseif($e->employment->amount>=5750)
+                                  elseif($employee_salary>=5750)
                                     $msc=6000;
-                                  elseif($e->employment->amount>=5250)
+                                  elseif($employee_salary>=5250)
                                     $msc=5500;
-                                  elseif($e->employment->amount>=4750)
+                                  elseif($employee_salary>=4750)
                                     $msc=5000;
-                                  elseif($e->employment->amount>=4250)
+                                  elseif($employee_salary>=4250)
                                     $msc=4500;
-                                  elseif($e->employment->amount>=3750)
+                                  elseif($employee_salary>=3750)
                                     $msc=4000;
-                                  elseif($e->employment->amount>=3250)
+                                  elseif($employee_salary>=3250)
                                     $msc=3500;
-                                  elseif($e->employment->amount>=2750)
+                                  elseif($employee_salary>=2750)
                                     $msc=3000;
-                                  elseif($e->employment->amount>=2250)
+                                  elseif($employee_salary>=2250)
                                     $msc=2500;
-                                  elseif($e->employment->amount < 2250)
+                                  elseif($employee_salary < 2250)
                                     $msc=2000;
                                   $amount = $msc*.04;
                                   break;
                               
                                   case 3:
-                                    if($e->employment->amount<=10000)
+                                    if($employee_salary<=10000)
                                       $amount = 150;
-                                    elseif($e->employment->amount>=60000)
+                                    elseif($employee_salary>=60000)
                                       $amount = 900;
                                     else
-                                      $amount = ($e->employment->amount*.03)/2;
+                                      $amount = ($employee_salary*.03)/2;
                                   break;
 
                                   case 4:
-                                    if($e->employment->amount>1500)
-                                      $amount = ($e->employment->amount*.02);
+                                    if($employee_salary>1500)
+                                      $amount = ($employee_salary*.02);
                                     else
-                                      $amount = ($e->employment->amount*.01);
+                                      $amount = ($employee_salary*.01);
+                                  break;
+
+                                  case 5:
+                                    $amount = $deduction_amount * $ot_days;
+                                  break;
+
+                                  case 6:
+                                    $amount = $deduction_amount * $ut_days;
+                                  break;
+
+                                  default:
+                                    $amount = $deduction_amount;  
+                                  break;
                               }
-                              echo number_format($amount, 2, '.', ',');
+                              $amount = number_format($amount, 2, '.', ',');
+                              echo $amount;
                             @endphp

@@ -11,10 +11,20 @@
             }
 
             /* Clear floats after the columns */
+            .row {
+                width: 100%;
+                margin-bottom: 10px;
+            }
             .row:after {
                 content: "";
                 display: table;
                 clear: both;
+            }
+
+            table {
+                border-style: solid;
+                width:100%;
+                margin-left: 10px;
             }
         </style>
     </head>
@@ -22,50 +32,10 @@
         @foreach($data as $k => $emp)
             @if($k%2!=0)
             <div class="row">
-                <div class="column">
-                    <table>
-                        <tr>
-                            <td colspan="2" style="font-size: 11px"><center><b><u>North Flash Power and Builds, Inc.</u></b></center></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><center><b>Payslip for {{ Carbon\Carbon::parse($emp->payroll_date)->format('F Y') }}</b></center></td>
-                        </tr>
-                        <tr>
-                            <td>Employee ID:</td>
-                            <td>{{ $emp->employee_id }}</td>
-                        </tr>
-                        <tr>
-                            <td>Name:</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="border: 1px"></td>
-                        </tr>
-                    </table>
-                </div>
+                @include('include.payroll.payslip-details')
             </div>
             @else
-            <div class="column">
-                <table>
-                    <tr>
-                        <td colspan="2" style="font-size: 11px"><center><b><u>North Flash Power and Builds, Inc.</u></b></center></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><center><b>Payslip for {{ Carbon\Carbon::parse($emp->payroll_date)->format('F Y') }}</b></center></td>
-                    </tr>
-                    <tr>
-                        <td>Employee ID:</td>
-                        <td>{{ $emp->employee_id }}</td>
-                    </tr>
-                    <tr>
-                        <td>Name:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="border: 1px"></td>
-                    </tr>
-                </table>
-            </div>
+                @include('include.payroll.payslip-details')
             @endif
         @endforeach
     </body>

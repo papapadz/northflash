@@ -23,6 +23,9 @@
             </thead>
             <tbody>
             @foreach($employeePayrolls as $e)
+            @php
+              $employee_salary = $e->employment->amount;
+            @endphp
               <tr class="py-1">
                 <td>{{ $e->employee_id }}</td>
                 <td>{{ $e->last_name }}, {{ $e->first_name }} {{ $e->middle_name[0] ?? ''}}</td>
@@ -31,7 +34,7 @@
                     <span class="text-success">Additions (+)</span>
                     <div class="row">
                       <div class="col-6">Salary:</div>
-                      <div class="col-6">@php echo number_format($e->employment->amount, 2, '.', ',') @endphp</div>
+                      <div class="col-6">@php echo number_format($employee_salary, 2, '.', ',') @endphp</div>
                     </div>
                     <div class="row">
                       @foreach($e->payroll->where('type',1) as $additions)
@@ -48,14 +51,18 @@
                           {{ $deductions->item }}:
                           </div>
                           <div class="col-6">
-                          @if($deductions->id==6)
+                          @php
+                            $deduction_id = $deductions->id;
+                            $deduction_amount = $deductions->amount;
+                          @endphp
+                          @if($deduction_id==6)
                             {{number_format($deductions->amount, 2, '.', ',')}} /min
                           @elseif($deductions->flexirate)
-                            @include('include.payroll.flexirate')
+                            {{ findPayroll($deduction_id,$employee_salary,$deduction_amount,0,0) }}
                           @elseif($deductions->percentage>0)
                             {{($deductions->percentage*100)}}% 
                           @else
-                            {{number_format($deductions->amount, 2, '.', ',')}}
+                            {{number_format($deduction_amount, 2, '.', ',')}}
                           @endif
                           </div>
                         </div>
