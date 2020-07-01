@@ -22,12 +22,12 @@ class PayrollGeneration extends Model
             ->get();
     }
 
-    public function totalPayments($param_date,$param_employee_id) {
+    public function employeePayroll($param_date,$param_employee_id,$param_type) {
         return $this::join('payroll','payroll.employee_id','=','payroll_generations.employee_id')
             ->join('payroll_items','payroll_items.id','=','payroll.payroll_item')
             ->whereDate('payroll_date',$param_date)
             ->where([
-                    ['type',1],
+                    ['type',$param_type],
                     ['payroll.employee_id',$param_employee_id]
                 ])
             ->get();

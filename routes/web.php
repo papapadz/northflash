@@ -154,8 +154,8 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::get('payrolls/generations', 'PayrollController@generations');
     Route::post('payrolls/generations/add', 'PayrollController@generateview');
     Route::post('payrolls/generations/save','PayrollController@save');
-    Route::get('payrolls/generations/payslip','PayrollController@payslip');
-
+    Route::get('payrolls/generations/payslip/{payroll_date}','PayrollController@payslip');
+    
     Route::group(['prefix'=>'variables'], function() {
 
         Route::get('positions', 'PositionController@index');

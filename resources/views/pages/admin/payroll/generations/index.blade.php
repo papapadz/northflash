@@ -29,7 +29,7 @@
                 @php
                   $total = $empbenefits = 0;
                   foreach($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString()) as $emp) {
-                    foreach($emp->totalPayments(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id) as $payroll) {
+                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1) as $payroll) {
                       if($payroll->ot>0)
                         $empbenefits = $empbenefits + ($payroll->amount*$payroll->ot);
                     }
@@ -43,7 +43,7 @@
                   <div class="btn-group dropdown">
                     <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Manage </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{{ url('admin/payrolls/generations/payslip') }}">View payslips</a>
+                      <a class="dropdown-item" href="{{ url('admin/payrolls/generations/payslip/'.Carbon\Carbon::parse($generation->payroll_date)->toDateString()) }}">View payslips</a>
                       <hr>  
                       <a class="dropdown-item" href="#">Update</a>
                       <a class="dropdown-item" href="#">Delete</a>

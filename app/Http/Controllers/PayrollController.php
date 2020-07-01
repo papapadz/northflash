@@ -139,8 +139,10 @@ class PayrollController extends Controller
         return $this->generations();
     }
 
-    public function payslip() {
-        $data = '<h1>Test</h1>';
-        $pdf = DOMPdf::loadView($data);
+    public function payslip($payroll_date) {
+        $data = PayrollGeneration::select()->whereDate('payroll_date',$payroll_date)->get();
+        
+        $pdf = DOMPdf::loadView('include.payroll.payslip',compact('data'));
+        return $pdf->download('customers.pdf');
     }
 }
