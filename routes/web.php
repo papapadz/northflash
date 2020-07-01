@@ -149,7 +149,12 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::post('employee/add','EmployeeController@store');
 
     Route::get('payrolls', 'PayrollController@index');
+    
     Route::post('payroll/add','PayrollController@store');
+    Route::get('payrolls/generations', 'PayrollController@generations');
+    Route::post('payrolls/generations/add', 'PayrollController@generateview');
+    Route::post('payrolls/generations/save','PayrollController@save');
+    Route::get('payrolls/generations/payslip','PayrollController@payslip');
 
     Route::group(['prefix'=>'variables'], function() {
 

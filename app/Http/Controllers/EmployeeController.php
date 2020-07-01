@@ -10,7 +10,7 @@ use App\Models\Salary;
 
 class EmployeeController extends Controller
 {
-    public static function index() {
+    public function index() {
 
         $employees = Employee::select()
             ->orderBy('last_name')
@@ -24,7 +24,7 @@ class EmployeeController extends Controller
             ]);
     }
 
-    public static function store(Request $request) {
+    public function store(Request $request) {
 
         try {
             $employee = Employee::firstOrCreate(

@@ -56,6 +56,28 @@ class PayrollItemsSeeder extends Seeder
                 'date_effective' => '2020-01-01',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
+            ],
+            [
+                'id' => 5,
+                'item' => 'Overtime Pay',
+                'amount' => 0,
+                'percentage' => 0,
+                'type' => 1,
+                'flexirate' => false,
+                'date_effective' => '2020-01-01',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'id' => 6,
+                'item' => 'Undertime',
+                'amount' => 0,
+                'percentage' => 0,
+                'type' => 2,
+                'flexirate' => false,
+                'date_effective' => '2020-01-01',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]
         ]);
     }

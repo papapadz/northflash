@@ -1,6 +1,6 @@
 @php
                               $amount = 0.00;
-                              switch($payroll->id) {
+                              switch($deductions->id) {
 
                                 case 1:
                                   $annualIncome = ($e->employment->amount * 12);

@@ -7,14 +7,14 @@ use App\Models\Position;
 
 class PositionController extends Controller
 {
-    public static function index() {
+    public function index() {
 
         $positions = Position::orderBy('title')->get();
 
         return view('pages.admin.position.index')->with('positions',$positions);
     }
 
-    public static function store(Request $request) {
+    public function store(Request $request) {
 
         $position = Position::firstOrCreate(
             ['title' => $request->title]

@@ -16497,10 +16497,8 @@ small {
   margin: 0 0 0 -.1em;
   background: #19d895;
   transform-origin: 50% 250%;
-  -webkit-animation: rota 1.13s linear infinite,
- opa 3.67s ease-in-out infinite alternate;
-  animation: rota 1.13s linear infinite,
- opa 3.67s ease-in-out infinite alternate;
+  -webkit-animation: rota 1.13s linear infinite, opa 3.67s ease-in-out infinite alternate;
+  animation: rota 1.13s linear infinite, opa 3.67s ease-in-out infinite alternate;
 }
 
 #pgloading .bokeh li:nth-child(2) {
@@ -16509,10 +16507,8 @@ small {
   margin: -.1em 0 0 0;
   background: #ff0017;
   transform-origin: -150% 50%;
-  -webkit-animation: rota 1.86s linear infinite,
- opa 4.29s ease-in-out infinite alternate;
-  animation: rota 1.86s linear infinite,
- opa 4.29s ease-in-out infinite alternate;
+  -webkit-animation: rota 1.86s linear infinite, opa 4.29s ease-in-out infinite alternate;
+  animation: rota 1.86s linear infinite, opa 4.29s ease-in-out infinite alternate;
 }
 
 #pgloading .bokeh li:nth-child(3) {
@@ -16521,10 +16517,8 @@ small {
   margin: 0 0 0 -.1em;
   background: #ffaf00;
   transform-origin: 50% -150%;
-  -webkit-animation: rota 1.45s linear infinite,
- opa 5.12s ease-in-out infinite alternate;
-  animation: rota 1.45s linear infinite,
- opa 5.12s ease-in-out infinite alternate;
+  -webkit-animation: rota 1.45s linear infinite, opa 5.12s ease-in-out infinite alternate;
+  animation: rota 1.45s linear infinite, opa 5.12s ease-in-out infinite alternate;
 }
 
 #pgloading .bokeh li:nth-child(4) {
@@ -16533,10 +16527,8 @@ small {
   margin: -.1em 0 0 0;
   background: #2196f3;
   transform-origin: 250% 50%;
-  -webkit-animation: rota 1.72s linear infinite,
- opa 5.25s ease-in-out infinite alternate;
-  animation: rota 1.72s linear infinite,
- opa 5.25s ease-in-out infinite alternate;
+  -webkit-animation: rota 1.72s linear infinite, opa 5.25s ease-in-out infinite alternate;
+  animation: rota 1.72s linear infinite, opa 5.25s ease-in-out infinite alternate;
 }
 
 @-webkit-keyframes rota {
@@ -16868,14 +16860,7 @@ small {
   background: #ffaf00;
   color: #ffaf00;
   margin: 80px auto;
-  box-shadow: 15px 15px  0 0,
- -15px -15px  0 0,
- 15px -15px  0 0,
- -15px 15px  0 0,
- 0 15px  0 0,
- 15px 0  0 0,
- -15px 0  0 0,
- 0 -15px 0 0;
+  box-shadow: 15px 15px  0 0, -15px -15px  0 0, 15px -15px  0 0, -15px 15px  0 0, 0 15px  0 0, 15px 0  0 0, -15px 0  0 0, 0 -15px 0 0;
   -webkit-animation: anim 2s linear infinite;
           animation: anim 2s linear infinite;
 }
@@ -16886,25 +16871,11 @@ small {
   }
 
   50% {
-    box-shadow: 20px 20px  0 0,
- -20px -20px  0 0,
- 20px -20px  0 0,
- -20px 20px  0 0,
- 0 10px  0 0,
- 10px 0  0 0,
- -10px 0  0 0,
- 0 -10px 0 0;
+    box-shadow: 20px 20px  0 0, -20px -20px  0 0, 20px -20px  0 0, -20px 20px  0 0, 0 10px  0 0, 10px 0  0 0, -10px 0  0 0, 0 -10px 0 0;
   }
 
   75% {
-    box-shadow: 20px 20px  0 0,
- -20px -20px  0 0,
- 20px -20px  0 0,
- -20px 20px  0 0,
- 0 10px  0 0,
- 10px 0  0 0,
- -10px 0  0 0,
- 0 -10px 0 0;
+    box-shadow: 20px 20px  0 0, -20px -20px  0 0, 20px -20px  0 0, -20px 20px  0 0, 0 10px  0 0, 10px 0  0 0, -10px 0  0 0, 0 -10px 0 0;
   }
 
   100% {
@@ -16919,25 +16890,11 @@ small {
   }
 
   50% {
-    box-shadow: 20px 20px  0 0,
- -20px -20px  0 0,
- 20px -20px  0 0,
- -20px 20px  0 0,
- 0 10px  0 0,
- 10px 0  0 0,
- -10px 0  0 0,
- 0 -10px 0 0;
+    box-shadow: 20px 20px  0 0, -20px -20px  0 0, 20px -20px  0 0, -20px 20px  0 0, 0 10px  0 0, 10px 0  0 0, -10px 0  0 0, 0 -10px 0 0;
   }
 
   75% {
-    box-shadow: 20px 20px  0 0,
- -20px -20px  0 0,
- 20px -20px  0 0,
- -20px 20px  0 0,
- 0 10px  0 0,
- 10px 0  0 0,
- -10px 0  0 0,
- 0 -10px 0 0;
+    box-shadow: 20px 20px  0 0, -20px -20px  0 0, 20px -20px  0 0, -20px 20px  0 0, 0 10px  0 0, 10px 0  0 0, -10px 0  0 0, 0 -10px 0 0;
   }
 
   100% {

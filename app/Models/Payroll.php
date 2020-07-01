@@ -36,4 +36,5 @@ class Payroll extends Model
     public function employee() {
         return $this->belongsTo('App\Models\Employee','employee_id','employee_id');
     }
+
 }

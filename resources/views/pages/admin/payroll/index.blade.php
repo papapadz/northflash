@@ -9,6 +9,7 @@
     <div class="card">
       <div class="card-body">
         <button class="btn btn-rounded btn-success" data-toggle="modal" data-target="#exampleModalCenter">New Payroll</button>
+        <a class="btn btn-rounded btn-warning" href="{{ url('admin/payrolls/generations') }}">Generate Payroll</a>
         <hr>
         <div class="table-responsive">
           <table id="table" class="table table-striped">
@@ -32,21 +33,29 @@
                       <div class="col-6">Salary:</div>
                       <div class="col-6">@php echo number_format($e->employment->amount, 2, '.', ',') @endphp</div>
                     </div>
+                    <div class="row">
+                      @foreach($e->payroll->where('type',1) as $additions)
+                        <div class="col-6">{{$additions->item}}: </div>
+                        <div class="col-6">{{$additions->amount}} /hr</div>
+                      @endforeach
+                    </div>
                   </div>
                   <div class="col-6">
                     <span class="text-danger">Deductions (-)</span>
-                      @foreach($e->payroll as $payroll)
+                      @foreach($e->payroll->where('type',2) as $deductions)
                         <div class="row">
                           <div class="col-6">
-                          {{ $payroll->item }}:
+                          {{ $deductions->item }}:
                           </div>
                           <div class="col-6">
-                          @if($payroll->flexirate)
+                          @if($deductions->id==6)
+                            {{number_format($deductions->amount, 2, '.', ',')}} /min
+                          @elseif($deductions->flexirate)
                             @include('include.payroll.flexirate')
-                          @elseif($payroll->percentage>0)
-                            {{($payroll->percentage*100)}}% 
+                          @elseif($deductions->percentage>0)
+                            {{($deductions->percentage*100)}}% 
                           @else
-                            {{number_format($payroll->amount, 2, '.', ',')}}
+                            {{number_format($deductions->amount, 2, '.', ',')}}
                           @endif
                           </div>
                         </div>
@@ -99,7 +108,7 @@
             <div class="row">
               <div class="col-6">
               <small class="text-success">Additions</small>
-                @foreach($payrollItems->where('type','=',1) as $item1)
+                @foreach($payrollItems1 as $item1)
                 <div class="custom-control custom-checkbox">
                   <input class="form-check-input is-invalid" type="checkbox" value="{{ $item1->id }}" name="item[]">
                   <label>{{ $item1->item }}</label>
@@ -108,7 +117,7 @@
               </div>
               <div class="col-6">
               <small class="text-danger">Deductions</small>
-                @foreach($payrollItems->where('type','!=',1) as $item2)
+                @foreach($payrollItems2 as $item2)
                 <div class="custom-control custom-checkbox">
                   <input class="form-check-input is-invalid" type="checkbox" value="{{ $item2->id }}" name="item[]">
                   <label>{{ $item2->item }}</label>

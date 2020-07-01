@@ -7,7 +7,7 @@ use App\Models\PayrollItem;
 
 class PayrollItemController extends Controller
 {
-    public static function index() {
+    public function index() {
 
         $payrollItems = PayrollItem::all();
 
@@ -15,7 +15,7 @@ class PayrollItemController extends Controller
             ->with('payrollItems',$payrollItems);
     }
 
-    public static function store(Request $request) {
+    public function store(Request $request) {
 
         $percentage = 0;
         if($request->percentage>0)
