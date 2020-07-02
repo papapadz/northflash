@@ -98,6 +98,7 @@ class PayrollController extends Controller
             'payroll_date_end'
         )
         ->join('payroll','payroll.employee_id','=','employees.employee_id')
+        ->join('employments','employments.employee_id','=','employees.employee_id')
         ->groupBy(
                 'employees.employee_id',
                 'last_name',
@@ -106,6 +107,7 @@ class PayrollController extends Controller
                 'payroll_date_start',
                 'payroll_date_end'
             )
+        ->whereDate('date_hired','<=',$request->payroll_date)
         ->get();
 
         return view('pages.admin.payroll.generations.generate')
@@ -141,8 +143,8 @@ class PayrollController extends Controller
 
     public function payslip($payroll_date) {
         $data = PayrollGeneration::select()->whereDate('payroll_date',$payroll_date)->get();
-        
+        $filename = 'payslip'.$payroll_date.'.pdf';
         $pdf = DOMPdf::loadView('include.payroll.payslip',compact('data'))->setPaper('letter', 'portrait');
-        return $pdf->download('customers.pdf');
+        return $pdf->download($filename);
     }
 }
