@@ -52,9 +52,8 @@ class Employee extends Model
 
     public function employment() {
         return $this->hasOne('App\Models\Employment','employee_id','employee_id')
-            ->join('salary','salary.employment_id','=','employments.id')
-            ->join('positions','positions.id','=','employments.position_id')
-            ->orderBy('salary.date_effective','desc')
-            ->orderBy('salary.created_at','desc');
+            ->join('salary','salary.id','=','salary_id')
+            ->join('positions','positions.id','=','salary.position_id')
+            ->orderBy('employments.created_at','desc');
     }
 }

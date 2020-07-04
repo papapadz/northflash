@@ -17,11 +17,6 @@ class PayrollGeneration extends Model
 
     protected $dates = ['payroll_date'];
 
-    protected $casts = [
-        'ot' => 'integer',
-        'ut' => 'integer'
-    ];
-
     public function totalEmployees($param_date) {
         return $this::whereDate('payroll_date',$param_date)
             ->get();
@@ -38,17 +33,11 @@ class PayrollGeneration extends Model
             ->get();
     }
 
-    public function employeeSalary($param_employee_id,$param_date) {
+    public function employeeSalary($param_employee_id) {
         return $this::join('employments','employments.employee_id','=','payroll_generations.employee_id')
-            ->join('salary','salary.employment_id','=','employments.id')
+            ->join('salary','salary.id','=','employments.salary_id')
             ->where('employments.employee_id',$param_employee_id)
-            ->whereDate('salary.date_effective','<=',$param_date)
-            ->orderBy('salary.date_effective','desc')
-            ->orderBy('salary.created_at','desc')
+            ->orderBy('employments.created_at','desc')
             ->first();
-    }
-
-    public function employee() {
-        return $this->hasOne('App\Models\Employee','employee_id','employee_id');
     }
 }

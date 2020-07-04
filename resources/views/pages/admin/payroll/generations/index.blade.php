@@ -30,12 +30,11 @@
                   $total = $empbenefits = 0;
                   foreach($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString()) as $emp) {
                     foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1) as $payroll) {
-                      
-                      if($payroll->payroll_item==5 && $payroll->ot>0)
+                      if($payroll->ot>0)
                         $empbenefits = $empbenefits + ($payroll->amount*$payroll->ot);
                     }
                     
-                    $total = $total + $emp->employeeSalary($emp->employee_id,Carbon\Carbon::parse($generation->payroll_date)->toDateString())->amount + $empbenefits;
+                    $total = $total + $emp->employeeSalary($emp->employee_id)->amount + $empbenefits;
                   }
                   echo number_format($total, 2, '.', ',');
                 @endphp

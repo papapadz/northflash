@@ -15,7 +15,7 @@ class CreateSalaryTable extends Migration
     {
         Schema::create('salary', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('employment_id');
+            $table->integer('position_id');
             $table->decimal('amount');
             $table->date('date_effective');
             $table->timestamps();
