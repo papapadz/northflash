@@ -20,9 +20,13 @@ class PositionController extends Controller
             ['title' => $request->title]
         );
 
-        if($position)
+        if($position->wasRecentlyCreated)
             return redirect()->back()->with('success','Record has been added!');
-        else
+        else 
             return redirect()->back()->with('danger','Position already exists.');
+    }
+
+    public static function delete($id) {
+        Position::find($id)->delete();
     }
 }

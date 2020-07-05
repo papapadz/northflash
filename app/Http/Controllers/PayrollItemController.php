@@ -9,7 +9,7 @@ class PayrollItemController extends Controller
 {
     public function index() {
 
-        $payrollItems = PayrollItem::all();
+        $payrollItems = PayrollItem::where('flexirate',false)->get();
 
         return view('pages.admin.payrollItem.index')
             ->with('payrollItems',$payrollItems);
@@ -31,9 +31,13 @@ class PayrollItemController extends Controller
             ]
         );
 
-        if($payrollItem)
+        if($payrollItem->wasRecentlyCreated)
             return redirect()->back()->with('success','Record has been added!');
         else
             return redirect()->back()->with('danger','Item name already exists!');
+    }
+
+    public static function delete($id) {
+        PayrollItem::find($id)->delete();
     }
 }

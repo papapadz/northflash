@@ -27,20 +27,26 @@ class EmployeeController extends Controller
     public function store(Request $request) {
 
         try {
-            $employee = Employee::firstOrCreate(
-                ['employee_id' => $request->employee_id ],
-                [
-                    'first_name' => $request->first_name,
-                    'middle_name' => $request->middle_name,
-                    'last_name' => $request->last_name,
-                    'birthdate' => $request->birthdate,
-                    'gender' => $request->gender,
-                    'civil_stat' => $request->civil_stat,
-                    'address' => $request->address,
-                ]
-            );
-            
-            if($employee) {
+
+            $employee = Employee::where('employee_id',$request->employee_id)->withTrashed()->first();
+
+            if(!$employee) {
+                $employee = Employee::firstOrCreate(
+                    ['employee_id' => $request->employee_id ],
+                    [
+                        'first_name' => $request->first_name,
+                        'middle_name' => $request->middle_name,
+                        'last_name' => $request->last_name,
+                        'birthdate' => $request->birthdate,
+                        'gender' => $request->gender,
+                        'civil_stat' => $request->civil_stat,
+                        'address' => $request->address,
+                    ]
+                );
+            } else
+                return redirect()->back()->with('danger','Employee ID No. already taken.');
+
+            if($employee->wasRecentlyCreated) {
 
                 $salary = Salary::firstOrCreate(
                     [
@@ -64,5 +70,16 @@ class EmployeeController extends Controller
         } catch(Exception $e) {
             return redirect()->back()->with('error',$e);
         }
+    }
+
+    public static function delete($id) {
+        Employee::find($id)->delete();
+    }
+
+    public function view($employee_id) {
+
+        $employee = Employee::find($employee_id);
+
+        return view('pages.admin.employee.profile')->with('employee',$employee);
     }
 }

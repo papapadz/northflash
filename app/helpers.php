@@ -15,7 +15,7 @@ function show_class($path) {
   return call_user_func_array('Request::is', (array)$path) ? 'show' : '';
 }
 
-function findPayroll($deduction_id,$employee_salary,$deduction_amount,$ot_days,$ut_days) {
+function findPayroll($deduction_id,$employee_salary,$deduction_amount) {
   $amount = 0.00;
                               switch($deduction_id) {
 
@@ -122,11 +122,7 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount,$ot_days,$
                                   break;
 
                                   case 5:
-                                    $amount = $deduction_amount * $ot_days;
-                                  break;
-
-                                  case 6:
-                                    $amount = $deduction_amount * $ut_days;
+                                    $amount = ($employee_salary/26)/8;
                                   break;
 
                                   default:

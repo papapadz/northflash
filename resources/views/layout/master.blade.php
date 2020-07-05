@@ -34,6 +34,19 @@
       @include('layout.sidebar')
       <div class="main-panel">
         <div class="content-wrapper">
+          @if(session('success'))
+              <div class="alert alert-success dismissable">
+                {{ session('success') }}
+              </div>
+          @elseif(session('danger'))
+            <div class="alert alert-danger dismissable">
+              {{ session('danger') }}
+            </div>
+          @elseif(session('warning'))
+            <div class="alert alert-warning dismissable">
+              {{ session('warning') }}
+            </div>
+          @endif
           @yield('content')
         </div>
         @include('layout.footer')
@@ -60,6 +73,26 @@
   {!! Html::script('assets/select2/js/select2.js') !!}
   <!-- end common js -->
 
+
+  <script>
+    function buttonCRUD(tbl,id,crud) {
+      
+      if(confirm('Are you sure you want to make this changes?')) {
+        $.ajax({
+          url: "{{ url('admin/crud') }}",
+          method: "POST",
+          data: {
+            _token: "{{ csrf_token() }}",
+            tbl:tbl,
+            id:id,
+            crud:crud
+          }
+        }).done(function() {
+          window.location.reload();
+        });
+      }
+    }
+  </script>
   @stack('custom-scripts')
 </body>
 </html>

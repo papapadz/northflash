@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PayrollItem extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'item',
         'amount',
@@ -13,14 +16,6 @@ class PayrollItem extends Model
         'type',
         'flexirate',
         'date_effective',
-    ];
-    
-    
-    protected $dates = [
-        'date_effective',
-        'created_at',
-        'updated_at',
-    
     ];
     
     protected $appends = ['resource_url'];

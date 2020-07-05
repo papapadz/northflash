@@ -91,10 +91,10 @@
             <input type="radio" name="type" value="2" >
             <label class="text-danger">Deduction (-)</label>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Date Effective: </label>
-            <input required type="date" value="{{ Carbon\Carbon::now()->firstOfYear()->toDateString() }}" class="form-control" name="date_effective" ></input>
-          </div>
+            <input type="date" value="{{ Carbon\Carbon::now()->firstOfYear()->toDateString() }}" class="form-control" name="date_effective" ></input>
+          </div> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -38,9 +38,8 @@
                   <div class="btn-group dropdown">
                     <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Manage </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">View</a>
-                      <a class="dropdown-item" href="#">Update</a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="{{ url('admin/employee/'.$emp->employee_id) }}">View</a>
+                      <a class="dropdown-item text-danger" onclick="buttonCRUD('employees','{{ $emp->employee_id }}',3)">Delete</a>
                     </div>
                   </div>
                 </td>

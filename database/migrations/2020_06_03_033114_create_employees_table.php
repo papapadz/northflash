@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('civil_stat',50);
             $table->string('address',255);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

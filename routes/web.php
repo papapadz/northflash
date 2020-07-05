@@ -147,6 +147,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
     Route::get('employees', 'EmployeeController@index');
     Route::post('employee/add','EmployeeController@store');
+    Route::get('employee/{employee_id}','EmployeeController@view');
 
     Route::get('payrolls', 'PayrollController@index');
     
@@ -156,11 +157,13 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::post('payrolls/generations/save','PayrollController@save');
     Route::get('payrolls/generations/payslip/{payroll_date}','PayrollController@payslip');
     
+    Route::post('crud','AdminController@crud');
+    
     Route::group(['prefix'=>'variables'], function() {
 
         Route::get('positions', 'PositionController@index');
         Route::post('position/add','PositionController@store');
-
+        
         Route::get('payroll-items', 'PayrollItemController@index');
         Route::post('payroll-item/add','PayrollItemController@store');
     });

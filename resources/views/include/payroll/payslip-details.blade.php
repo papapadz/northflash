@@ -58,7 +58,6 @@
             <td colspan="3" style="border-top: solid"><i>Deductions</i></td>
         </tr>
         @foreach($emp->employeePayroll($emp->payroll_date,$emp->employee_id,2) as $payroll)
-        {{ dd($emp->employeePayroll($emp->payroll_date,$emp->employee_id,2)) }}
         <tr>
             <td>{{ $payroll->item }}:</td>
             <td colspan="2">

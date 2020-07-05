@@ -20,7 +20,6 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => true,
-                'date_effective' => '2018-01-01',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -31,7 +30,6 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => true,
-                'date_effective' => '2019-04-01',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -42,7 +40,6 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => true,
-                'date_effective' => '2018-01-01',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -53,7 +50,6 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => false,
-                'date_effective' => '2020-01-01',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -63,8 +59,7 @@ class PayrollItemsSeeder extends Seeder
                 'amount' => 0,
                 'percentage' => 0,
                 'type' => 1,
-                'flexirate' => false,
-                'date_effective' => '2020-01-01',
+                'flexirate' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -75,7 +70,6 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => false,
-                'date_effective' => '2020-01-01',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

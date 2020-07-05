@@ -22,7 +22,9 @@
             @foreach($positions as $pos)
               <tr class="py-1">
                 <td>{{ $pos->title }}</td>
-                <td></td>
+                <td>
+                <button class="btn btn-sm btn-danger" onclick="buttonCRUD('positions','{{ $pos->id }}',3)">Delete</button>
+                </td>
               </tr>
             @endforeach
             </tbody>
