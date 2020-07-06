@@ -114,13 +114,6 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount) {
                                       $amount = ($employee_salary*.03)/2;
                                   break;
 
-                                  case 4:
-                                    if($employee_salary>1500)
-                                      $amount = ($employee_salary*.02);
-                                    else
-                                      $amount = ($employee_salary*.01);
-                                  break;
-
                                   case 5:
                                     $amount = ($employee_salary/26)/8;
                                   break;

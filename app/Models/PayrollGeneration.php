@@ -40,4 +40,8 @@ class PayrollGeneration extends Model
             ->orderBy('employments.created_at','desc')
             ->first();
     }
+
+    public function employeeInfo() {
+        return $this::hasOne('App\Models\Employee','employee_id','employee_id');
+    }
 }

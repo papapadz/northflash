@@ -26,12 +26,25 @@
                 width:100%;
                 margin-left: 10px;
             }
+
+            .right {
+                text-align: right;
+            }
+
+            td.mid {
+                width: 40%;
+            }
         </style>
     </head>
     <body>
+        {{ dd($data) }}
         @foreach($data as $k => $emp)
             @if($k%2!=0)
-            <div class="row">
+                @if(($k+1)%4==0)
+                    <div class="page-break">
+                @else
+                    <div class="row">
+                @endif
                 @include('include.payroll.payslip-details')
             </div>
             @else
