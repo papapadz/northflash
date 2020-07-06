@@ -60,6 +60,7 @@
             <td colspan="3" style="border-top: solid"><i>Deductions</i></td>
         </tr>
         @foreach($emp->employeePayroll($emp->payroll_date,$emp->employee_id,2) as $payroll)
+        {{ dd($emp->employeePayroll($emp->payroll_date,$emp->employee_id,2)) }}
         <tr>
             <td>{{ $payroll->item }}:</td>
             <td class="right mid">
@@ -78,8 +79,8 @@
         </tr>
         @endforeach
         <tr>
-            <td colspan="2" class="right"><b>Total: </b></td>
-            <td class="right"><u><b>
+            <td colspan="2" style="text-align:right"><b>Total: </b></td>
+            <td  style="text-align:right"><u><b>
             @php
                 $net = $gross - $totalDeduct;
                 echo number_format($totalDeduct,2,'.',',');
