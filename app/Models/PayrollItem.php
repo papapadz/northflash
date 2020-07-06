@@ -18,6 +18,13 @@ class PayrollItem extends Model
         'date_effective',
     ];
     
+    protected $dates = [
+        'date_effective',
+        'created_at',
+        'updated_at',
+    
+    ];
+    
     protected $appends = ['resource_url'];
 
     /* ************************ ACCESSOR ************************* */
