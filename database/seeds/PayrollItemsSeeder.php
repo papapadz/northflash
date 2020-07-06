@@ -72,6 +72,16 @@ class PayrollItemsSeeder extends Seeder
                 'flexirate' => false,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
+            ],
+            [
+                'id' => 7,
+                'item' => '13th Month Pay',
+                'amount' => 0,
+                'percentage' => 0,
+                'type' => 1,
+                'flexirate' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]
         ]);
     }

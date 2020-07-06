@@ -38,8 +38,16 @@
                     </div>
                     <div class="row">
                       @foreach($e->payroll->where('type',1) as $additions)
-                        <div class="col-6">{{$additions->item}}: </div>
-                        <div class="col-6">{{$additions->amount}} /hr</div>
+                      <div class="col-6">{{$additions->item}}: </div>
+                        <div class="col-6">
+                        @if($additions->id == 5)
+                          {{ findPayroll($additions->id,$employee_salary,$additions->amount) }} /hr
+                        @elseif($additions->id == 7)
+                          {{ findPayroll($additions->id,$employee_salary,$additions->amount) }} <small>semi-annual</small>
+                        @else
+                          {{ findPayroll($additions->id,$employee_salary,$additions->amount) }}
+                        @endif
+                        </div>
                       @endforeach
                     </div>
                   </div>
@@ -58,7 +66,7 @@
                           @if($deduction_id==6)
                             {{number_format($deductions->amount, 2, '.', ',')}} /min
                           @elseif($deductions->flexirate)
-                            {{ findPayroll($deduction_id,$employee_salary,$deduction_amount,0,0) }}
+                            {{ findPayroll($deduction_id,$employee_salary,$deduction_amount) }}
                           @elseif($deductions->percentage>0)
                             {{($deductions->percentage*100)}}% 
                           @else

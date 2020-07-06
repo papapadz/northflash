@@ -31,13 +31,16 @@
                 text-align: right;
             }
 
+            td.first {
+                width: 35%;
+            }
+
             td.mid {
                 width: 40%;
             }
         </style>
     </head>
     <body>
-        {{ dd($data) }}
         @foreach($data as $k => $emp)
             @if($k%2!=0)
                 @if(($k+1)%4==0)

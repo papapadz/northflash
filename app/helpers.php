@@ -118,6 +118,10 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount) {
                                     $amount = ($employee_salary/26)/8;
                                   break;
 
+                                  case 7:
+                                    $amount = ($employee_salary/2);
+                                  break;
+
                                   default:
                                     $amount = $deduction_amount;  
                                   break;

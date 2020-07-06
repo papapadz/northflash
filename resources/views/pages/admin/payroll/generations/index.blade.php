@@ -27,11 +27,16 @@
                 <td>{{ count($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString())) }}</td>
                 <td>
                 @php
-                  $total = $empbenefits = 0;
+                  $total = 0;
                   foreach($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString()) as $emp) {
+                    $empbenefits = 0;
                     foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1) as $payroll) {
-                      if($payroll->ot>0)
-                        $empbenefits = $empbenefits + ($payroll->amount*$payroll->ot);
+                      if($payroll->payroll_item == 5)
+                        $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot);
+                      else if($payroll->payroll_item == 6)
+                        $empbenefits = $empbenefits - (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ut);
+                      else
+                        $empbenefits = $empbenefits + floatval(findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount));
                     }
                     
                     $total = $total + $emp->employeeSalary($emp->employee_id)->amount + $empbenefits;
