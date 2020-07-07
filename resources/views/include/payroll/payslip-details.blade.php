@@ -33,8 +33,14 @@
             @php $pamount = 0; @endphp
             @if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($emp->payroll_date)->month == 5 || Carbon\Carbon::parse($emp->payroll_date)->month == 11))
             <td class="first">{{ $payroll->item }}:</td>
-            <td class="right mid">@php $pamount = $payroll->amount; @endphp</td>
-            @else
+            <td class="right mid">
+            @php 
+                $pamount = $emp->employeeSalary($emp->employee_id)->amount/2;
+                echo number_format($pamount,2,'.',',');
+                $totalAdd = $totalAdd + $pamount;
+            @endphp
+            </td>
+            @elseif($payroll->payroll_item != 7)
             <td class="first">{{ $payroll->item }}:</td>
             <td class="right mid">
             @php
@@ -42,9 +48,9 @@
                     $pamount = findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot;
                 else
                     $pamount = $payroll->amount;
-
-                $totalAdd = $totalAdd + $pamount;
+                
                 echo number_format($pamount,2,'.',',');
+                $totalAdd = $totalAdd + $pamount;
             @endphp
             </td>
             @endif

@@ -35,8 +35,12 @@
                         $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot);
                       else if($payroll->payroll_item == 6)
                         $empbenefits = $empbenefits - (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ut);
-                      else
-                        $empbenefits = $empbenefits + floatval(findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount));
+                      else {
+                        if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($generation->payroll_date)->month == 5 || Carbon\Carbon::parse($generation->payroll_date)->month == 11))
+                          $empbenefits = $empbenefits + ($emp->employeeSalary($emp->employee_id)->amount/2);
+                        else
+                          $empbenefits = $empbenefits + floatval(findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount));
+                      }
                     }
                     
                     $total = $total + $emp->employeeSalary($emp->employee_id)->amount + $empbenefits;
