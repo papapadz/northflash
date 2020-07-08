@@ -7,6 +7,8 @@ use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Employment;
 use App\Models\Salary;
+use App\Models\LicenseType;
+use App\Models\License;
 
 class EmployeeController extends Controller
 {
@@ -52,7 +54,8 @@ class EmployeeController extends Controller
                     [
                         'position_id' => $request->position,
                         'amount' => $request->salary,
-                        'date_effective' => $request->date_hired
+                        'date_effective' => $request->date_hired,
+                        'monthly' => $request->monthly
                     ]
                 );
                 
@@ -80,6 +83,26 @@ class EmployeeController extends Controller
 
         $employee = Employee::find($employee_id);
 
-        return view('pages.admin.employee.profile')->with('employee',$employee);
+        return view('pages.admin.employee.profile')->with([
+                'employee' => $employee,
+                'licensetypes' => LicenseType::all()
+            ]);
+    }
+
+    public function addlicense(Request $request) {
+
+        License::updateOrCreate(
+            [
+                'license_type_id' => $request->license_type_id,
+                'employee_id' => $request->employee_id
+            ],
+            [
+                'license_no' => $request->license_no,
+                'date_issued' => $request->date_issued,
+                'date_expired' => $request->date_expired
+            ]
+        );
+        
+        return redirect()->back()->with('success','Record has been added!');
     }
 }

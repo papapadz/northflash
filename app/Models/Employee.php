@@ -58,4 +58,10 @@ class Employee extends Model
             ->join('positions','positions.id','=','salary.position_id')
             ->orderBy('employments.created_at','desc');
     }
+
+    public function licensenos() {
+        return $this->hasMany('App\Models\License','employee_id','employee_id')
+            ->join('license_types','license_types.id','=','license_type_id')
+            ->orderBy('license_type_id');
+    }
 }
