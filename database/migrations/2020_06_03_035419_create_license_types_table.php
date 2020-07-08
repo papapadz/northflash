@@ -17,7 +17,7 @@ class CreateLicenseTypesTable extends Migration
             $table->bigIncrements('id');
             $table->string('type');
             $table->boolean('government');
-            $table->string('remarks',100);
+            $table->text('remarks');
             $table->timestamps();
         });
     }

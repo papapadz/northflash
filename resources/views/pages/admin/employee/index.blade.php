@@ -1,6 +1,11 @@
 @extends('layout.master')
 
 @push('plugin-styles')
+<style>
+  label {
+    font-weight: bold;
+  }
+</style>
 @endpush
 
 @section('content')
@@ -32,7 +37,14 @@
                 <td>{{ $emp->employee_id }}</td>
                 <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</td>
                 <td>{{ $emp->employment->title }}</td>
-                <td>{{ $emp->employment->amount }}</td>
+                <td>
+                  {{ number_format($emp->employment->amount,2,'.',',') }}
+                  @if($emp->employment->monthly)
+                    /month
+                  @else
+                    /day
+                  @endif
+                </td>
                 <td>{{ $emp->employment->status }}</td>
                 <td>
                   <div class="btn-group dropdown">
@@ -66,49 +78,60 @@
         </button>
       </div>
       <div class="modal-body">
-          <div class="form-group">
+        <div class="row">
+          <div class="form-group col-md-6">
             <label>Employee ID No.: </label>
             <input required type="text" class="form-control" placeholder="ID No." name="employee_id">
           </div>
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label>Last Name: </label>
             <input required type="text" class="form-control" placeholder="Last Name" name="last_name">
           </div>
-          <div class="form-group">
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
             <label>First Name: </label>
             <input required type="text" class="form-control" placeholder="First Name" name="first_name">
           </div>
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label>Middle Name: </label>
             <input type="text" class="form-control" placeholder="Middle Name" name="middle_name">
           </div>
-          <div class="form-group">
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
             <label>Birthday: </label>
             <input required type="date" class="form-control" name="birthdate">
           </div>
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label>Gender: </label><br>
             <input type="radio" name="gender" value="M" checked>
-            <label class="mr-2">Male</label>
+            <span class="mr-2">Male</span>
             <input type="radio" name="gender" value="F" >
-            <label>Female</label>
+            <span>Female</span>
           </div>
-          <div class="form-group">
+        </div>
+        <div class="row">
+          <div class="form-group col-12">
             <label>Civil Status: </label><br>
             <input type="radio" name="civil_stat" value="Single" checked>
-            <label class="mr-2">Single</label>
+            <span class="mr-2">Single</span>
             <input type="radio" name="civil_stat" value="Married" >
-            <label class="mr-2">Married</label>
+            <span class="mr-2">Married</span>
             <input type="radio" name="civil_stat" value="Separated">
-            <label class="mr-2">Separated</label>
+            <span class="mr-2">Separated</span>
             <input type="radio" name="civil_stat" value="Widowed" >
-            <label>Widowed</label>
+            <span>Widowed</span>
           </div>
-          <div class="form-group">
+        </div>
+        <div class="row">
+          <div class="form-group col-12">
             <label>Address: </label>
             <textarea required class="form-control" name="address"></textarea>
-          </div>
-          <div class="form-group">
+          </div> 
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
             <label>Position: </label><br>
             <select required name="position" style="width: 100%">
               @foreach($positions as $pos)
@@ -116,21 +139,33 @@
               @endforeach
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label>Salary (Php): </label><br>
             <input required type="number" min="0.00" step="0.01" class="form-control" name="salary" placeholder="x.xx">
           </div>
-          <div class="form-group">
+        </div>          
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label>Rate: </label><br>
+            <input type="radio" name="monthly" value=1 checked>
+            <span class="mr-2">Monthly</span>
+            <input type="radio" name="monthly" value=0 >
+            <span>Daily</span>
+          </div>
+          <div class="form-group col-md-6">
             <label>Date Hired: </label>
             <input required type="date" class="form-control" name="date_hired">
           </div>
-          <div class="form-group">
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
             <label>Employment Status: </label><br>
             <select required name="status" style="width: 100%">
               <option value="Regular">Regular</option>
               <option value="Contractual">Contractual</option>
             </select>
           </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

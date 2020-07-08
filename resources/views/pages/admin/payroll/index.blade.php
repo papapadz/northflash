@@ -41,11 +41,11 @@
                       <div class="col-6">{{$additions->item}}: </div>
                         <div class="col-6">
                         @if($additions->id == 5)
-                          {{ findPayroll($additions->id,$employee_salary,$additions->amount) }} /hr
+                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount),2,'.',',') }} /hr
                         @elseif($additions->id == 7)
-                          {{ findPayroll($additions->id,$employee_salary,$additions->amount) }} <small>semi-annual</small>
+                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount),2,'.',',') }} <small>semi-annual</small>
                         @else
-                          {{ findPayroll($additions->id,$employee_salary,$additions->amount) }}
+                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount),2,'.',',') }}
                         @endif
                         </div>
                       @endforeach
@@ -66,7 +66,7 @@
                           @if($deduction_id==6)
                             {{number_format($deductions->amount, 2, '.', ',')}} /min
                           @elseif($deductions->flexirate)
-                            {{ findPayroll($deduction_id,$employee_salary,$deduction_amount) }}
+                            {{ number_format(findPayroll($deduction_id,$employee_salary,$deduction_amount),2,'.',',') }}
                           @elseif($deductions->percentage>0)
                             {{($deductions->percentage*100)}}% 
                           @else

@@ -79,7 +79,7 @@
                 if($payroll->payroll_item == 6)
                     $pdeduct = $pdeduct * $emp->ut;
 
-                $totalDeduct = $totalDeduct + $pdeduct;
+                $totalDeduct = (double)$totalDeduct + (double)$pdeduct;
 
                 echo number_format($pdeduct,2,'.',',');
             @endphp

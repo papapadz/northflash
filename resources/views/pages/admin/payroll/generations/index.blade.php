@@ -16,7 +16,9 @@
               <tr>
                 <th> Date </th>
                 <th> No. of Employees </th>
-                <th> Total Salary </th>
+                <th> Gross Salary </th>
+                <th> Total Deductions </th>
+                <th> Net Pay </th>
                 <th></th>
               </tr> 
             </thead>
@@ -27,26 +29,37 @@
                 <td>{{ count($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString())) }}</td>
                 <td>
                 @php
-                  $total = 0;
+                  $total = $totald = 0;
                   foreach($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString()) as $emp) {
-                    $empbenefits = 0;
+                    $empbenefits = $empdeductions = 0;
                     foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1) as $payroll) {
-                      if($payroll->payroll_item == 5)
-                        $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot);
-                      else if($payroll->payroll_item == 6)
-                        $empbenefits = $empbenefits - (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ut);
-                      else {
-                        if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($generation->payroll_date)->month == 5 || Carbon\Carbon::parse($generation->payroll_date)->month == 11))
-                          $empbenefits = $empbenefits + ($emp->employeeSalary($emp->employee_id)->amount/2);
-                        else
-                          $empbenefits = $empbenefits + floatval(findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount));
-                      }
+                      
+                      if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($generation->payroll_date)->month == 5 || Carbon\Carbon::parse($generation->payroll_date)->month == 11)) {
+                        $empbenefits = $empbenefits + ($emp->employeeSalary($emp->employee_id)->amount/2);
+                      } else if($payroll->payroll_item != 7) {
+                          if($payroll->payroll_item == 5)
+                            $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot);
+                          else
+                            $empbenefits = $empbenefits + findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount);
+                        }
                     }
-                    
+                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,2) as $payrolld) {
+                      if($payroll->payroll_item == 6)
+                        $empdeductions = $empdeductions + (findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount) * $emp->ut);
+                      else
+                        $empdeductions = $empdeductions + findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount);
+                    }
                     $total = $total + $emp->employeeSalary($emp->employee_id)->amount + $empbenefits;
+                    $totald = $totald + $empdeductions;
                   }
                   echo number_format($total, 2, '.', ',');
                 @endphp
+                </td>
+                <td>
+                  @php echo number_format($totald, 2, '.', ','); @endphp
+                </td>
+                <td>
+                  @php echo number_format(($total-$totald), 2, '.', ','); @endphp
                 </td>
                 <td>
                   <div class="btn-group dropdown">
@@ -82,8 +95,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <label>Set Payroll Date</label>
-        <input style="width:100%" type="date" name="payroll_date">
+        <div class="row">
+          <div class="col-md-6">
+            <label>Start Date <small>(1st or 15th)</small></label>
+            <input style="width:100%" type="date" name="payroll_date_start">
+          </div>
+          <div class="col-md-6">
+            <label>Start Date <small>(15th or 30th)</small></label>
+            <input style="width:100%" type="date" name="payroll_date_end">
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

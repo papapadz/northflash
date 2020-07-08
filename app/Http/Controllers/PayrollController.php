@@ -58,25 +58,19 @@ class PayrollController extends Controller
         
         foreach($request->item as $item) {
 
-            $payroll = Payroll::firstOrCreate(
+            $payroll = Payroll::updateOrInsert(
                 [
                     'employee_id' => $request->employee_id,
-                    'payroll_item' => $item,
-                    'payroll_date_start' => $request->payroll_date_start
+                    'payroll_item' => $item
                 ],
                 [
+                    'payroll_date_start' => $request->payroll_date_start,
                     'payroll_date_end' => $date_end
                 ]
             );
-
-            if(!$payroll)
-                array_push($err,$item);
         }
 
-        if(count($err)>0)
-            return redirect()->back()->with('err',$err);
-        else
-            return redirect()->back()->with('success','Record has been added!');
+        return redirect()->back()->with('success','Record has been added!');
     }
 
     public function generations() {
@@ -89,6 +83,9 @@ class PayrollController extends Controller
 
     public function generateview(Request $request) {
 
+        $date_start = Carbon::parse($request->payroll_date_start)->firstOfMonth();
+        $date_end = Carbon::parse($request->payroll_date_end)->firstOfMonth();
+        
         $employees = Employee::select(
             'employees.employee_id',
             'last_name',
@@ -106,11 +103,13 @@ class PayrollController extends Controller
                 'payroll_date_start',
                 'payroll_date_end'
             )
+        ->whereDate('payroll_date_start','>=','')
         ->get();
 
         return view('pages.admin.payroll.generations.generate')
             ->with([
-                'payroll_date' => $request->payroll_date,
+                'payroll_date_start' => $request->payroll_date_start,
+                'payroll_date_end' => $request->payroll_date_end,
                 'employees' => $employees
             ]);
     }

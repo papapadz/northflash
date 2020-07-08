@@ -6,7 +6,8 @@
 @section('content')
 <form method="POST" action="{{ url('admin/payrolls/generations/save') }}">
 {{ csrf_field() }}
-<input type="text" name="payroll_date" value="{{ $payroll_date }}" hidden>
+<input type="text" name="payroll_date_start" value="{{ $payroll_date_start }}" hidden>
+<input type="text" name="payroll_date_end" value="{{ $payroll_date_end }}" hidden>
 <div class="row">
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">

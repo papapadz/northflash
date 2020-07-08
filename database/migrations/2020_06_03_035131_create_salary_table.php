@@ -18,6 +18,7 @@ class CreateSalaryTable extends Migration
             $table->integer('position_id');
             $table->decimal('amount');
             $table->date('date_effective');
+            $table->boolean('monthly')->default(true);
             $table->timestamps();
         });
     }
