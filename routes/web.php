@@ -148,7 +148,8 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::get('employees', 'EmployeeController@index');
     Route::post('employee/add','EmployeeController@store');
     Route::get('employee/{employee_id}','EmployeeController@view');
-
+    Route::post('employee/license/add','EmployeeController@addlicense');
+    
     Route::get('payrolls', 'PayrollController@index');
     
     Route::post('payroll/add','PayrollController@store');

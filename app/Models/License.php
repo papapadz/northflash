@@ -12,7 +12,6 @@ class License extends Model
         'license_no',
         'date_issued',
         'date_expired',
-    
     ];
     
     
