@@ -75,7 +75,7 @@ class PayrollController extends Controller
 
     public function generations() {
 
-        $payrollGenerations = PayrollGeneration::select('payroll_date')->groupBy('payroll_date')->get();
+        $payrollGenerations = PayrollGeneration::select('payroll_date','payroll_date_to')->groupBy('payroll_date','payroll_date_to')->get();
 
         return view('pages.admin.payroll.generations.index')
             ->with('payrollGenerations',$payrollGenerations);
@@ -83,8 +83,8 @@ class PayrollController extends Controller
 
     public function generateview(Request $request) {
 
-        $date_start = Carbon::parse($request->payroll_date_start)->firstOfMonth();
-        $date_end = Carbon::parse($request->payroll_date_end)->firstOfMonth();
+        $date_start = Carbon::parse($request->payroll_date_start)->toDateString();
+        $date_end = Carbon::parse($request->payroll_date_end)->toDateString();
         
         $employees = Employee::select(
             'employees.employee_id',
@@ -103,30 +103,31 @@ class PayrollController extends Controller
                 'payroll_date_start',
                 'payroll_date_end'
             )
-        ->whereDate('payroll_date_start','>=','')
+        ->whereDate('payroll_date_start','>=',$date_start)
         ->get();
 
         return view('pages.admin.payroll.generations.generate')
             ->with([
-                'payroll_date_start' => $request->payroll_date_start,
-                'payroll_date_end' => $request->payroll_date_end,
+                'payroll_date_start' => $date_start,
+                'payroll_date_end' => $date_start,
                 'employees' => $employees
             ]);
     }
 
     public function save(Request $request) {
 
-        $pmonth = Carbon::parse($request->payroll_date);
-        $payroll_date = new Carbon('first day of '.$pmonth->englishMonth.' '.$pmonth->year);
+        $payroll_date = Carbon::parse($request->payroll_date_start)->toDateString();
+        $payroll_date_to = Carbon::parse($request->payroll_date_end)->toDateString();
 
         foreach($request->emp as $k => $emp) {
 
             $generate = PayrollGeneration::updateOrCreate(
                 [
                     'employee_id' => $emp,
-                    'payroll_date' => $payroll_date->toDateString()
+                    'payroll_date' => $payroll_date
                 ],
                 [
+                    'payroll_date_to' => $payroll_date_to,
                     'regular_days' => $request->reg[$k],
                     'ot' => $request->ot[$k],
                     'ut' => $request->ut[$k],

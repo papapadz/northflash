@@ -25,7 +25,7 @@
             <tbody>
             @foreach($payrollGenerations as $generation)
               <tr class="py-1">
-                <td>{{ Carbon\Carbon::parse($generation->payroll_date)->format('F Y') }}</td>
+                <td>{{ Carbon\Carbon::parse($generation->payroll_date)->format('F d') }} - {{ Carbon\Carbon::parse($generation->payroll_date_to)->format('d, Y') }}</td>
                 <td>{{ count($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString())) }}</td>
                 <td>
                 @php

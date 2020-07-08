@@ -20,6 +20,7 @@ class CreatePayrollGenerationsTable extends Migration
             $table->integer('ot')->default(0);
             $table->integer('ut')->default(0);
             $table->date('payroll_date');
+            $table->date('payroll_date_to');
             $table->bigInteger('generated_by');
             $table->timestamps();
         });
