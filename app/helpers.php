@@ -126,6 +126,6 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount) {
                                     $amount = $deduction_amount;  
                                   break;
                               }
-                              $amount = number_format($amount, 2, '.', ',');
+                              //$amount = number_format($amount, 2, '.', ',');
                               return $amount;
 }
