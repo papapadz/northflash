@@ -17,8 +17,7 @@ class CreatePayrollTable extends Migration
             $table->bigIncrements('id');
             $table->string('employee_id',10);
             $table->integer('payroll_item');
-            $table->date('payroll_date_start');
-            $table->date('payroll_date_end')->nullable();
+            $table->date('payroll_date');
             $table->timestamps();
             $table->softDeletes();
         });

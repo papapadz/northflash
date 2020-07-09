@@ -4,16 +4,24 @@
 @endpush
 
 @section('content')
-<form method="POST" action="{{ url('admin/payrolls/generations/save') }}">
+<form method="POST" action="{{ url('admin/payrolls/generations/save') }}" onsubmit="return confirm('Are you sure you want to save this payroll?')">
 {{ csrf_field() }}
-<input type="text" name="payroll_date_start" value="{{ $payroll_date_start }}" hidden>
-<input type="text" name="payroll_date_end" value="{{ $payroll_date_end }}" hidden>
+<input type="text" name="payroll_date" value="{{ $payroll_date }}" hidden>
 <div class="row">
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
+      <div class="card-header">
+        <b>Payroll Period: 
+        @if(Carbon\Carbon::parse($payroll_date)->day==1)
+          1 to 15th day {{ Carbon\Carbon::parse($payroll_date)->format('F Y') }}
+        @else
+          16 to @if(Carbon\Carbon::parse($payroll_date)->endOfMonth()->day==31)
+          {{ Carbon\Carbon::parse($payroll_date)->endOfMonth()->day }}st @else {{ Carbon\Carbon::parse($payroll_date)->endOfMonth()->day }}th @endif of {{ Carbon\Carbon::parse($payroll_date)->format('F Y') }}
+        @endif
+        </b>
+        <button class="btn btn-rounded btn-success float-right" type="submit">Save</button>
+      </div>
       <div class="card-body">
-        <button class="btn btn-rounded btn-success" type="submit">Save</button>
-        <hr>
         <div class="table-responsive">
           <table id="table" class="table table-striped">
             <thead>
@@ -60,5 +68,6 @@
     else
       $('#divFixedDate').show();
   });
+
 </script>
 @endpush

@@ -71,6 +71,7 @@
   {!! Html::script('assets/js/settings.js') !!}
   {!! Html::script('assets/js/todolist.js') !!}
   {!! Html::script('assets/select2/js/select2.js') !!}
+  {!! Html::script('assets/plugins/moment/moment.js') !!}
   <!-- end common js -->
 
 

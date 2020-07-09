@@ -20,6 +20,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => true,
+                'deduction_period' => 16,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -30,6 +31,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => true,
+                'deduction_period' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -40,6 +42,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => true,
+                'deduction_period' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -50,6 +53,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => false,
+                'deduction_period' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -60,6 +64,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 1,
                 'flexirate' => true,
+                'deduction_period' => 0,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -70,6 +75,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 2,
                 'flexirate' => false,
+                'deduction_period' => 0,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -80,6 +86,7 @@ class PayrollItemsSeeder extends Seeder
                 'percentage' => 0,
                 'type' => 1,
                 'flexirate' => true,
+                'deduction_period' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

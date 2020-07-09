@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class PayrollGeneration extends Model
 {
@@ -18,16 +19,34 @@ class PayrollGeneration extends Model
     protected $dates = ['payroll_date'];
 
     public function totalEmployees($param_date) {
+        
         return $this::whereDate('payroll_date',$param_date)
             ->get();
     }
 
-    public function employeePayroll($param_date,$param_employee_id,$param_type) {
+    public function employeePayroll($param_date,$param_employee_id,$param_type,$param_period) {
+        
         return $this::join('payroll','payroll.employee_id','=','payroll_generations.employee_id')
             ->join('payroll_items','payroll_items.id','=','payroll.payroll_item')
             ->whereDate('payroll_date',$param_date)
             ->where([
                     ['type',$param_type],
+                    ['deduction_period',$param_period],
+                    ['payroll.employee_id',$param_employee_id],
+                ])
+            ->orWhere('deduction_period',0)
+            ->get();
+    }
+
+    public function monthlyPayroll($param_date,$param_employee_id) {
+
+        $start_date = Carbon::parse($param_date)->startOfMonth()->toDateString();
+        $end_date = Carbon::parse($param_date)->endOfMonth()->toDateString();
+
+        return $this::join('payroll','payroll.employee_id','=','payroll_generations.employee_id')
+            ->join('payroll_items','payroll_items.id','=','payroll.payroll_item')
+            ->whereIn('payroll_date',[$start_date,$end_date])
+            ->where([
                     ['payroll.employee_id',$param_employee_id]
                 ])
             ->get();

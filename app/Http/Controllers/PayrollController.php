@@ -10,6 +10,7 @@ use App\Models\Payroll;
 use App\Models\PayrollItem;
 use App\Models\Employee;
 use App\Models\PayrollGeneration;
+use App\Models\Employment;
 
 class PayrollController extends Controller
 {
@@ -61,10 +62,10 @@ class PayrollController extends Controller
             $payroll = Payroll::updateOrInsert(
                 [
                     'employee_id' => $request->employee_id,
-                    'payroll_item' => $item
+                    'payroll_item' => $item,
+                    'payroll_date_start' => $request->payroll_date_start,
                 ],
                 [
-                    'payroll_date_start' => $request->payroll_date_start,
                     'payroll_date_end' => $date_end
                 ]
             );
@@ -75,27 +76,17 @@ class PayrollController extends Controller
 
     public function generations() {
 
-        $payrollGenerations = PayrollGeneration::select('payroll_date','payroll_date_to')->groupBy('payroll_date','payroll_date_to')->get();
+        $payrollGenerations = PayrollGeneration::select('payroll_date')->groupBy('payroll_date')->get();
 
         return view('pages.admin.payroll.generations.index')
             ->with('payrollGenerations',$payrollGenerations);
     }
 
     public function generateview(Request $request) {
-
-        $date_start = Carbon::parse($request->payroll_date_start)->toDateString();
-        $date_end = Carbon::parse($request->payroll_date_end)->toDateString();
         
-        $employees = Employee::select(
-            'employees.employee_id',
-            'last_name',
-            'first_name',
-            'middle_name',
-            'payroll_date_start',
-            'payroll_date_end'
-        )
-        ->join('payroll','payroll.employee_id','=','employees.employee_id')
-        ->groupBy(
+        $payroll_date = Carbon::create($request->year,$request->month,$request->period)->toDateString();
+        
+        $employees = Employment::select(
                 'employees.employee_id',
                 'last_name',
                 'first_name',
@@ -103,21 +94,50 @@ class PayrollController extends Controller
                 'payroll_date_start',
                 'payroll_date_end'
             )
-        ->whereDate('payroll_date_start','>=',$date_start)
-        ->get();
+            ->join('employees','employees.employee_id','=','employments.employee_id')
+            ->join('payroll','payroll.employee_id','=','employees.employee_id')
+            ->groupBy(
+                'employees.employee_id',
+                'last_name',
+                'first_name',
+                'middle_name',
+                'payroll_date_start',
+                'payroll_date_end'
+            )
+            ->where('date_expired', NULL)
+            ->whereDate('date_hired','<=',$payroll_date)
+            ->get();
+
+        // $employees = Employee::select(
+        //     'employees.employee_id',
+        //     'last_name',
+        //     'first_name',
+        //     'middle_name',
+        //     'payroll_date_start',
+        //     'payroll_date_end'
+        // )
+        // ->join('payroll','payroll.employee_id','=','employees.employee_id')
+        // ->groupBy(
+        //         'employees.employee_id',
+        //         'last_name',
+        //         'first_name',
+        //         'middle_name',
+        //         'payroll_date_start',
+        //         'payroll_date_end'
+        //     )
+        // ->whereDate('payroll_date_start','>=',$payroll_date)
+        // ->get();
 
         return view('pages.admin.payroll.generations.generate')
             ->with([
-                'payroll_date_start' => $date_start,
-                'payroll_date_end' => $date_start,
+                'payroll_date' => $payroll_date,
                 'employees' => $employees
             ]);
     }
 
     public function save(Request $request) {
 
-        $payroll_date = Carbon::parse($request->payroll_date_start)->toDateString();
-        $payroll_date_to = Carbon::parse($request->payroll_date_end)->toDateString();
+        $payroll_date = Carbon::parse($request->payroll_date)->toDateString();
 
         foreach($request->emp as $k => $emp) {
 
@@ -127,7 +147,6 @@ class PayrollController extends Controller
                     'payroll_date' => $payroll_date
                 ],
                 [
-                    'payroll_date_to' => $payroll_date_to,
                     'regular_days' => $request->reg[$k],
                     'ot' => $request->ot[$k],
                     'ut' => $request->ut[$k],
@@ -136,7 +155,7 @@ class PayrollController extends Controller
             );
         }
 
-        return $this->generations();
+        return redirect()->route('generations.index')->with('success','Payroll has been saved!');
     }
 
     public function payslip($payroll_date) {

@@ -1,6 +1,11 @@
 @extends('layout.master')
 
 @push('plugin-styles')
+<style>
+  label {
+    font-weight: bold;
+  }
+</style>
 @endpush
 
 @section('content')
@@ -25,31 +30,44 @@
             <tbody>
             @foreach($payrollGenerations as $generation)
               <tr class="py-1">
-                <td>{{ Carbon\Carbon::parse($generation->payroll_date)->format('F d') }} - {{ Carbon\Carbon::parse($generation->payroll_date_to)->format('d, Y') }}</td>
+                <td>
+                  {{ Carbon\Carbon::parse($generation->payroll_date)->format('M ') }}
+                  @if(Carbon\Carbon::parse($generation->payroll_date)->day == 1)
+                    {{ Carbon\Carbon::parse($generation->payroll_date)->day }} - 15
+                  @else
+                    16 - {{ Carbon\Carbon::parse($generation->payroll_date)->endOfMonth()->day }}
+                  @endif
+                  ,{{ Carbon\Carbon::parse($generation->payroll_date)->year }}
+                </td>
                 <td>{{ count($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString())) }}</td>
                 <td>
                 @php
+                  $payrollperiod = Carbon\Carbon::parse($generation->payroll_date)->day;
                   $total = $totald = 0;
                   foreach($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString()) as $emp) {
                     $empbenefits = $empdeductions = 0;
-                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1) as $payroll) {
-                      
+                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1,$payrollperiod) as $payroll) {
                       if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($generation->payroll_date)->month == 5 || Carbon\Carbon::parse($generation->payroll_date)->month == 11)) {
                         $empbenefits = $empbenefits + ($emp->employeeSalary($emp->employee_id)->amount/2);
                       } else if($payroll->payroll_item != 7) {
                           if($payroll->payroll_item == 5)
-                            $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot);
+                            $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount,$emp->monthly) * $emp->ot);
                           else
-                            $empbenefits = $empbenefits + findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount);
+                            $empbenefits = $empbenefits + findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount,$emp->monthly);
                         }
                     }
-                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,2) as $payrolld) {
+                    
+                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,2,$payrollperiod) as $payrolld) {
                       if($payroll->payroll_item == 6)
-                        $empdeductions = $empdeductions + (findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount) * $emp->ut);
+                        $empdeductions = $empdeductions + (findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount,$emp->monthly) * $emp->ut);
                       else
-                        $empdeductions = $empdeductions + findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount);
+                        $empdeductions = $empdeductions + findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount,$emp->monthly);
                     }
-                    $total = $total + $emp->employeeSalary($emp->employee_id)->amount + $empbenefits;
+                    if($emp->employeeSalary($emp->employee_id)->monthly)
+                      $salary = $emp->employeeSalary($emp->employee_id)->amount/2;
+                    else
+                      $salary = $emp->employeeSalary($emp->employee_id)->amount * $emp->regular_days;
+                    $total = $total + $empbenefits + $salary;
                     $totald = $totald + $empdeductions;
                   }
                   echo number_format($total, 2, '.', ',');
@@ -95,15 +113,43 @@
         </button>
       </div>
       <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label>Month: </label><br>
+            <select required name="month" id="month" style="width: 100%">
+              <option value="1" @if(Carbon\Carbon::now()->month==1) selected @endif>January</option>
+              <option value="2" @if(Carbon\Carbon::now()->month==2) selected @endif>February</option>
+              <option value="3" @if(Carbon\Carbon::now()->month==3) selected @endif>March</option>
+              <option value="4" @if(Carbon\Carbon::now()->month==4) selected @endif>April</option>
+              <option value="5" @if(Carbon\Carbon::now()->month==5) selected @endif>May</option>
+              <option value="6" @if(Carbon\Carbon::now()->month==6) selected @endif>June</option>
+              <option value="7" @if(Carbon\Carbon::now()->month==7) selected @endif>July</option>
+              <option value="8" @if(Carbon\Carbon::now()->month==8) selected @endif>August</option>
+              <option value="9" @if(Carbon\Carbon::now()->month==9) selected @endif>September</option>
+              <option value="10" @if(Carbon\Carbon::now()->month==10) selected @endif>October</option>
+              <option value="11" @if(Carbon\Carbon::now()->month==11) selected @endif>November</option>
+              <option value="12" @if(Carbon\Carbon::now()->month==12) selected @endif>December</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label>Year: </label><br>
+            <select required name="year" id="year" style="width: 100%">
+              <option value="2018" @if(Carbon\Carbon::now()->year==2018) selected @endif>2018</option>
+              <option value="2019" @if(Carbon\Carbon::now()->year==2019) selected @endif>2019</option>
+              <option value="2020" @if(Carbon\Carbon::now()->year==2020) selected @endif>2020</option>
+              <option value="2021" @if(Carbon\Carbon::now()->month==2) selected @endif>2021</option>
+              <option value="2022" @if(Carbon\Carbon::now()->month==3) selected @endif>2022</option>
+            </select>
+          </div>
+        </div>
         <div class="row">
-          <div class="col-md-6">
-            <label>Start Date <small>(1st or 15th)</small></label>
-            <input style="width:100%" type="date" name="payroll_date_start">
-          </div>
-          <div class="col-md-6">
-            <label>Start Date <small>(15th or 30th)</small></label>
-            <input style="width:100%" type="date" name="payroll_date_end">
-          </div>
+            <div class="col-12">
+              <label>Period: </label><br>
+              <input type="radio" name="period" value="1" checked>
+              <span class="mr-2" >1 to 15th day of the month</span>
+              <input type="radio" name="period" value="16" >
+              <span class="mr-2" id="period2"></span>  
+            </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -121,7 +167,31 @@
 
 @push('custom-scripts')
 <script>
-  $('#table').DataTable();
-  $('select').select2();
+  $(document).ready(function() {
+
+    $('#table').DataTable();
+    $('select').select2();
+
+    changelabels() 
+
+    $('#month').on('change', function() {
+      changelabels()    
+    });
+
+  });
+  
+function changelabels() {
+  
+      $('.tolabel').remove()
+
+      var period = $('#year').val()+"-"+$('#month').val()
+      var daysinmonth = moment(period,'YYYY-M').daysInMonth();
+      if(daysinmonth==31)
+        periodlabel = daysinmonth+'st'
+      else
+        periodlabel = daysinmonth+'th'
+      $('#period2').append('<span class="tolabel">16 to '+periodlabel+' of the month</span>')
+}
+
 </script>
 @endpush

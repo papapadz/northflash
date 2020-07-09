@@ -153,7 +153,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::get('payrolls', 'PayrollController@index');
     
     Route::post('payroll/add','PayrollController@store');
-    Route::get('payrolls/generations', 'PayrollController@generations');
+    Route::get('payrolls/generations', 'PayrollController@generations')->name('generations.index');
     Route::post('payrolls/generations/add', 'PayrollController@generateview');
     Route::post('payrolls/generations/save','PayrollController@save');
     Route::get('payrolls/generations/payslip/{payroll_date}','PayrollController@payslip');

@@ -15,21 +15,18 @@ function show_class($path) {
   return call_user_func_array('Request::is', (array)$path) ? 'show' : '';
 }
 
-function findPayroll($deduction_id,$employee_salary,$deduction_amount) {
-  $amount = 0.00;
-                              switch($deduction_id) {
+function computeTax($employee_salary) {
+  $annualIncome = ($employee_salary * 12);
+  if($annualIncome<=250000)
+    return 0.00;
+  elseif($annualIncome<=400000)
+    return (($annualIncome-250000)*.20)/12;
+}
 
-                                case 1:
-                                  $annualIncome = ($employee_salary * 12);
-                                  if($annualIncome<=250000)
-                                    $amount = 0.00;
-                                  elseif($annualIncome<=400000)
-                                    $amount = (($annualIncome-250000)*.20)/12;
-                                  break;
-
-                                case 2:
-                                  if($employee_salary>=19750)
-                                    $msc=20000;
+function computeSSS($employee_salary) {
+  $msc = 0;
+  if($employee_salary>=19750)
+    $msc=20000;
                                   elseif($employee_salary>=19250)
                                     $msc=19500;
                                   elseif($employee_salary>=18750)
@@ -102,21 +99,46 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount) {
                                     $msc=2500;
                                   elseif($employee_salary < 2250)
                                     $msc=2000;
-                                  $amount = $msc*.04;
-                                  break;
-                              
-                                  case 3:
-                                    if($employee_salary<=10000)
-                                      $amount = 150;
-                                    elseif($employee_salary>=60000)
-                                      $amount = 900;
-                                    else
-                                      $amount = ($employee_salary*.03)/2;
-                                  break;
+    return $msc*.04;
+}
 
-                                  case 5:
-                                    $amount = ($employee_salary/26)/8;
-                                  break;
+function computePhic($employee_salary) {
+  if($employee_salary<=10000)
+    return 150;
+  elseif($employee_salary>=60000)
+    return 900;
+  else
+    return ($employee_salary*.03)/2;
+}
+
+function computeOTPay($employee_salary) {
+  $amount = ($employee_salary/26)/8;
+  return $amount;
+}
+
+function findPayroll($deduction_id,$employee_salary,$deduction_amount,$emp_status) {
+  $amount = 0.00;
+
+  if(!$emp_status)
+    $employee_salary = $employee_salary * 26;
+
+                              switch($deduction_id) {
+
+                                case 1:
+                                  $amount = computeTax($employee_salary);
+                                break;
+
+                                case 2:
+                                  $amount = computeSSS($employee_salary);
+                                break;
+                              
+                                case 3:
+                                  $amount = computePhic($employee_salary);
+                                break;
+
+                                case 5:
+                                  $amount = computeOTPay($employee_salary);    
+                                break;
 
                                   case 7:
                                     $amount = ($employee_salary/2);
