@@ -33,24 +33,13 @@
                   <div class="col-6">
                     <span class="text-success">Additions (+)</span>
                     <div class="row">
-                      <div class="col-6">Salary:</div>
-                      <div class="col-6">
-                        @php echo number_format($employee_salary, 2, '.', ',') ;
-                          if($e->employment->monthly)
-                            echo '/month';
-                          else
-                            echo '/day';
-                        @endphp
-                      </div>
-                    </div>
-                    <div class="row">
                       @foreach($e->payroll->where('type',1) as $additions)
                       <div class="col-6">{{$additions->item}}: </div>
                         <div class="col-6">
                         @if($additions->id == 5)
                           {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }} /hr
                         @elseif($additions->id == 7)
-                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }} <small>semi-annual</small>
+                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }}
                         @else
                           {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }}
                         @endif

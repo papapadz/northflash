@@ -9,14 +9,38 @@ class PayrollGeneration extends Model
 {
     protected $fillable = [
         'employee_id',
-        'regular_days',
-        'ot',
-        'ut',
+        'payroll_item',
+        'amount',
+        'num_days',
         'payroll_date',
         'generated_by'
     ];
 
     protected $dates = ['payroll_date'];
+
+    /** new */
+
+    public function monthlySalaryAmount($param_date) {
+        return $this::join('payroll_items','payroll_items.id','=','payroll_item')
+            ->where('payroll_items.type',1)
+            ->whereDate('payroll_date',Carbon::parse($param_date)->toDateString())
+            ->sum('payroll_generations.amount');
+    }
+
+    public function monthlyDeductionAmount($param_date) {
+        return $this::join('payroll_items','payroll_items.id','=','payroll_item')
+            ->where('payroll_items.type',2)
+            ->whereDate('payroll_date',Carbon::parse($param_date)->toDateString())
+            ->sum('payroll_generations.amount');
+    }
+
+    public function employeeGenerationsCount($param_date) {
+        return $this::join('employment','employment.employee_id','=','payroll_generations.employee_id')
+            ->
+            ->whereDate('date_hired','<=',Carbon::parse($param_date)->toDateString());
+    }
+
+    /** old */
 
     public function totalEmployees($param_date) {
         

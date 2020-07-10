@@ -39,46 +39,10 @@
                   @endif
                   ,{{ Carbon\Carbon::parse($generation->payroll_date)->year }}
                 </td>
-                <td>{{ count($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString())) }}</td>
-                <td>
-                @php
-                  $payrollperiod = Carbon\Carbon::parse($generation->payroll_date)->day;
-                  $total = $totald = 0;
-                  foreach($generation->totalEmployees(Carbon\Carbon::parse($generation->payroll_date)->toDateString()) as $emp) {
-                    $empbenefits = $empdeductions = 0;
-                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,1,$payrollperiod) as $payroll) {
-                      if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($generation->payroll_date)->month == 5 || Carbon\Carbon::parse($generation->payroll_date)->month == 11)) {
-                        $empbenefits = $empbenefits + ($emp->employeeSalary($emp->employee_id)->amount/2);
-                      } else if($payroll->payroll_item != 7) {
-                          if($payroll->payroll_item == 5)
-                            $empbenefits = $empbenefits + (findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount,$emp->monthly) * $emp->ot);
-                          else
-                            $empbenefits = $empbenefits + findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount,$emp->monthly);
-                        }
-                    }
-                    
-                    foreach($emp->employeePayroll(Carbon\Carbon::parse($generation->payroll_date)->toDateString(),$emp->employee_id,2,$payrollperiod) as $payrolld) {
-                      if($payroll->payroll_item == 6)
-                        $empdeductions = $empdeductions + (findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount,$emp->monthly) * $emp->ut);
-                      else
-                        $empdeductions = $empdeductions + findPayroll($payrolld->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payrolld->amount,$emp->monthly);
-                    }
-                    if($emp->employeeSalary($emp->employee_id)->monthly)
-                      $salary = $emp->employeeSalary($emp->employee_id)->amount/2;
-                    else
-                      $salary = $emp->employeeSalary($emp->employee_id)->amount * $emp->regular_days;
-                    $total = $total + $empbenefits + $salary;
-                    $totald = $totald + $empdeductions;
-                  }
-                  echo number_format($total, 2, '.', ',');
-                @endphp
-                </td>
-                <td>
-                  @php echo number_format($totald, 2, '.', ','); @endphp
-                </td>
-                <td>
-                  @php echo number_format(($total-$totald), 2, '.', ','); @endphp
-                </td>
+                <td></td>
+                <td> @php $gross = $generation->monthlySalaryAmount($generation->payroll_date); echo number_format($gross,2,'.',','); @endphp </td>
+                <td> @php $grossd = $generation->monthlyDeductionAmount($generation->payroll_date);  echo number_format($grossd,2,'.',','); @endphp </td>
+                <td> @php echo number_format($gross-$grossd,2,'.',',') @endphp </td>
                 <td>
                   <div class="btn-group dropdown">
                     <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Manage </button>

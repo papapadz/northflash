@@ -118,35 +118,39 @@ function computeOTPay($employee_salary) {
 
 function findPayroll($deduction_id,$employee_salary,$deduction_amount,$emp_status) {
   $amount = 0.00;
-
+  $new_employee_salary = $employee_salary;
   if(!$emp_status)
-    $employee_salary = $employee_salary * 26;
+    $new_employee_salary = $employee_salary * 26;
 
                               switch($deduction_id) {
 
                                 case 1:
-                                  $amount = computeTax($employee_salary);
+                                  $amount = computeTax($new_employee_salary);
                                 break;
 
                                 case 2:
-                                  $amount = computeSSS($employee_salary);
+                                  $amount = computeSSS($new_employee_salary);
                                 break;
                               
                                 case 3:
-                                  $amount = computePhic($employee_salary);
+                                  $amount = computePhic($new_employee_salary);
                                 break;
 
                                 case 5:
-                                  $amount = computeOTPay($employee_salary);    
+                                  $amount = computeOTPay($new_employee_salary);    
                                 break;
 
-                                  case 7:
-                                    $amount = ($employee_salary/2);
-                                  break;
+                                case 7:
+                                  $amount = ($new_employee_salary/2);
+                                break;
 
-                                  default:
-                                    $amount = $deduction_amount;  
-                                  break;
+                                case 8:
+                                  $amount = $employee_salary;
+                                break;
+
+                                default:
+                                  $amount = $deduction_amount;  
+                                break;
                               }
                               //$amount = number_format($amount, 2, '.', ',');
                               return $amount;

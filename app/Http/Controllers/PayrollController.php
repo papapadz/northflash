@@ -35,7 +35,7 @@ class PayrollController extends Controller
                 )
             ->get();
 
-        $payrollItems1 = PayrollItem::select('id','item','type')->orderBy('item')->where('type',1)->get();
+        $payrollItems1 = PayrollItem::select('id','item','type')->orderBy('item')->where([['type','=',1],['id','!=',8]])->get();
         $payrollItems2 = PayrollItem::select('id','item','type')->orderBy('item')->where('type',2)->get();
             
         $employees = Employee::select('employee_id','first_name','last_name')->orderBy('last_name')->get();
@@ -75,9 +75,9 @@ class PayrollController extends Controller
     }
 
     public function generations() {
-
+     
         $payrollGenerations = PayrollGeneration::select('payroll_date')->groupBy('payroll_date')->get();
-
+        
         return view('pages.admin.payroll.generations.index')
             ->with('payrollGenerations',$payrollGenerations);
     }
@@ -137,25 +137,68 @@ class PayrollController extends Controller
 
     public function save(Request $request) {
 
-        $payroll_date = Carbon::parse($request->payroll_date)->toDateString();
+        $payroll_date = Carbon::parse($request->payroll_date);
 
         foreach($request->emp as $k => $emp) {
+        
+            $employee = Employee::find($emp);
 
-            $generate = PayrollGeneration::updateOrCreate(
-                [
-                    'employee_id' => $emp,
-                    'payroll_date' => $payroll_date
-                ],
-                [
-                    'regular_days' => $request->reg[$k],
-                    'ot' => $request->ot[$k],
-                    'ut' => $request->ut[$k],
-                    'generated_by' => Auth::user()->id
-                ]
-            );
+            if($payroll_date->day==1)
+                $emppayroll = $employee->payroll->whereIn('deduction_period',[1,0]);
+            else 
+                $emppayroll = $employee->payroll->whereIn('deduction_period',[16,0]);
+
+            foreach($emppayroll as $payroll) {
+                $num_days = 1;
+                $amount = findPayroll($payroll->payroll_item,$employee->employment->amount,$payroll->amount,$employee->employment->monthly);
+
+                if($payroll->payroll_item==7 && ($payroll_date->month == 5 || $payroll_date->month == 11)) {
+                    $this->savePayrollGeneration($emp,$payroll->payroll_item,$payroll_date->toDateString(),$amount,$num_days);
+                } else if($payroll->payroll_item != 7) {
+
+                    switch($payroll->payroll_item) {
+                        case 8:
+                            if($employee->employment->monthly)
+                                $amount = $amount/2;
+                            else
+                                $amount = $amount * $request->reg[$k];
+                            $num_days = $request->reg[$k];
+                        break;
+
+                        case 5:
+                            $amount = $amount * $request->ot[$k];
+                            $num_days = $request->ot[$k];
+                        break;
+
+                        case 5:
+                            $amount = $amount * $request->ut[$k];
+                            $num_days = $request->ut[$k];
+                        break;
+                    }
+                    
+                    $this->savePayrollGeneration($emp,$payroll->payroll_item,$payroll_date->toDateString(),$amount,$num_days);
+                }
+            }
+            
         }
 
         return redirect()->route('generations.index')->with('success','Payroll has been saved!');
+    }
+
+    private function savePayrollGeneration($employee_id,$payroll_item,$payroll_date,$amount,$num_days) {
+
+        PayrollGeneration::updateOrCreate(
+            [
+                'employee_id' => $employee_id,
+                'payroll_date' => $payroll_date,
+                'payroll_item' => $payroll_item
+            ],
+            [
+                'amount' => $amount,
+                'num_days' => $num_days,
+                'generated_by' => Auth::user()->id
+            ]
+        );
     }
 
     public function payslip($payroll_date) {

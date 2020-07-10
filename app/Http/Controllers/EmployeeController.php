@@ -9,6 +9,7 @@ use App\Models\Employment;
 use App\Models\Salary;
 use App\Models\LicenseType;
 use App\Models\License;
+use App\Models\Payroll;
 
 class EmployeeController extends Controller
 {
@@ -59,11 +60,17 @@ class EmployeeController extends Controller
                     ]
                 );
                 
-                $employment = Employment::create([
+                Employment::create([
                     'employee_id' => $request->employee_id,
                     'salary_id' => $salary->id,
                     'status' => $request->status,
                     'date_hired' => $request->date_hired
+                ]);
+                
+                Payroll::create([
+                    'employee_id' => $request->employee_id,
+                    'payroll_item' => 8,
+                    'payroll_date_start' => $request->date_hired
                 ]);
 
                 return redirect()->back()->with('success','Employee added!');

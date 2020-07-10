@@ -16,9 +16,9 @@ class CreatePayrollGenerationsTable extends Migration
         Schema::create('payroll_generations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('employee_id',15);
-            $table->integer('regular_days');
-            $table->integer('ot')->default(0);
-            $table->integer('ut')->default(0);
+            $table->bigInteger('payroll_item');
+            $table->double('amount',9,2);
+            $table->integer('num_days')->default(1);
             $table->date('payroll_date');
             $table->bigInteger('generated_by');
             $table->timestamps();
