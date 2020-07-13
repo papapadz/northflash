@@ -78,7 +78,11 @@ class DashboardController extends Controller
               $annualreport[Carbon::parse($generation->payroll_date)->month-1] = number_format(($total - $totald),2,'.','');
                   
           }
-        $average = ($grandtotal - $grandtotald) / count($payrollgeneration);
+        
+        if(count($payrollgeneration))
+          $average = ($grandtotal - $grandtotald) / count($payrollgeneration);
+        else
+          $average = 0;
         $employees = Employee::count();
         $projects = Project::where('completed',false)->count();
         return view('dashboard', compact(

@@ -34,12 +34,6 @@ class PayrollGeneration extends Model
             ->sum('payroll_generations.amount');
     }
 
-    public function employeeGenerationsCount($param_date) {
-        return $this::join('employment','employment.employee_id','=','payroll_generations.employee_id')
-            ->
-            ->whereDate('date_hired','<=',Carbon::parse($param_date)->toDateString());
-    }
-
     /** old */
 
     public function totalEmployees($param_date) {
