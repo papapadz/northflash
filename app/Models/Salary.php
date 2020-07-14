@@ -17,10 +17,7 @@ class Salary extends Model
     
     
     protected $dates = [
-        'date_effective',
-        'created_at',
-        'updated_at',
-    
+        'date_effective'
     ];
     
     protected $appends = ['resource_url'];

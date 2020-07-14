@@ -17,9 +17,7 @@ class License extends Model
     
     protected $dates = [
         'date_issued',
-        'date_expired',
-        'created_at',
-        'updated_at',
+        'date_expired'
     
     ];
     

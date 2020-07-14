@@ -19,9 +19,6 @@ class Payroll extends Model
     protected $dates = [
         'payroll_date_start',
         'payroll_date_end',
-        'created_at',
-        'updated_at',
-        'deleted_at'
     ];
     
     protected $appends = ['resource_url'];

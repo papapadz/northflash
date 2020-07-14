@@ -13,14 +13,7 @@ class Dtr extends Model
         'type',
     
     ];
-    
-    
-    protected $dates = [
-        'created_at',
-        'updated_at',
-    
-    ];
-    
+        
     protected $appends = ['resource_url'];
 
     /* ************************ ACCESSOR ************************* */

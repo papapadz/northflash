@@ -13,13 +13,6 @@ class Position extends Model
         'title',
     ];
     
-    
-    protected $dates = [
-        'created_at',
-        'updated_at',
-    
-    ];
-    
     protected $appends = ['resource_url'];
 
     /* ************************ ACCESSOR ************************* */

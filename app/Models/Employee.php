@@ -31,10 +31,7 @@ class Employee extends Model
     protected $dates = [
         'birthdate',
         'date_hired',
-        'date_expired',
-        'created_at',
-        'updated_at',
-    
+        'date_expired'
     ];
     
     protected $appends = ['resource_url'];
