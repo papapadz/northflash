@@ -170,7 +170,7 @@ class PayrollController extends Controller
                             $num_days = $request->ot[$k];
                         break;
 
-                        case 5:
+                        case 6:
                             $amount = $amount * $request->ut[$k];
                             $num_days = $request->ut[$k];
                         break;
@@ -202,7 +202,8 @@ class PayrollController extends Controller
     }
 
     public function payslip($payroll_date) {
-        $data = PayrollGeneration::select()->whereDate('payroll_date',$payroll_date)->get();
+        $data = PayrollGeneration::select('employee_id','payroll_date')->whereDate('payroll_date',$payroll_date)->groupBy('employee_id','payroll_date')->get();
+        
         $payslip = 'payslip-'.$payroll_date.'.pdf';
         $pdf = DOMPdf::loadView('include.payroll.payslip',compact('data'))->setPaper('letter', 'portrait');
         return $pdf->download($payslip);

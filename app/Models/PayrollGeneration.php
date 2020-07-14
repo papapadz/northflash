@@ -34,6 +34,12 @@ class PayrollGeneration extends Model
             ->sum('payroll_generations.amount');
     }
 
+    public function getPayslipDetails($param_date,$param_employee_id) {
+        return $this::select('payroll_item','item','payroll_generations.amount','type','payroll_date')->join('payroll_items','payroll_items.id','=','payroll_item')
+            ->where('employee_id',$param_employee_id)
+            ->whereDate('payroll_date',Carbon::parse($param_date)->toDateString());
+    }
+
     /** old */
 
     public function totalEmployees($param_date) {

@@ -18,42 +18,20 @@
         <tr>
             <td colspan="3" style="border-top: solid"><i>Additions</i></td>
         </tr>
+        @php $totalAdd = $totalDeduct = 0; @endphp
+        @foreach($emp->getPayslipDetails($emp->payroll_date,$emp->employee_id)->where('type',1)->orderBy('payroll_item','desc')->get() as $payroll)
         <tr>
-            <td>Salary:</td>
-            <td class="right mid">
-            @php
-                $totalAdd = $totalDeduct = 0;
-                echo number_format($emp->employeeSalary($emp->employee_id)->amount,2,'.',',');
-            @endphp
-            </td>
-            <td></td>
-        </tr>
-        @foreach($emp->employeePayroll($emp->payroll_date,$emp->employee_id,1) as $payroll)
-        <tr>
-            @php $pamount = 0; @endphp
-            @if($payroll->payroll_item == 7 && (Carbon\Carbon::parse($emp->payroll_date)->month == 5 || Carbon\Carbon::parse($emp->payroll_date)->month == 11))
-            <td class="first">{{ $payroll->item }}:</td>
-            <td class="right mid">
-            @php 
-                $pamount = $emp->employeeSalary($emp->employee_id)->amount/2;
-                echo number_format($pamount,2,'.',',');
-                $totalAdd = $totalAdd + $pamount;
-            @endphp
-            </td>
-            @elseif($payroll->payroll_item != 7)
             <td class="first">{{ $payroll->item }}:</td>
             <td class="right mid">
             @php
-                if($payroll->payroll_item == 5)
-                    $pamount = findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount) * $emp->ot;
-                else
-                    $pamount = $payroll->amount;
+                if($payroll->payroll_item==8)
+                    $salary = $payroll->amount;
+                $pamount = $payroll->amount;
                 
                 echo number_format($pamount,2,'.',',');
                 $totalAdd = $totalAdd + $pamount;
             @endphp
             </td>
-            @endif
             <td></td>
         </tr>
         @endforeach
@@ -61,25 +39,22 @@
             <td colspan="2" style="text-align:right"><b>Total: </b></td>
             <td  style="text-align:right"><u><b>
             @php
-                $gross = $emp->employeeSalary($emp->employee_id)->amount + $totalAdd;
-                echo number_format($gross,2,'.',',');
+                echo number_format($totalAdd,2,'.',',');
             @endphp
             </b></u></td>
         </tr>
         <tr>
             <td colspan="3" style="border-top: solid"><i>Deductions</i></td>
         </tr>
-        @foreach($emp->employeePayroll($emp->payroll_date,$emp->employee_id,2) as $payroll)
+        @php $deductcount = 0; @endphp
+        @foreach($emp->getPayslipDetails($emp->payroll_date,$emp->employee_id)->where('type',2)->get() as $k => $payroll)
         <tr>
             <td>{{ $payroll->item }}:</td>
             <td class="right mid">
             @php
-               $pdeduct = findPayroll($payroll->payroll_item,$emp->employeeSalary($emp->employee_id)->amount,$payroll->amount);
-
-                if($payroll->payroll_item == 6)
-                    $pdeduct = $pdeduct * $emp->ut;
-
-                $totalDeduct = (double)$totalDeduct + (double)$pdeduct;
+                $deductcount++;
+                $pdeduct = $payroll->amount;
+                $totalDeduct = $totalDeduct + $pdeduct;
 
                 echo number_format($pdeduct,2,'.',',');
             @endphp
@@ -87,28 +62,18 @@
             <td></td>
         </tr>
         @endforeach
+        @while($deductcount<5)
+            {{ $deductcount++ }}
+            <tr><td colspan="3"><br></td></tr>
+        @endwhile
         <tr>
             <td colspan="2" style="text-align:right"><b>Total: </b></td>
             <td  style="text-align:right"><u><b>
             @php
-                $net = $gross - $totalDeduct;
+                $net = $totalAdd - $totalDeduct;
                 echo number_format($totalDeduct,2,'.',',');
             @endphp
             </b></u></td>
-        </tr>
-        <tr><td style="border-top: solid" colspan="3"></td></tr>
-        <tr>
-            <td rowspan="2" class="right"><b>Total: </b></td>
-            <td class="right">15th</td>
-            <td class="right">
-                @php echo number_format($net/2,2,'.',','); @endphp
-            </td>
-        </tr>
-        <tr>
-            <td class="right">30th</td>
-            <td class="right">
-                @php echo number_format($net/2,2,'.',',') @endphp
-            </td>
         </tr>
         <tr><td style="border-top: solid" colspan="3"></td></tr>
         <tr>
