@@ -39,6 +39,7 @@ class AdminController extends Controller
             case 'payroll_generations':
                 PayrollController::deletePayrollGeneration($id);
             break;
+            
         }
     }
 

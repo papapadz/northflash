@@ -9,7 +9,7 @@ class PayrollItemController extends Controller
 {
     public function index() {
 
-        $payrollItems = PayrollItem::where('flexirate',false)->get();
+        $payrollItems = PayrollItem::get();
 
         return view('pages.admin.payrollItem.index')
             ->with('payrollItems',$payrollItems);
@@ -25,9 +25,7 @@ class PayrollItemController extends Controller
             ['item' => $request->item ],
             [
                 'amount' => $request->amount,
-                'percentage' => $percentage,
-                'type' => $request->type,
-                'date_effective' => $request->date_effective
+                'type' => $request->type
             ]
         );
 
@@ -35,6 +33,17 @@ class PayrollItemController extends Controller
             return redirect()->back()->with('success','Record has been added!');
         else
             return redirect()->back()->with('danger','Item name already exists!');
+    }
+
+    public function update(Request $request) {
+
+        PayrollItem::where('id',$request->item_id)->update([
+            'item' => $request->item,
+            'amount' => $request->amount,
+            'type' => $request->type
+        ]);
+
+        return redirect()->back()->with('success','Item updated successfully!');
     }
 
     public static function delete($id) {

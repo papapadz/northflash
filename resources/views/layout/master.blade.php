@@ -35,17 +35,26 @@
       <div class="main-panel">
         <div class="content-wrapper">
           @if(session('success'))
-              <div class="alert alert-success dismissable">
-                {{ session('success') }}
-              </div>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           @elseif(session('danger'))
-            <div class="alert alert-danger dismissable">
-              {{ session('danger') }}
-            </div>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Warning!</strong> {{ session('danger') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           @elseif(session('warning'))
-            <div class="alert alert-warning dismissable">
-              {{ session('warning') }}
-            </div>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Notice!</strong> {{ session('warning') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           @endif
           @yield('content')
         </div>

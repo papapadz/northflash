@@ -8,7 +8,7 @@
         <form method="POST" action="{{ route('login') }}">
             {{ csrf_field() }}
           <div class="form-group">
-            <label class="label">Username</label>
+            <label class="label">Email Address</label>
             <div class="input-group">
                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
 
@@ -62,17 +62,17 @@
         </form>
       </div>
       <ul class="auth-footer">
-        <li>
+        <!-- <li>
           <a href="#">Conditions</a>
+        </li> -->
+        <li>
+          <a href="https://www.facebook.com/binarybee.solutions">Facebook</a>
         </li>
         <li>
-          <a href="#">Help</a>
-        </li>
-        <li>
-          <a href="#">Terms</a>
+          <a href="https://www.gmail.com">binarybee.solutions@gmail.com</a>
         </li>
       </ul>
-      <p class="footer-text text-center">copyright © 2018 Bootstrapdash. All rights reserved.</p>
+      <p class="footer-text text-center">copyright © 2020 Binary Bee IT Solutions. All rights reserved.</p>
     </div>
   </div>
 </div>

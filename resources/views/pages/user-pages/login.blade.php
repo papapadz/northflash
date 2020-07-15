@@ -53,7 +53,7 @@
           <a href="#">Conditions</a>
         </li>
         <li>
-          <a href="#">Help</a>
+          <a href="www.facebook.com/binarybee.solutions">Help</a>
         </li>
         <li>
           <a href="#">Terms</a>

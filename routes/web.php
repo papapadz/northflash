@@ -175,6 +175,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
         
         Route::get('payroll-items', 'PayrollItemController@index');
         Route::post('payroll-item/add','PayrollItemController@store');
+        Route::post('payroll-item/update','PayrollItemController@update');
     });
 });
 
