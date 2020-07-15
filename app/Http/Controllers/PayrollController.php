@@ -208,4 +208,12 @@ class PayrollController extends Controller
         $pdf = DOMPdf::loadView('include.payroll.payslip',compact('data'))->setPaper('letter', 'portrait');
         return $pdf->download($payslip);
     }
+
+    public static function deletePayroll($employee_id) {
+        Payroll::where('employee_id',$employee_id)->delete();
+    }
+
+    public static function deletePayrollGeneration($payroll_date) {
+        PayrollGeneration::where('payroll_date',$payroll_date)->delete();
+    }
 }

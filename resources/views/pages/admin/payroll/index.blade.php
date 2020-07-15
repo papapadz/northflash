@@ -79,7 +79,7 @@
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="#">View</a>
                       <a class="dropdown-item" href="#">Update</a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item text-danger" onclick="buttonCRUD('payroll','{{ $e->employee_id }}',3)">Delete</a>
                     </div>
                   </div>
                 </td>

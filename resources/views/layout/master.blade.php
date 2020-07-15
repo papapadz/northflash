@@ -89,7 +89,7 @@
             crud:crud
           }
         }).done(function() {
-          window.location.reload();
+          window.location.replace("{{ url('admin/crud/redirect') }}/"+crud);
         });
       }
     }

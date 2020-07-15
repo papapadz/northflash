@@ -31,6 +31,22 @@ class AdminController extends Controller
             case 'payroll_items':
                 PayrollItemController::delete($id);
             break;
+
+            case 'payroll':
+                PayrollController::deletePayroll($id);
+            break;
+
+            case 'payroll_generations':
+                PayrollController::deletePayrollGeneration($id);
+            break;
+        }
+    }
+
+    public function redirect($id) {
+        switch($id) {
+            case 3:
+                return redirect()->back()->with('danger','Record has been deleted.');
+            break;
         }
     }
 

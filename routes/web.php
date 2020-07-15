@@ -166,6 +166,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::post('project/update/{id}','ProjectController@update');
 
     Route::post('crud','AdminController@crud');
+    Route::get('crud/redirect/{id}','AdminController@redirect');
     
     Route::group(['prefix'=>'variables'], function() {
 

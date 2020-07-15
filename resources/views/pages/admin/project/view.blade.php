@@ -17,11 +17,23 @@
       <div class="card-header">
           <h3 class="float-left">{{ $project->project_name }}</h3>
           <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-            <label class="btn btn-secondary active">
-                <input type="radio" name="options" id="option1" autocomplete="off" checked> Active
+              <label id="status1" 
+                @if($project->status)
+                    class="btn btn-secondary"
+                @else
+                    class="btn btn-danger"
+                @endif
+              >
+                <input type="radio" name="status" autocomplete="off" value=false> On-going
               </label>
-              <label class="btn btn-secondary">
-                <input type="radio" name="options" id="option2" autocomplete="off"> Radio
+              <label id="status1" 
+                @if($project->status)
+                    class="btn btn-success"
+                @else
+                    class="btn btn-secondary"
+                @endif
+              >
+                <input type="radio" name="status" autocomplete="off" value=true> Completed
               </label>
           </div>
       </div>
@@ -108,6 +120,18 @@
             var txt = $('select option:selected').text();
             $('#toaddemp').append(
                 '<tr id="'+$(this).val()+'"><td><input type="text" name="emp[]" value="'+$(this).val()+'" hidden>'+$(this).val()+'</td><td>'+txt+'</td><td><button class="btn btn-sm btn-danger" type="button" onclick=removeEmp("'+$(this).val()+'")>Remove</button></td></tr>');
+        });
+
+        $('input[type=radio][name=status]').change(function() {
+            
+            if($(this).val()=='true') {
+                $('#status1').attr('class','btn btn-secondary')
+                $('#status2').attr('class','btn btn-success')
+            } else {
+                $('#status1').attr('class','btn btn-danger')
+                $('#status2').attr('class','btn btn-secondary')
+            }
+                
         });
   });
 
