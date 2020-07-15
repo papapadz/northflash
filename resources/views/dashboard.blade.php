@@ -14,7 +14,7 @@
             <i class="mdi mdi-receipt text-warning icon-lg"></i>
           </div>
           <div class="float-right">
-            <p class="mb-0 text-right">Monthly Payouts</p>
+            <p class="mb-0 text-right">Average Payouts</p>
             <div class="fluid-container">
               <h3 class="font-weight-medium text-right mb-0">PHP {{ number_format($average,2,'.',',') }}</h3>
             </div>

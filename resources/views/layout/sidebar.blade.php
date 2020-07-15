@@ -54,12 +54,18 @@
     </li>
     <li class="nav-item {{ active_class(['admin/payrolls']) }}">
       <a class="nav-link" href="{{ url('/admin/payrolls') }}">
-        <i class="menu-icon mdi mdi-account"></i>
+        <i class="menu-icon mdi mdi-calculator"></i>
         <span class="menu-title">Payrolls</span>
       </a>
     </li>
+    <li class="nav-item {{ active_class(['admin/projects']) }}">
+      <a class="nav-link" href="{{ url('/admin/projects') }}">
+        <i class="menu-icon mdi mdi-cube"></i>
+        <span class="menu-title">Projects</span>
+      </a>
+    </li>
     <!-- -->
-    <div class="progress">
+    {{-- <div class="progress">
       <div class="progress-bar bg-disabled progress-bar" role="progressbar" style="width: 100%"  aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <li class="nav-item {{ active_class(['admin/variables/*']) }}">
@@ -78,6 +84,6 @@
           </li>
         </ul>
       </div>
-    </li>
+    </li> --}}
   </ul>
 </nav>

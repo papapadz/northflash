@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -31,5 +32,11 @@ class AdminController extends Controller
                 PayrollItemController::delete($id);
             break;
         }
+    }
+
+    public function logout() {
+        
+        Auth::logout();
+        return redirect()->route('home');
     }
 }
