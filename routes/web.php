@@ -142,6 +142,7 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::get('/home','DashboardController@index')->name('home')->middleware('auth');
+Route::get('logout','AdminController@logout')->middleware('auth');
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
@@ -158,6 +159,12 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::post('payrolls/generations/save','PayrollController@save');
     Route::get('payrolls/generations/payslip/{payroll_date}','PayrollController@payslip');
     
+    Route::get('projects','ProjectController@index')->name('projects.index');
+    Route::get('projects/add','ProjectController@add');
+    Route::post('projects/save','ProjectController@save');
+    Route::get('project/{id}','ProjectController@view');
+    Route::post('project/update/{id}','ProjectController@update');
+
     Route::post('crud','AdminController@crud');
     
     Route::group(['prefix'=>'variables'], function() {

@@ -21,6 +21,7 @@ class CreateProjectsTable extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('contract_by')->nullable();
+            $table->decimal('amount',12,2);
             $table->boolean('completed')->default(false);
             $table->timestamps();
         });
