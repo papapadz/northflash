@@ -27,7 +27,7 @@ class DashboardController extends Controller
           $annualreport[Carbon::parse($generation->payroll_date)->month-1] = $annualreport[Carbon::parse($generation->payroll_date)->month-1] + $total;
         }
 
-        if($payrollgeneration)
+        if(count($payrollgeneration))
           $average = $grandtotal / count($payrollgeneration);
         else
           $average = 0;

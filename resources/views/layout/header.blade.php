@@ -1,7 +1,7 @@
 <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
     <a class="navbar-brand brand-logo" href="{{ url('/') }}">
-      <img src="{{ url('assets/images/logo.svg') }}" alt="logo" /> </a>
+      <img src="{{ url('assets/images/nfpb.jpg') }}" alt="logo" /> </a>
     <a class="navbar-brand brand-logo-mini" href="{{ url('/') }}">
       <img src="{{ url('assets/images/logo-mini.svg') }}" alt="logo" /> </a>
   </div>
@@ -126,10 +126,10 @@
               </div>
             </div>
           </a>
-          <a class="dropdown-item mt-2"> Manage Accounts </a>
+          {{-- <a class="dropdown-item mt-2"> Manage Accounts </a>
           <a class="dropdown-item"> Change Password </a>
-          <a class="dropdown-item"> Check Inbox </a>
-          <a class="dropdown-item" href="{{ url('logout') }}"> Sign Out </a>
+          <a class="dropdown-item"> Check Inbox </a> --}}
+          <a class="dropdown-item text-danger" href="{{ url('logout') }}"> Sign Out </a>
         </div>
       </li>
     </ul>
