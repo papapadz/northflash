@@ -52,6 +52,7 @@
                         data-type="{{ $item->type }}"
                       >Edit</a>
                       @if($item->id > 8)
+                      <hr>
                       <a class="dropdown-item text-danger" onclick="buttonCRUD('payroll_items','{{ $item->id }}',3)">Delete</a>
                       @endif
                     </div>

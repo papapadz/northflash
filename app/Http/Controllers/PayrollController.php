@@ -51,11 +51,21 @@ class PayrollController extends Controller
 
     public function store(Request $request) {
 
-        $err[] = null;
+        foreach($request->item as $item) {
 
-        $date_end = null;
-        if($request->repeat==2)
-            $date_end = $request->payroll_date_end;
+            $payroll = Payroll::updateOrInsert(
+                [
+                    'employee_id' => $request->employee_id,
+                    'payroll_item' => $item,
+                    'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success','New payroll record has been added!');
+    }
+
+    public function update(Request $request) {
         
         foreach($request->item as $item) {
 
@@ -63,21 +73,21 @@ class PayrollController extends Controller
                 [
                     'employee_id' => $request->employee_id,
                     'payroll_item' => $item,
-                    'payroll_date_start' => $request->payroll_date_start,
-                ],
-                [
-                    'payroll_date_end' => $date_end
+                    'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
                 ]
             );
         }
 
-        return redirect()->back()->with('success','Record has been added!');
+        return redirect()->back()->with('success','Payroll record has been updated!');
     }
 
     public function generations() {
      
         $payrollGenerations = PayrollGeneration::select('payroll_date')->groupBy('payroll_date')->get();
         
+        if(Payroll::count()==0)
+            return redirect()->back()->with('danger','Please set first the payroll items for your employees');
+
         return view('pages.admin.payroll.generations.index')
             ->with('payrollGenerations',$payrollGenerations);
     }

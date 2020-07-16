@@ -150,6 +150,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::post('employee/add','EmployeeController@store');
     Route::get('employee/{employee_id}','EmployeeController@view');
     Route::post('employee/license/add','EmployeeController@addlicense');
+    Route::post('employee/basic/update','EmployeeController@updatebasic');
     
     Route::get('payrolls', 'PayrollController@index');
     
@@ -158,7 +159,8 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::post('payrolls/generations/add', 'PayrollController@generateview');
     Route::post('payrolls/generations/save','PayrollController@save');
     Route::get('payrolls/generations/payslip/{payroll_date}','PayrollController@payslip');
-    
+    Route::post('payroll/update','PayrollController@update');
+
     Route::get('projects','ProjectController@index')->name('projects.index');
     Route::get('projects/add','ProjectController@add');
     Route::post('projects/save','ProjectController@save');
@@ -176,6 +178,10 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
         Route::get('payroll-items', 'PayrollItemController@index');
         Route::post('payroll-item/add','PayrollItemController@store');
         Route::post('payroll-item/update','PayrollItemController@update');
+    });
+
+    Route::group(['prefix'=>'get'], function() {
+        Route::get('employee/payroll/{employee_id}','EmployeeController@getEmployeePayroll');
     });
 });
 

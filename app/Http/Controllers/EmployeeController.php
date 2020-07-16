@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Employment;
@@ -82,7 +83,24 @@ class EmployeeController extends Controller
         }
     }
 
+    public function updatebasic(Request $request) {
+        Employee::where('employee_id',$request->employee_id)->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'middle_name' => $request->middle_name,
+            'birthdate' => $request->birthdate,
+            'gender' => $request->gender,
+            'civil_stat' => $request->civil_stat,
+            'address' => $request->address,
+        ]);
+
+        return redirect()->back()->with('success','Employee details has been updated successfully!');
+    }
+
     public static function delete($id) {
+        
+        $employment = Employment::where('employee_id',$id)->orderBy('date_hired','desc')->first();
+        $employment->update(['date_expired' => Carbon::now()]);
         Employee::find($id)->delete();
     }
 
@@ -92,7 +110,8 @@ class EmployeeController extends Controller
 
         return view('pages.admin.employee.profile')->with([
                 'employee' => $employee,
-                'licensetypes' => LicenseType::all()
+                'licensetypes' => LicenseType::all(),
+                'positions' => Position::all()
             ]);
     }
 
@@ -111,5 +130,11 @@ class EmployeeController extends Controller
         );
         
         return redirect()->back()->with('success','Record has been added!');
+    }
+
+    public function getEmployeePayroll($employee_id) {
+        $employee = Employee::find($employee_id);
+        $payroll = $employee->payroll;
+        return $payroll;
     }
 }

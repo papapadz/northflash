@@ -26,6 +26,7 @@ class AdminController extends Controller
 
             case 'employees':
                 EmployeeController::delete($id);
+
             break;
 
             case 'payroll_items':

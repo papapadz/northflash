@@ -52,7 +52,7 @@
         <span class="menu-title">Employees</span>
       </a>
     </li>
-    <li class="nav-item {{ active_class(['admin/payrolls']) }}">
+    <li class="nav-item {{ active_class(['admin/payrolls']) }} {{ active_class(['admin/payrolls/*']) }}">
       <a class="nav-link" href="{{ url('/admin/payrolls') }}">
         <i class="menu-icon mdi mdi-calculator"></i>
         <span class="menu-title">Payrolls</span>

@@ -58,7 +58,15 @@ class ProjectController extends Controller
 
     public function update($id,Request $request) {
 
-        Project::where('id',$id)->update($request->all());
+        Project::where('id',$id)->update([
+            'project_name' => $request->project_name,
+            'location' => $request->location,
+            'project_type' => $request->project_type,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'contract_by' => $request->contract_by,
+            'amount' => $request->amount,
+        ]);
         
         ProjectAssignment::where('project_id',$id)->delete();
 

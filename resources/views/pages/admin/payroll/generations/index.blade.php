@@ -49,7 +49,6 @@
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="{{ url('admin/payrolls/generations/payslip/'.Carbon\Carbon::parse($generation->payroll_date)->toDateString()) }}">View payslips</a>
                       <hr>  
-                      <a class="dropdown-item" href="#">Update</a>
                       <a class="dropdown-item text-danger" onclick="buttonCRUD('payroll_generations','{{ $generation->payroll_date }}',3)">Delete</a>
                     </div>
                   </div>

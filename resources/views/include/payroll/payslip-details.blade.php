@@ -4,7 +4,13 @@
             <td colspan="3" style="font-size: 16px"><center><b><u>NORTHFLASH POWER AND BUILDS, INC.</u></b></center></td>
         </tr>
         <tr>
-            <td colspan="3"><center><b>Payslip for {{ Carbon\Carbon::parse($emp->payroll_date)->format('F Y') }}</b></center></td>
+            <td colspan="3"><center><b>
+                @if(Carbon\Carbon::parse($emp->payroll_date)->day==1)
+                    {{ Carbon\Carbon::parse($emp->payroll_date)->format('F') }} 1-15, {{ Carbon\Carbon::parse($emp->payroll_date)->year }} Payslip
+                @else
+                    {{ Carbon\Carbon::parse($emp->payroll_date)->format('F') }} 16-{{ Carbon\Carbon::parse($emp->payroll_date)->endOfMonth()->day }}, {{ Carbon\Carbon::parse($emp->payroll_date)->year }} Payslip
+                @endif
+            </b></center></td>
         </tr>
         <tr><td colspan="3"></td></tr>
         <tr>

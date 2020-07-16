@@ -10,15 +10,12 @@ class Payroll extends Model
 
     protected $fillable = [
         'employee_id',
-        'payroll_item',
-        'payroll_date_start',
-        'payroll_date_end'
+        'payroll_item'
     ];
     
     
     protected $dates = [
-        'payroll_date_start',
-        'payroll_date_end',
+        'payroll_date_start'
     ];
     
     protected $appends = ['resource_url'];

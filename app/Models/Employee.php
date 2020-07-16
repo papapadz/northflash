@@ -61,4 +61,49 @@ class Employee extends Model
             ->join('license_types','license_types.id','=','license_type_id')
             ->orderBy('license_type_id');
     }
+
+    public function generations() {
+        return $this->hasMany('App\Models\PayrollGeneration','employee_id','employee_id')
+            ->select(
+                'payroll_date',
+                'payroll_items.amount as unit_amount',
+                'num_days',
+                'payroll_generations.amount as total_amount',
+                'payroll_item',
+                'item',
+                'type'
+            )
+            ->join('payroll_items','payroll_items.id','=','payroll_generations.payroll_item');
+    }
+
+    public function projects() {
+        return $this->hasMany('App\Models\ProjectAssignment','employee_id','employee_id')
+            ->join('projects','projects.id','=','project_id');
+    }
+
+    public function employments() {
+        return $this->hasMany('App\Models\Employment','employee_id','employee_id')
+            ->select('*','employments.id as employment_id')
+            ->join('salary','salary.id','=','salary_id')
+            ->join('positions','positions.id','=','salary.position_id');
+    }
+
+    public function getEmploymentDetails($id) {
+        return $this::select(
+                'employments.employee_id',
+                'amount',
+                'position_id',
+                'salary_id',
+                'status',
+                'date_hired',
+                'date_expired',
+                'monthly',
+                'title'
+            )
+            ->join('employments','employments.employee_id','employees.employee_id')
+            ->join('salary','salary.id','=','salary_id')
+            ->join('positions','positions.id','=','salary.position_id')
+            ->where('employments.id',$id)
+            ->first();
+    }
 }
