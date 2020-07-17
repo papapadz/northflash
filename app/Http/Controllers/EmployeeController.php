@@ -52,21 +52,7 @@ class EmployeeController extends Controller
 
             if($employee->wasRecentlyCreated) {
 
-                $salary = Salary::firstOrCreate(
-                    [
-                        'position_id' => $request->position,
-                        'amount' => $request->salary,
-                        'date_effective' => $request->date_hired,
-                        'monthly' => $request->monthly
-                    ]
-                );
-                
-                Employment::create([
-                    'employee_id' => $request->employee_id,
-                    'salary_id' => $salary->id,
-                    'status' => $request->status,
-                    'date_hired' => $request->date_hired
-                ]);
+                $this->storeemployment($request);
                 
                 Payroll::create([
                     'employee_id' => $request->employee_id,
@@ -136,5 +122,74 @@ class EmployeeController extends Controller
         $employee = Employee::find($employee_id);
         $payroll = $employee->payroll;
         return $payroll;
+    }
+
+    public function addemployment(Request $request) {
+
+        if($this->storeemployment($request)==0)
+            return redirect()->back()->with('danger','Employment record already exists.');
+        else
+            return redirect()->back()->with('success','New employment record has been saved!');
+    }
+
+    private function storeemployment(Request $request) {
+
+        $salary = Salary::firstOrCreate(
+            [
+                'position_id' => $request->position,
+                'amount' => $request->salary,
+                'date_effective' => $request->date_hired,
+                'monthly' => $request->monthly
+            ]
+        );
+
+        $employment = Employment::firstOrcreate(
+            [
+                'employee_id' => $request->employee_id,
+                'salary_id' => $salary->id,
+                'status' => $request->status,
+                'date_hired' => $request->date_hired
+            ]
+        );
+
+        if($employment->wasRecentlyCreated) {
+            $empl = Employment::where([
+                ['date_expired',null],
+                ['id','!=',$employment->id],
+                ['employee_id',$request->employee_id]
+            ])->update(['date_expired' => Carbon::now()]);
+            
+            return 1;
+        }
+        else
+            return 0;
+    }
+
+    public function updatemployment(Request $request) {
+
+        $salary = Salary::firstOrCreate(
+            [
+                'position_id' => $request->position,
+                'amount' => $request->salary,
+                'date_effective' => $request->date_hired,
+                'monthly' => $request->monthly
+            ]
+        );
+
+        Employment::where('id',$id)->update(
+            [
+                'employee_id' => $request->employee_id,
+                'salary_id' => $salary->id,
+                'status' => $request->status,
+                'date_hired' => $request->date_hired
+            ]
+        );
+
+        return redirect()->back()->with('success','Employment record has been updated!');
+    }
+
+    public static function deleteEmployment($id) {
+
+        Employment::where('id',$id)->update(['date_expired' => Carbon::now()]);
     }
 }

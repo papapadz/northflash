@@ -285,8 +285,14 @@
 $(document).ready(function() {
     $('table').DataTable();
     $('select').select2();
-
-
 })
 </script>
+@endpush
+
+@push('plugin-styles')
+<style>
+  label {
+    font-weight: bold;
+  }
+</style>
 @endpush

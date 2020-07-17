@@ -46,7 +46,7 @@
       </a>
     </li>
     <!-- -->
-    <li class="nav-item {{ active_class(['admin/employees']) }}">
+    <li class="nav-item {{ active_class(['admin/employees']) }} {{ active_class(['admin/employee/*']) }}">
       <a class="nav-link" href="{{ url('/admin/employees') }}">
         <i class="menu-icon mdi mdi-account"></i>
         <span class="menu-title">Employees</span>
@@ -58,7 +58,7 @@
         <span class="menu-title">Payrolls</span>
       </a>
     </li>
-    <li class="nav-item {{ active_class(['admin/projects']) }}">
+    <li class="nav-item {{ active_class(['admin/projects']) }} {{ active_class(['admin/project/*']) }}">
       <a class="nav-link" href="{{ url('/admin/projects') }}">
         <i class="menu-icon mdi mdi-cube"></i>
         <span class="menu-title">Projects</span>
