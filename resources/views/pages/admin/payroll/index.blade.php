@@ -39,7 +39,12 @@
                         @if($additions->id == 5)
                           {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }} /hr
                         @elseif($additions->id == 7)
-                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }}
+                          {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }} 
+                          @if($e->employment->monthly)
+                            /month
+                          @else
+                            /day
+                          @endif
                         @else
                           {{ number_format(findPayroll($additions->id,$employee_salary,$additions->amount,$e->employment->monthly),2,'.',',') }}
                         @endif
@@ -59,12 +64,12 @@
                             $deduction_id = $deductions->id;
                             $deduction_amount = $deductions->amount;
                           @endphp
-                          @if($deduction_id==6)
-                            {{number_format($deductions->amount, 2, '.', ',')}} /min
-                          @elseif($deductions->flexirate)
+                         
+                          @if($deductions->flexirate)
                             {{ number_format(findPayroll($deductions->id,$employee_salary,$deductions->amount,$e->employment->monthly),2,'.',',') }}
-                          @elseif($deductions->percentage>0)
-                            {{($deductions->percentage*100)}}% 
+                            @if($deduction_id==6)
+                              /min
+                            @endif
                           @else
                             {{number_format($deduction_amount, 2, '.', ',')}}
                           @endif
