@@ -10,7 +10,8 @@ class Payroll extends Model
 
     protected $fillable = [
         'employee_id',
-        'payroll_item'
+        'payroll_item',
+        'payroll_date_start'
     ];
     
     

@@ -63,7 +63,7 @@ class EmployeeController extends Controller
                 return redirect()->back()->with('success','Employee added!');
             }
             else
-                return redirect()->back()->with('danger','Employee ID No. already taken.');
+                return redirect()->back()->with('danger','Employee ID No. is already taken.');
         } catch(Exception $e) {
             return redirect()->back()->with('error',$e);
         }
