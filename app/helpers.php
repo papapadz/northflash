@@ -140,6 +140,10 @@ function findPayroll($deduction_id,$employee_salary,$deduction_amount,$emp_statu
                                   $amount = computeOTPay($new_employee_salary);    
                                 break;
 
+                                case 6:
+                                  $amount = computeOTPay($new_employee_salary)/60; 
+                                break;
+
                                 case 7:
                                   $amount = ($new_employee_salary/2);
                                 break;

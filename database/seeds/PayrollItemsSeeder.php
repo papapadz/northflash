@@ -74,7 +74,7 @@ class PayrollItemsSeeder extends Seeder
                 'amount' => 0,
                 'percentage' => 0,
                 'type' => 2,
-                'flexirate' => false,
+                'flexirate' => true,
                 'deduction_period' => 0,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
