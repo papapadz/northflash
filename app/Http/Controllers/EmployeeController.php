@@ -165,8 +165,8 @@ class EmployeeController extends Controller
             return 0;
     }
 
-    public function updatemployment(Request $request) {
-
+    public function updateemployment(Request $request) {
+        
         $salary = Salary::firstOrCreate(
             [
                 'position_id' => $request->position,
@@ -176,9 +176,8 @@ class EmployeeController extends Controller
             ]
         );
 
-        Employment::where('id',$id)->update(
+        Employment::where('id',$request->employment_id)->update(
             [
-                'employee_id' => $request->employee_id,
                 'salary_id' => $salary->id,
                 'status' => $request->status,
                 'date_hired' => $request->date_hired

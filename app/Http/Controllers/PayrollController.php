@@ -115,9 +115,9 @@ class PayrollController extends Controller
                 'payroll_date_end'
             )
             ->where('date_expired', NULL)
-            ->whereDate('date_hired','<=',$payroll_date)
+            ->where('date_hired','<=',$payroll_date)
             ->get();
-
+            
         // $employees = Employee::select(
         //     'employees.employee_id',
         //     'last_name',

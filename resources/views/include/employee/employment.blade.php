@@ -35,7 +35,7 @@
                             class="dropdown-item" 
                             data-toggle="modal" 
                             data-target="#updateEmploymentModal"
-                            data-id = "{{ $empl->employment_id }}"
+                            data-employment_id = "{{ $empl->employment_id }}"
                             data-position_id = "{{ $employee->getEmploymentDetails($empl->employment_id)->position_id }}"
                             data-position = "{{ $employee->getEmploymentDetails($empl->employment_id)->title }}"
                             data-salary_id = "{{ $employee->getEmploymentDetails($empl->employment_id)->salary_id }}"
@@ -192,6 +192,7 @@ $(document).ready(function() {
         else
           $('#monthly2').prop('checked',true)
 
+        $('#employment_id').val(employment_id)
         $('#date_hired').val(date_hired)
         $('#salary').val(salary)
         
