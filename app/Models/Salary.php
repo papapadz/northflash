@@ -12,7 +12,7 @@ class Salary extends Model
         'position_id',
         'amount',
         'date_effective',
-    
+        'monthly'
     ];
     
     
