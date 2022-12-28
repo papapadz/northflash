@@ -23,9 +23,8 @@
           <i class="mdi mdi-bookmark-plus-outline"></i>Score</a>
       </li> --}}
       <li class="nav-item dropdown d-none d-lg-flex">
-        <a class="nav-link dropdown-toggle px-0" id="quickDropdown" href="#" data-toggle="dropdown" aria-expanded="false"> Quick Links </a>
+        <a class="nav-link dropdown-toggle px-0" id="quickDropdown" href="#" data-toggle="dropdown" aria-expanded="false"> Settings </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown pt-3" aria-labelledby="quickDropdown">
-          <a href="#" class="dropdown-item">Settings <span class="badge badge-primary ml-1">New</span></a>
           <a href="{{ url('/admin/variables/positions') }}" class="dropdown-item"><i class="mdi mdi-clipboard-account"></i>Positions</a>
           <a href="{{ url('/admin/variables/payroll-items') }}" class="dropdown-item"><i class="mdi mdi-book-multiple"></i>Payroll Items</a>
         </div>
@@ -113,23 +112,16 @@
           <span class="profile-text d-none d-md-inline-flex">Hello {{ Auth::user()->name }} !</span>
           <img class="img-xs rounded-circle" src="{{ url('assets/images/faces/face8.jpg') }}" alt="Profile image"> </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-          <a class="dropdown-item p-0">
+          <div class="dropdown-item p-0">
             <div class="d-flex border-bottom w-100 justify-content-center">
-              <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
-              </div>
-              <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
-                <i class="mdi mdi-account-outline mr-0 text-gray"></i>
-              </div>
-              <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
-              </div>
+              
+                <a class="py-3 px-4 d-flex align-items-center justify-content-center" onclick="return confirm('Are you sure you want to logout?')" href="{{ url('logout') }}"><i class="mdi mdi-logout mr-0 text-danger"></i></a>
             </div>
-          </a>
+          </div>
           {{-- <a class="dropdown-item mt-2"> Manage Accounts </a>
           <a class="dropdown-item"> Change Password </a>
           <a class="dropdown-item"> Check Inbox </a> --}}
-          <a class="dropdown-item text-danger" href="{{ url('logout') }}"> Sign Out </a>
+          
         </div>
       </li>
     </ul>

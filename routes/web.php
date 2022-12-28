@@ -182,6 +182,16 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
         Route::post('payroll-item/update','PayrollItemController@update');
     });
 
+    Route::group(['prefix'=>'users'], function() {
+
+        Route::get('/', 'UserController@index');
+        Route::get('/{id}','UserController@view');
+        Route::post('add','UserController@store')->name('user.add');
+        Route::post('update','UserController@update')->name('user.update');
+        Route::post('delete','UserController@delete')->name('user.delete');
+        
+    });
+
     Route::group(['prefix'=>'get'], function() {
         Route::get('employee/payroll/{employee_id}','EmployeeController@getEmployeePayroll');
     });

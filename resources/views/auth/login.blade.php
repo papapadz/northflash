@@ -8,15 +8,9 @@
         <form method="POST" action="{{ route('login') }}">
             {{ csrf_field() }}
           <div class="form-group">
-            <label class="label">Email Address</label>
+            <label class="label">Email Address </label>
             <div class="input-group">
                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
               <div class="input-group-append">
                 <span class="input-group-text">
                   <i class="mdi mdi-check-circle-outline"></i>
@@ -28,12 +22,6 @@
             <label class="label">Password</label>
             <div class="input-group">
                 <input id="password" type="password" class="form-control" name="password" required>
-
-                @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif
               <div class="input-group-append">
                 <span class="input-group-text">
                   <i class="mdi mdi-check-circle-outline"></i>
@@ -41,6 +29,14 @@
               </div>
             </div>
           </div>
+          <center>
+            
+            @if ($errors->has('email'))
+                    <span class="help-block text-danger">
+                        <i>{{ $errors->first('email') }}</i>
+                    </span>
+                @endif
+          </center>
           <div class="form-group">
             <button class="btn btn-primary submit-btn btn-block">Login</button>
           </div>
