@@ -17,6 +17,14 @@
                 </span>
               </div>
             </div>
+            <center>
+              @if ($errors->has('email'))
+                      <small class="help-block text-danger">
+                          <i>{{ $errors->first('email') }}</i>
+                      </small>
+                  @endif
+            </center>
+            
           </div>
           <div class="form-group">
             <label class="label">Password</label>
@@ -29,14 +37,6 @@
               </div>
             </div>
           </div>
-          <center>
-            
-            @if ($errors->has('email'))
-                    <span class="help-block text-danger">
-                        <i>{{ $errors->first('email') }}</i>
-                    </span>
-                @endif
-          </center>
           <div class="form-group">
             <button class="btn btn-primary submit-btn btn-block">Login</button>
           </div>

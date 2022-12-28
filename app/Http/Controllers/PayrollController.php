@@ -51,34 +51,40 @@ class PayrollController extends Controller
 
     public function store(Request $request) {
 
-        foreach($request->item as $item) {
+        if($request->item) {
+            foreach($request->item as $item) {
 
-            $payroll = Payroll::updateOrInsert(
-                [
-                    'employee_id' => $request->employee_id,
-                    'payroll_item' => $item,
-                    'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
-                ]
-            );
+                $payroll = Payroll::updateOrInsert(
+                    [
+                        'employee_id' => $request->employee_id,
+                        'payroll_item' => $item,
+                        'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
+                    ]
+                );
+            }
+    
+            return redirect()->back()->with('success','New payroll record has been added!');
         }
-
-        return redirect()->back()->with('success','New payroll record has been added!');
+        return redirect()->back()->with('danger','No payroll item selected! Please select at least 1.');
     }
 
     public function update(Request $request) {
         
-        foreach($request->item as $item) {
+        if($request->item) {
+            foreach($request->item as $item) {
 
-            $payroll = Payroll::updateOrInsert(
-                [
-                    'employee_id' => $request->employee_id,
-                    'payroll_item' => $item,
-                    'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
-                ]
-            );
+                $payroll = Payroll::updateOrInsert(
+                    [
+                        'employee_id' => $request->employee_id,
+                        'payroll_item' => $item,
+                        'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
+                    ]
+                );
+            }
+            
+            return redirect()->back()->with('success','Payroll record has been updated!');
         }
-
-        return redirect()->back()->with('success','Payroll record has been updated!');
+        return redirect()->back()->with('danger','No payroll item selected! Please select at least 1.');
     }
 
     public function generations() {

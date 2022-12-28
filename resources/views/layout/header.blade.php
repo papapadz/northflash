@@ -25,6 +25,7 @@
       <li class="nav-item dropdown d-none d-lg-flex">
         <a class="nav-link dropdown-toggle px-0" id="quickDropdown" href="#" data-toggle="dropdown" aria-expanded="false"> Settings </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown pt-3" aria-labelledby="quickDropdown">
+          <a href="{{ url('/admin/users') }}" class="dropdown-item"><i class="mdi mdi-account"></i>User Accounts</a>
           <a href="{{ url('/admin/variables/positions') }}" class="dropdown-item"><i class="mdi mdi-clipboard-account"></i>Positions</a>
           <a href="{{ url('/admin/variables/payroll-items') }}" class="dropdown-item"><i class="mdi mdi-book-multiple"></i>Payroll Items</a>
         </div>
@@ -114,7 +115,7 @@
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
           <div class="dropdown-item p-0">
             <div class="d-flex border-bottom w-100 justify-content-center">
-              
+              <a class="py-3 px-4 d-flex align-items-center justify-content-center" href="{{ route('user.view',['id'=>Auth::User()->id]) }}"><i class="mdi mdi-account mr-0 text-black"></i></a>
                 <a class="py-3 px-4 d-flex align-items-center justify-content-center" onclick="return confirm('Are you sure you want to logout?')" href="{{ url('logout') }}"><i class="mdi mdi-logout mr-0 text-danger"></i></a>
             </div>
           </div>

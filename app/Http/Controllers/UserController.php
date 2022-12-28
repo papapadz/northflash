@@ -27,4 +27,28 @@ class UserController extends Controller
         ]);
         return redirect()->back()->with('success','Account created!');
     }
+
+    public function view($id) {
+        return view('pages.admin.accounts.view')->with('account',User::find($id));
+    }
+
+    public function update(Request $request) {
+
+        User::where('id',$request->id)->update([
+            'email' => $request->email,
+            'name' => $request->name,
+            'password' => bcrypt($request->password)
+        ]);
+
+        return redirect()->back()->with('success','Account has been updated!');
+    }
+
+    public function delete($id) {
+
+        if(User::count()>1) {
+            User::find($id)->delete();
+            return redirect()->back()->with('success','Account has been deleted!');
+        }
+        return redirect()->back()->with('danger','Cannot delete last account!');
+    }
 }

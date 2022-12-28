@@ -25,8 +25,10 @@
                 <td>{{ $acct->name }}</td>
                 <td>{{ $acct->email }}</td>
                 <td>
-                <button class="btn btn-sm btn-primary" onclick="buttonCRUD('users','{{ $acct->id }}',1)">View</button>
-                <button class="btn btn-sm btn-danger" onclick="buttonCRUD('users','{{ $acct->id }}',3)">Delete</button>
+                <a class="btn btn-sm btn-primary" href="{{ route('user.view',['id'=> $acct->id ]) }}">View</a>
+                @if(count($accounts)>1)
+                <a class="btn btn-sm btn-danger" href="{{ route('user.delete',['id'=> $acct->id ]) }}" onclick="return confirm('Are you sure you want to delete this account?')">Delete</a>
+                @endif
                 </td>
               </tr>
             @endforeach

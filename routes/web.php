@@ -142,6 +142,7 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::get('/home','DashboardController@index')->name('home')->middleware('auth');
+Route::post('/home','DashboardController@index')->name('home')->middleware('auth');
 Route::get('logout','AdminController@logout')->middleware('auth');
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
@@ -184,11 +185,11 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
     Route::group(['prefix'=>'users'], function() {
 
-        Route::get('/', 'UserController@index');
-        Route::get('/{id}','UserController@view');
+        Route::get('/', 'UserController@index')->name('user.index');
+        Route::get('/{id}','UserController@view')->name('user.view');
         Route::post('add','UserController@store')->name('user.add');
         Route::post('update','UserController@update')->name('user.update');
-        Route::post('delete','UserController@delete')->name('user.delete');
+        Route::get('delete/{id}','UserController@delete')->name('user.delete');
         
     });
 

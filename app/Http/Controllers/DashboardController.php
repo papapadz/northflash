@@ -10,14 +10,23 @@ use App\Models\Project;
 
 class DashboardController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
 
         $now = Carbon::now();
         $annualreport = array(0,0,0,0,0,0,0,0,0,0,0,0);
         $total = $grandtotal = 0;
+        $employees = Employee::count();
+        $projects = Project::where('completed',false)->count();
+        $dateFrom = $now->startOfYear()->toDateString();
+        $dateTo = $now->endOfYear()->toDateString();
+
+        if($request->has('filter')) {
+          $dateFrom = Carbon::parse($request->dateFrom)->toDateString();
+          $dateTo = Carbon::parse($request->dateTo)->toDateString();
+        }
 
         $payrollgeneration = PayrollGeneration::select('payroll_date')
-          ->whereBetween('payroll_date',[$now->startOfYear()->toDateString(),$now->endOfYear()->toDateString()])
+          ->whereBetween('payroll_date',[$dateFrom,$dateTo])
           ->groupBy('payroll_date')
           ->get();
         
@@ -32,13 +41,14 @@ class DashboardController extends Controller
         else
           $average = 0;
 
-        $employees = Employee::count();
-        $projects = Project::where('completed',false)->count();
+        
         return view('dashboard', compact(
             'annualreport',
             'average',
             'employees',
-            'projects'
+            'projects',
+            'dateFrom',
+            'dateTo'
         ));
     }
 }

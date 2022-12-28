@@ -9,6 +9,13 @@
   <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
     <div class="card card-statistics">
       <div class="card-body">
+        <img class="img-fluid" src="{{ asset('assets/images/nfpb.jpg') }}" />
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+    <div class="card card-statistics">
+      <div class="card-body">
         <div class="d-flex flex-md-column flex-xl-row flex-wrap justify-content-between align-items-md-center justify-content-xl-between">
           <div class="float-left">
             <i class="mdi mdi-receipt text-warning icon-lg"></i>
@@ -21,7 +28,7 @@
           </div>
         </div>
         <p class="text-muted mt-3 mb-0 text-left text-md-center text-xl-left">
-          <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Average for the year {{ Carbon\Carbon::now()->year }}</p>
+          <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Average for the year {{ Carbon\Carbon::parse($dateTo)->year }}</p>
       </div>
     </div>
   </div>
@@ -63,32 +70,27 @@
       </div>
     </div>
   </div>
-  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-    <div class="card card-statistics">
-      <div class="card-body">
-        <div class="d-flex flex-md-column flex-xl-row flex-wrap justify-content-between align-items-md-center justify-content-xl-between">
-          <div class="float-left">
-            <i class="mdi mdi-poll-box text-success icon-lg"></i>
-          </div>
-          <div class="float-right">
-            <p class="mb-0 text-right"></p>
-            <div class="fluid-container">
-              <h3 class="font-weight-medium text-right mb-0"></h3>
-            </div>
-          </div>
-        </div>
-        <p class="text-muted mt-3 mb-0 text-left text-md-center text-xl-left">
-          <i class="mdi mdi-calendar mr-1" aria-hidden="true"></i> </p>
-      </div>
+</div>
+<div class="row">
+  <form method="post">
+    {{ csrf_field() }}
+    <div class="col-12 form-inline">
+      <i class="mdi mdi-calendar text-primary icon-lg"></i>
+      <input type="number" name="filter" value="1" hidden>
+      <b>Date Range</b>
+      <input type="date" name="dateFrom" class="form-control" value="{{ $dateFrom }}">  
+      to
+      <input type="date" name="dateTo" class="form-control" value="{{ $dateTo }}"> 
+      <button type="submit" class="btn btn-sm btn-success">Filter</button>
     </div>
-  </div>
+  </form>
 </div>
 <div class="row">
   <div class="col-md-12 grid-margin">
     <div class="card">
       <div class="card-body">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-          <h2 class="card-title mb-0">Payroll Overview for the year {{ Carbon\Carbon::now()->year }}</h2>
+          <h2 class="card-title mb-0">Payroll Overview for the year {{ Carbon\Carbon::parse($dateTo)->year }}</h2>
           <div class="wrapper d-flex">
             <div class="d-flex align-items-center mr-3">
               <span class="dot-indicator bg-success"></span>
