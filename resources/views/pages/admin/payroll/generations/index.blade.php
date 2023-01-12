@@ -100,7 +100,7 @@
               <option value="2020" @if(Carbon\Carbon::now()->year==2020) selected @endif>2020</option>
               <option value="2021" @if(Carbon\Carbon::now()->year==2021) selected @endif>2021</option>
               <option value="2022" @if(Carbon\Carbon::now()->year==2022) selected @endif>2022</option>
-              <option value="2022" @if(Carbon\Carbon::now()->year==2023) selected @endif>2023</option>
+              <option value="2023" @if(Carbon\Carbon::now()->year==2023) selected @endif>2023</option>
             </select>
           </div>
         </div>
