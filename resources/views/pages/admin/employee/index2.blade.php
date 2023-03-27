@@ -32,7 +32,7 @@
             @foreach($employees as $emp)
               <tr class="py-1">
                 <td>
-                  <img src="{{ $emp->avatar->url }}" alt="image" />
+                  <img src="{{ $emp->avatar ? $emp->avatar->url : null }}" alt="image" />
                 </td>
                 <td>{{ $emp->employee_id }}</td>
                 <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name }}</td>
