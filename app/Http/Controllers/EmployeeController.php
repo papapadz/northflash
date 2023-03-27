@@ -36,7 +36,7 @@ class EmployeeController extends Controller
 
         // Set the URL that you want to GET by using the CURLOPT_URL option.
         //curl_setopt($ch, CURLOPT_URL, 'http://localhost/nfpbv2/public/api/v2/get/registered');
-        curl_setopt($ch, CURLOPT_URL, 'http://nfpbv2.binarybee.org/api/v2/get/registered');
+        curl_setopt($ch, CURLOPT_URL, 'https://nfpb.binarybee.org/api/v2/get/registered');
         // Set CURLOPT_RETURNTRANSFER so that the content is returned as a variable.
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -51,7 +51,7 @@ class EmployeeController extends Controller
         // // Print the data out onto the page.
         // echo $data;
         $employees = json_decode($data);
-
+        
         return view('pages.admin.employee.index2')
         ->with([
             'employees' => $employees
