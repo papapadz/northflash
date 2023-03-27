@@ -147,6 +147,8 @@ Route::get('logout','AdminController@logout')->middleware('auth');
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
+    Route::get('registrations','EmployeeController@getRegistrations');
+
     Route::get('employees', 'EmployeeController@index');
     Route::post('employee/add','EmployeeController@store');
     Route::get('employee/{employee_id}','EmployeeController@view');
