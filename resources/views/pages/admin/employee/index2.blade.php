@@ -22,6 +22,9 @@
                 <th></th>
                 <th> Reference # </th>
                 <th> Name </th>
+                <th> Birthdate </th>
+                <th> Email </th>
+                <th> Address </th>
                 <th> Work Exp </th>
                 <th> Education </th>
                 <th> Family Info </th>
@@ -36,6 +39,9 @@
                 </td>
                 <td>{{ $emp->employee_id }}</td>
                 <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name }}</td>
+                <td>{{ Carbon\Carbon::parse($emp->birthdate)->toFormattedDateString() }}</td>
+                <td>{{ $emp->email }}</td>
+                <td>{{ $emp->address }}</td>
                 <td>
                     <ul>
                     @foreach($emp->employment as $employment)
