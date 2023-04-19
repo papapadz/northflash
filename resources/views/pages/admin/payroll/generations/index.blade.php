@@ -29,7 +29,7 @@
             </thead>
             <tbody>
             @foreach($payrollGenerations as $generation)
-              <tr class="py-1">
+              {{-- <tr class="py-1">
                 <td>
                   {{ Carbon\Carbon::parse($generation->payroll_date)->format('M ') }}
                   @if(Carbon\Carbon::parse($generation->payroll_date)->day == 1)
@@ -53,7 +53,7 @@
                     </div>
                   </div>
                 </td>
-              </tr>
+              </tr> --}}
             @endforeach
             </tbody>
           </table>
@@ -64,7 +64,7 @@
 </div>
 
 <!-- Modal -->
-<form method="POST" action="{{ url('admin/payrolls/generations/add') }}">
+<form method="POST" action="{{ route('generations.add') }}">
 {{ csrf_field() }}
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -77,41 +77,25 @@
       </div>
       <div class="modal-body">
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label>Month: </label><br>
-            <select required name="month" id="month" style="width: 100%">
-              <option value="1" @if(Carbon\Carbon::now()->month==1) selected @endif>January</option>
-              <option value="2" @if(Carbon\Carbon::now()->month==2) selected @endif>February</option>
-              <option value="3" @if(Carbon\Carbon::now()->month==3) selected @endif>March</option>
-              <option value="4" @if(Carbon\Carbon::now()->month==4) selected @endif>April</option>
-              <option value="5" @if(Carbon\Carbon::now()->month==5) selected @endif>May</option>
-              <option value="6" @if(Carbon\Carbon::now()->month==6) selected @endif>June</option>
-              <option value="7" @if(Carbon\Carbon::now()->month==7) selected @endif>July</option>
-              <option value="8" @if(Carbon\Carbon::now()->month==8) selected @endif>August</option>
-              <option value="9" @if(Carbon\Carbon::now()->month==9) selected @endif>September</option>
-              <option value="10" @if(Carbon\Carbon::now()->month==10) selected @endif>October</option>
-              <option value="11" @if(Carbon\Carbon::now()->month==11) selected @endif>November</option>
-              <option value="12" @if(Carbon\Carbon::now()->month==12) selected @endif>December</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label>Year: </label><br>
-            <select required name="year" id="year" style="width: 100%">
-              <option value="2020" @if(Carbon\Carbon::now()->year==2020) selected @endif>2020</option>
-              <option value="2021" @if(Carbon\Carbon::now()->year==2021) selected @endif>2021</option>
-              <option value="2022" @if(Carbon\Carbon::now()->year==2022) selected @endif>2022</option>
-              <option value="2023" @if(Carbon\Carbon::now()->year==2023) selected @endif>2023</option>
+          <div class="col-12">
+            <label>Department/Project</label><br>
+            <select name="project_id" class="form-control">
+              <option disabled selected>Please select project...</option>
+              @foreach($projects as $project)
+              <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+              @endforeach
             </select>
           </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-              <label>Period: </label><br>
-              <input type="radio" name="period" value="1" checked>
-              <span class="mr-2" >1 to 15th day of the month</span>
-              <input type="radio" name="period" value="16" >
-              <span class="mr-2" id="period2"></span>  
-            </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label>Date Start</label>
+            <input name="date_start" type="date" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label>Date End</label>
+            <input name="date_end" type="date" class="form-control" />
+          </div>
         </div>
       </div>
       <div class="modal-footer">

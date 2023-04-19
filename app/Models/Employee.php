@@ -43,18 +43,26 @@ class Employee extends Model
         return url('/admin/employees/'.$this->getKey());
     }
 
-    public function payroll() {
-        return $this->hasMany('App\Models\Payroll','employee_id','employee_id')
-            ->join('payroll_items','payroll_items.id','=','payroll_item')
-            ->orderBy('payroll_items.id');
+    public function employment() {
+        return $this->hasOne(Employment::class,'employee_id','employee_id')->where('date_expired',null);
     }
 
-    public function employment() {
-        return $this->hasOne('App\Models\Employment','employee_id','employee_id')
-            ->join('salary','salary.id','=','salary_id')
-            ->join('positions','positions.id','=','salary.position_id')
-            ->orderBy('employments.created_at','desc');
+    // public function payroll() {
+    //     return $this->hasMany('App\Models\Payroll','employee_id','employee_id')
+    //         ->join('payroll_items','payroll_items.id','=','payroll_item')
+    //         ->orderBy('payroll_items.id');
+    // }
+
+    public function payroll() {
+        return $this->hasMany(Payroll::class,'employee_id','employee_id')->with('payrollItem');
     }
+
+    // public function employment() {
+    //     return $this->hasOne('App\Models\Employment','employee_id','employee_id')
+    //         ->join('salary','salary.id','=','salary_id')
+    //         ->join('positions','positions.id','=','salary.position_id')
+    //         ->orderBy('employments.created_at','desc');
+    // }
 
     public function licensenos() {
         return $this->hasMany('App\Models\License','employee_id','employee_id')

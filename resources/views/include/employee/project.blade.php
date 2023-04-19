@@ -18,9 +18,9 @@
                 <td> {{ $project->type }} </td>
                 <td> {{ $project->contract_by }} </td>
                 <td> 
-                    {{ Carbon\Carbon::parse($project->start_date)->formattedDateString() }}
+                    {{ Carbon\Carbon::parse($project->start_date)->toFormattedDateString() }}
                     @if($project->end_date!=null)
-                        {{ Carbon\Carbon::parse($project->end_date)->formattedDateString() }}
+                        to {{ Carbon\Carbon::parse($project->end_date)->toFormattedDateString() }}
                     @endif
                 </td>
                 <td>

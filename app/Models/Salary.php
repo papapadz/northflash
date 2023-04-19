@@ -28,4 +28,8 @@ class Salary extends Model
     {
         return url('/admin/salaries/'.$this->getKey());
     }
+
+    public function position() {
+        return $this->hasOne(Position::class,'id','position_id');
+    }
 }

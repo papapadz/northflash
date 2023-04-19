@@ -25,15 +25,15 @@ class DashboardController extends Controller
           $dateTo = Carbon::parse($request->dateTo)->toDateString();
         }
 
-        $payrollgeneration = PayrollGeneration::select('payroll_date')
-          ->whereBetween('payroll_date',[$dateFrom,$dateTo])
-          ->groupBy('payroll_date')
+        $payrollgeneration = PayrollGeneration::select()
+          //->whereBetween('payroll_date',[$dateFrom,$dateTo])
+         // ->groupBy('payroll_date')
           ->get();
         
         foreach($payrollgeneration as $generation) {
-          $total = $generation->monthlySalaryAmount($generation->payroll_date) - $generation->monthlyDeductionAmount($generation->payroll_date);
-          $grandtotal = $grandtotal + $total;
-          $annualreport[Carbon::parse($generation->payroll_date)->month-1] = $annualreport[Carbon::parse($generation->payroll_date)->month-1] + $total;
+          //$total = $generation->monthlySalaryAmount($generation->payroll_date) - $generation->monthlyDeductionAmount($generation->payroll_date);
+          //$grandtotal = $grandtotal + $total;
+          //$annualreport[Carbon::parse($generation->payroll_date)->month-1] = $annualreport[Carbon::parse($generation->payroll_date)->month-1] + $total;
         }
 
         if(count($payrollgeneration))

@@ -11,38 +11,39 @@ use App\Models\PayrollItem;
 use App\Models\Employee;
 use App\Models\PayrollGeneration;
 use App\Models\Employment;
+use App\Models\Project;
+use App\Models\PayrollGenerationMaster;
 
 class PayrollController extends Controller
 {
     public function index() {
 
-        $employeePayrolls = Employee::select(
-                'employees.employee_id',
-                'last_name',
-                'first_name',
-                'middle_name',
-                'payroll_date_start',
-                'payroll_date_end'
-            )
-            ->join('payroll','payroll.employee_id','=','employees.employee_id')
-            ->groupBy(
-                    'employees.employee_id',
-                    'last_name',
-                    'first_name',
-                    'middle_name',
-                    'payroll_date_start',
-                    'payroll_date_end'
-                )
-            ->get();
-
-        $payrollItems1 = PayrollItem::select('id','item','type')->orderBy('item')->where([['type','=',1],['id','!=',8]])->get();
-        $payrollItems2 = PayrollItem::select('id','item','type')->orderBy('item')->where('type',2)->get();
+        // $employeePayrolls = Employee::select(
+        //         'employees.employee_id',
+        //         'last_name',
+        //         'first_name',
+        //         'middle_name',
+        //         'payroll_date_start',
+        //         'payroll_date_end'
+        //     )
+        //     ->join('payroll','payroll.employee_id','=','employees.employee_id')
+        //     ->groupBy(
+        //             'employees.employee_id',
+        //             'last_name',
+        //             'first_name',
+        //             'middle_name',
+        //             'payroll_date_start',
+        //             'payroll_date_end'
+        //         )
+        //     ->get();
+        $payrollItems1 = PayrollItem::select('id','item','amount','type')->orderBy('item')->where([['type',1],['id','!=',8]])->get();
+        $payrollItems2 = PayrollItem::select('id','item','amount','type')->orderBy('item')->where('type',2)->get();
             
         $employees = Employee::select('employee_id','first_name','last_name')->orderBy('last_name')->get();
         
         return view('pages.admin.payroll.index')
             ->with([
-                'employeePayrolls' => $employeePayrolls,
+                //'employeePayrolls' => $employeePayrolls,
                 'payrollItems1' => $payrollItems1,
                 'payrollItems2' => $payrollItems2,
                 'employees' => $employees
@@ -51,19 +52,31 @@ class PayrollController extends Controller
 
     public function store(Request $request) {
 
+        $employeePayroll = Payroll::where([['employee_id',$request->employee_id],['payroll_item','!=',8]])->get();
+        
         if($request->item) {
-            foreach($request->item as $item) {
 
-                $payroll = Payroll::updateOrInsert(
+            foreach($employeePayroll as $empPayroll) {
+                if(!in_array($empPayroll->id,$request->item)) 
+                    //array_push($empPayroll->id);
+                    Payroll::where('id',$empPayroll->id)->delete();
+            }
+
+            foreach($request->item as $k => $item) {
+
+                $payroll = Payroll::updateOrCreate(
                     [
                         'employee_id' => $request->employee_id,
                         'payroll_item' => $item,
-                        'payroll_date_start' => Employee::find($request->employee_id)->employment->date_hired
+                        'payroll_date_start' => Carbon::now()->toDateString()
+                    ],
+                    [
+                        'amount' => $request->itemVal[$k],
                     ]
                 );
             }
     
-            return redirect()->back()->with('success','New payroll record has been added!');
+            return redirect()->back()->with('success','New payroll record updated!');
         }
         return redirect()->back()->with('danger','No payroll item selected! Please select at least 1.');
     }
@@ -73,7 +86,7 @@ class PayrollController extends Controller
         if($request->item) {
             foreach($request->item as $item) {
 
-                $payroll = Payroll::updateOrInsert(
+                $payroll = Payroll::updateOrCreate(
                     [
                         'employee_id' => $request->employee_id,
                         'payroll_item' => $item,
@@ -89,66 +102,73 @@ class PayrollController extends Controller
 
     public function generations() {
      
-        $payrollGenerations = PayrollGeneration::select('payroll_date')->groupBy('payroll_date')->get();
+        $payrollGenerations = PayrollGenerationMaster::get();
         
         if(Payroll::count()==0)
             return redirect()->back()->with('danger','Please set first the payroll items for your employees');
 
         return view('pages.admin.payroll.generations.index')
-            ->with('payrollGenerations',$payrollGenerations);
+            ->with([
+                'payrollGenerations' => $payrollGenerations,
+                'projects' => Project::orderBy('project_name')->get()
+            ]);
     }
 
     public function generateview(Request $request) {
         
-        $payroll_date = Carbon::create($request->year,$request->month,$request->period)->toDateString();
+        // $payroll_date = Carbon::create($request->year,$request->month,$request->period)->toDateString();
+        // $employees = Employment::where([
+        //     ['is_active',true],
+        //     ['date_hired','<=',$payroll_date]
+        // ])->with('employee')->get();
         
-        $employees = Employment::select(
-                'employees.employee_id',
-                'last_name',
-                'first_name',
-                'middle_name',
-                'payroll_date_start',
-                'payroll_date_end'
-            )
-            ->join('employees','employees.employee_id','=','employments.employee_id')
-            ->join('payroll','payroll.employee_id','=','employees.employee_id')
-            ->groupBy(
-                'employees.employee_id',
-                'last_name',
-                'first_name',
-                'middle_name',
-                'payroll_date_start',
-                'payroll_date_end'
-            )
-            ->where('date_expired', NULL)
-            ->where('date_hired','<=',$payroll_date)
-            ->get();
-            
-        // $employees = Employee::select(
-        //     'employees.employee_id',
-        //     'last_name',
-        //     'first_name',
-        //     'middle_name',
-        //     'payroll_date_start',
-        //     'payroll_date_end'
-        // )
-        // ->join('payroll','payroll.employee_id','=','employees.employee_id')
-        // ->groupBy(
-        //         'employees.employee_id',
-        //         'last_name',
-        //         'first_name',
-        //         'middle_name',
-        //         'payroll_date_start',
-        //         'payroll_date_end'
-        //     )
-        // ->whereDate('payroll_date_start','>=',$payroll_date)
-        // ->get();
+        $payrollMaster = PayrollGenerationMaster::firstOrCreate([
+            'project_id' => $request->project_id,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end
+        ],[
+            'generated_by' => Auth::User()->id
+        ]);
 
         return view('pages.admin.payroll.generations.generate')
             ->with([
-                'payroll_date' => $payroll_date,
-                'employees' => $employees
+                'payrollMaster' => $payrollMaster,
+                'payroll_items' => PayrollItem::where('is_manual_entry',true)->orderBy('type')->get()
             ]);
+    }
+
+    public function savePayrollInput(Request $request) {
+        
+        $amount = 0;
+        $total = 0;
+        $qty = floatval($request->qty);
+        $employee = Employee::find($request->employee_id);
+        if($request->payroll_item_id==8) {
+            if($employee->employment->salary->monthly) {
+                $deduction = $this->getRatePerHr($request->employee_id)*8*$qty;
+                $amount = (floatval($employee->payroll->where('payroll_item',$request->payroll_item_id)->first()->amount)/2)-$deduction;
+            } else
+                $amount = floatval($employee->employment->salary->amount) * $qty;
+        } else {
+            
+            $amount = floatval($employee->payroll->where('payroll_item',$request->payroll_item_id)->first()->amount) * $qty;
+        }
+        
+        PayrollGeneration::updateOrCreate([
+            'payroll_master_id' => $request->payroll_master_id,
+            'employee_id' => $request->employee_id,
+            'payroll_item' => $request->payroll_item_id
+        ],[
+            'qty' => $request->qty,
+            'amount' => $amount,
+            'total' => $total,
+            'updated_by' => Auth::User()->id
+        ]);
+
+        return PayrollGeneration::where([
+            ['payroll_master_id',$request->payroll_master_id],
+            ['employee_id',$request->employee_id],
+        ])->first();
     }
 
     public function save(Request $request) {
@@ -231,5 +251,42 @@ class PayrollController extends Controller
 
     public static function deletePayrollGeneration($payroll_date) {
         PayrollGeneration::where('payroll_date',$payroll_date)->delete();
+    }
+
+    public function getPayrollItemAmt(Request $request) {
+
+        $amt = 0;
+        $payrollItem = PayrollItem::find($request->payroll_item);
+        $employee = Employee::find($request->emp_id);
+        if($payrollItem->flexirate) {
+            if($payrollItem->id==5)
+                $amt = $this->getRatePerHr($request->emp_id)*$payrollItem->percentage;
+            else if($payrollItem->id==6)
+                $amt = $this->getRatePerHr($request->emp_id)/60;
+            else if($payrollItem->id==7) {
+                if($employee->employment->salary->monthly)
+                    $amt = $employee->employment->salary->amount;
+                else
+                    $amt = $employee->employment->salary->amount * 22;
+            } else if($payrollItem->id==8)
+                $amt = $employee->employment->salary->amount;
+            else {
+                $amt = $employee->employment->salary->amount*$payrollItem->percentage;
+            }
+        } else {
+            $amt = $payrollItem->amount;
+        }
+        return floatval($amt);
+    }
+
+    public static function getRatePerHr($employee_id) {
+        $divisor = 307;
+        $rate = 0;
+        $employee = Employee::find($employee_id);
+        if($employee->employment->salary->monthly)
+            $rate = (((floatval($employee->employment->salary->amount)*12)/$divisor)/8);
+        else
+            $rate = (floatval($employee->employment->salary->amount)/8);
+        return $rate;
     }
 }

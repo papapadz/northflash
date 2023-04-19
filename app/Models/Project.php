@@ -21,8 +21,12 @@ class Project extends Model
         'end_date'
     ];
 
+    // public function employees() {
+    //     return $this->hasMany('App\Models\ProjectAssignment','project_id','id')
+    //         ->join('employees','employees.employee_id','=','project_assignments.employee_id');
+    // }
+
     public function employees() {
-        return $this->hasMany('App\Models\ProjectAssignment','project_id','id')
-            ->join('employees','employees.employee_id','=','project_assignments.employee_id');
+        return $this->hasMany(ProjectAssignment::class,'project_id','id')->with('employee');
     }
 }

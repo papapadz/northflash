@@ -11,12 +11,14 @@ class PayrollGeneration extends Model
         'employee_id',
         'payroll_item',
         'amount',
-        'num_days',
-        'payroll_date',
-        'generated_by'
+        //'num_days',
+        //'payroll_date',
+        //'generated_by'
+        'updated_by',
+        'qty',
+        'payroll_master_id',
+        'total'
     ];
-
-    protected $dates = ['payroll_date'];
 
     /** new */
 

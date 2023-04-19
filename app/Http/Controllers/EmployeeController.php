@@ -82,12 +82,37 @@ class EmployeeController extends Controller
 
             if($employee->wasRecentlyCreated) {
 
-                $this->storeemployment($request);
+                $employment = $this->storeemployment($request);
                 
-                Payroll::create([
+                Payroll::updateOrcreate([
                     'employee_id' => $request->employee_id,
                     'payroll_item' => 8,
-                    'payroll_date_start' => $request->date_hired
+                    'payroll_date_start' => $request->date_hired,
+                    'amount' => $request->salary
+                ]);
+
+                $OTRequest = new Request();
+                $OTRequest->replace([
+                    'payroll_item' => 5,
+                    'emp_id' => $request->employee_id
+                ]);
+                Payroll::updateOrcreate([
+                    'employee_id' => $request->employee_id,
+                    'payroll_item' => 5,
+                    'payroll_date_start' => $request->date_hired,
+                    'amount' => PayrollController::getPayrollItemAmt($OTRequest)
+                ]);
+
+                $UTRequest = new Request();
+                $UTRequest->replace([
+                    'payroll_item' => 6,
+                    'emp_id' => $request->employee_id
+                ]);
+                Payroll::updateOrcreate([
+                    'employee_id' => $request->employee_id,
+                    'payroll_item' => 6,
+                    'payroll_date_start' => $request->date_hired,
+                    'amount' => PayrollController::getPayrollItemAmt($UTRequest)
                 ]);
 
                 return redirect()->back()->with('success','Employee added!');
@@ -149,9 +174,8 @@ class EmployeeController extends Controller
     }
 
     public function getEmployeePayroll($employee_id) {
-        $employee = Employee::find($employee_id);
-        $payroll = $employee->payroll;
-        return $payroll;
+        return Employee::where('employee_id',$employee_id)->with('payroll')->first();
+        
     }
 
     public function addemployment(Request $request) {
@@ -188,11 +212,8 @@ class EmployeeController extends Controller
                 ['id','!=',$employment->id],
                 ['employee_id',$request->employee_id]
             ])->update(['date_expired' => Carbon::now()]);
-            
-            return 1;
         }
-        else
-            return 0;
+        return $employment;
     }
 
     public function updateemployment(Request $request) {

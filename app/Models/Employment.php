@@ -13,4 +13,12 @@ class Employment extends Model
         'date_hired',
         'date_expired'
     ];
+
+    public function employee() {
+        return $this->hasOne(Employee::class,'employee_id','employee_id');
+    }
+
+    public function salary() {
+        return $this->hasOne(Salary::class,'id','salary_id');
+    }
 }
