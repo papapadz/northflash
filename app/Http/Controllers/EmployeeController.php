@@ -91,6 +91,8 @@ class EmployeeController extends Controller
                     'amount' => $request->salary
                 ]);
 
+                $payrollController = new PayrollController;
+
                 $OTRequest = new Request();
                 $OTRequest->replace([
                     'payroll_item' => 5,
@@ -100,7 +102,7 @@ class EmployeeController extends Controller
                     'employee_id' => $request->employee_id,
                     'payroll_item' => 5,
                     'payroll_date_start' => $request->date_hired,
-                    'amount' => PayrollController::getPayrollItemAmt($OTRequest)
+                    'amount' => $payrollController->getPayrollItemAmt($OTRequest)
                 ]);
 
                 $UTRequest = new Request();
@@ -112,7 +114,7 @@ class EmployeeController extends Controller
                     'employee_id' => $request->employee_id,
                     'payroll_item' => 6,
                     'payroll_date_start' => $request->date_hired,
-                    'amount' => PayrollController::getPayrollItemAmt($UTRequest)
+                    'amount' => $payrollController->getPayrollItemAmt($UTRequest)
                 ]);
 
                 return redirect()->back()->with('success','Employee added!');

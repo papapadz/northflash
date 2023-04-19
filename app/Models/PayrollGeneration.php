@@ -21,6 +21,9 @@ class PayrollGeneration extends Model
     ];
 
     /** new */
+    public function payrollItem() {
+        return $this->hasOne(PayrollItem::class,'id','payroll_item');
+    }
 
     public function monthlySalaryAmount($param_date) {
         return $this::join('payroll_items','payroll_items.id','=','payroll_item')

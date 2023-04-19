@@ -15,11 +15,9 @@ class PayrollItem extends Model
         'percentage',
         'type',
         'flexirate',
-        'date_effective',
-    ];
-    
-    protected $dates = [
-        'date_effective'
+        'deduction_period',
+        'unit',
+        'is_manual_entry'
     ];
     
     protected $appends = ['resource_url'];

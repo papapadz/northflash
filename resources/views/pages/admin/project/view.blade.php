@@ -81,16 +81,19 @@
                     <select style="width: 100%" class="fillables">
                         <option selected disabled>Select an employee</option>
                         @foreach($employees as $emp)
-                            <option value="{{ $emp->employee_id }}">{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</option>
+                            <option value="{{ $emp->employee_id }}">{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }} ({{ $emp->employment->salary->position->title }})</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-6">
                     <table class="table table-bordered" id="toaddemp" style="width: 100%">
+                        <tr>
+                            <td colspan="3"><b>Assigned Employees</b></td>
+                        </tr>
                         @foreach($project->employees as $projemp)
                             <tr id="{{ $projemp->employee_id }}">
                                 <td><input type="text" name="emp[]" value="{{ $projemp->employee_id }}" hidden>{{ $projemp->employee_id }}</td>
-                                <td>{{ $projemp->last_name }}, {{ $projemp->first_name }} {{ $projemp->middle_name[0] ?? '' }}</td>
+                                <td>{{ $projemp->employee->last_name }}, {{ $projemp->employee->first_name }} {{ $projemp->employee->middle_name[0] ?? '' }} ({{ $projemp->employee->employment->salary->position->title }})</td>
                                 <td><button class="btn btn-sm btn-danger fillables" type="button" onclick="removeEmp('{{ $projemp->employee_id }}')">Remove</button></td>
                             </tr>
                         @endforeach

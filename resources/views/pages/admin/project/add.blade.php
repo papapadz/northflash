@@ -59,7 +59,7 @@
                     <select style="width: 100%">
                         <option selected disabled>Select an employee</option>
                         @foreach($employees as $emp)
-                            <option value="{{ $emp->employee_id }}">{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</option>
+                            <option value="{{ $emp->employee_id }}">{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }} ({{ $emp->employment->salary->position->title }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -83,18 +83,26 @@
 @push('custom-scripts')
 <script>
   $(document).ready(function(){
+
+    let selected = []
+
     $('#table').DataTable();
     $('select').select2();
 
         $('select').on('change', function(e) {
             var txt = $('select option:selected').text();
-            $('#toaddemp').append(
-                '<tr id="'+$(this).val()+'"><td><input type="text" name="emp[]" value="'+$(this).val()+'" hidden>'+$(this).val()+'</td><td>'+txt+'</td><td><button class="btn btn-sm btn-danger" type="button" onclick=removeEmp("'+$(this).val()+'")>Remove</button></td></tr>');
+            if(!selected.includes($(this).val()))
+                $('#toaddemp').append(
+                    '<tr id="'+$(this).val()+'"><td><input type="text" name="emp[]" value="'+$(this).val()+'" hidden>'+$(this).val()+'</td><td>'+txt+'</td><td><button class="btn btn-sm btn-danger" type="button" onclick=removeEmp("'+$(this).val()+'")>Remove</button></td></tr>');
         });
   });
 
     function removeEmp(id) {
         $('#'+id).remove();
+        var index = selected.indexOf(id);
+        if (index !== -1) {
+            selected.splice(index, 1);
+        }
     }
 
 </script>

@@ -16,7 +16,7 @@ class PayrollGenerationMaster extends Model
     ];
 
     public function payrollList() {
-        return $this->hasMany(PayrollGeneration::class,'payroll_master_id','id');
+        return $this->hasMany(PayrollGeneration::class,'payroll_master_id','id')->with('payrollItem');
     }
 
     public function project() {

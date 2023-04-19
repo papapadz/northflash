@@ -106,7 +106,6 @@ class PayrollController extends Controller
         
         if(Payroll::count()==0)
             return redirect()->back()->with('danger','Please set first the payroll items for your employees');
-
         return view('pages.admin.payroll.generations.index')
             ->with([
                 'payrollGenerations' => $payrollGenerations,
@@ -145,13 +144,15 @@ class PayrollController extends Controller
         $employee = Employee::find($request->employee_id);
         if($request->payroll_item_id==8) {
             if($employee->employment->salary->monthly) {
-                $deduction = $this->getRatePerHr($request->employee_id)*8*$qty;
-                $amount = (floatval($employee->payroll->where('payroll_item',$request->payroll_item_id)->first()->amount)/2)-$deduction;
-            } else
-                $amount = floatval($employee->employment->salary->amount) * $qty;
+                $amount = $this->getRatePerHr($request->employee_id) * 8 *$qty;
+                $total = (floatval($employee->payroll->where('payroll_item',$request->payroll_item_id)->first()->amount)/2) - $amount;
+            } else {
+                $amount = floatval($employee->employment->salary->amount);
+                $total =  $amount * $qty;
+            }
         } else {
-            
-            $amount = floatval($employee->payroll->where('payroll_item',$request->payroll_item_id)->first()->amount) * $qty;
+            $amount = floatval($employee->payroll->where('payroll_item',$request->payroll_item_id)->first()->amount);
+            $total =  $amount * $qty;
         }
         
         PayrollGeneration::updateOrCreate([
@@ -168,7 +169,7 @@ class PayrollController extends Controller
         return PayrollGeneration::where([
             ['payroll_master_id',$request->payroll_master_id],
             ['employee_id',$request->employee_id],
-        ])->first();
+        ])->with('payrollItem')->get();
     }
 
     public function save(Request $request) {
@@ -279,7 +280,7 @@ class PayrollController extends Controller
         return floatval($amt);
     }
 
-    public static function getRatePerHr($employee_id) {
+    public function getRatePerHr($employee_id) {
         $divisor = 307;
         $rate = 0;
         $employee = Employee::find($employee_id);

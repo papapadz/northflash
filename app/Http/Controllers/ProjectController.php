@@ -21,7 +21,7 @@ class ProjectController extends Controller
 
     public function add() {
 
-        $employees = Employee::all();
+        $employees = Employee::orderBy('last_name')->get();
 
         return view('pages.admin.project.add')
             ->with([
@@ -47,7 +47,7 @@ class ProjectController extends Controller
     public function view($id) {
 
         $project = Project::find($id);
-        $employees = Employee::all();
+        $employees = Employee::orderBy('last_name')->get();
 
         return view('pages.admin.project.view')
             ->with([

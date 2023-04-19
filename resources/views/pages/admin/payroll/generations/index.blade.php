@@ -19,9 +19,10 @@
           <table id="table" class="table table-striped">
             <thead>
               <tr>
-                <th> Date </th>
-                <th> No. of Employees </th>
-                <th> Gross Salary </th>
+                <th> Period </th>
+                <th> Project </th>
+                <th> # of Employees </th>
+                <th> Gross Pay </th>
                 <th> Total Deductions </th>
                 <th> Net Pay </th>
                 <th></th>
@@ -29,31 +30,26 @@
             </thead>
             <tbody>
             @foreach($payrollGenerations as $generation)
-              {{-- <tr class="py-1">
+              <tr>
+                <td>{{ Carbon\Carbon::parse($generation->date_start)->toDateString() }} to {{ Carbon\Carbon::parse($generation->date_end)->toDateString() }}
+                <td>{{ $generation->project->project_name }}</td>
+                <td>{{ count($generation->payrollList->groupBy('employee_id')) }}</td>
                 <td>
-                  {{ Carbon\Carbon::parse($generation->payroll_date)->format('M ') }}
-                  @if(Carbon\Carbon::parse($generation->payroll_date)->day == 1)
-                    {{ Carbon\Carbon::parse($generation->payroll_date)->day }} - 15
-                  @else
-                    16 - {{ Carbon\Carbon::parse($generation->payroll_date)->endOfMonth()->day }}
-                  @endif
-                  ,{{ Carbon\Carbon::parse($generation->payroll_date)->year }}
+                  @php
+                    $grossPay = 0;
+                    $netDeductions = 0;
+                    foreach($generation->payrollList as $listItem) 
+                      if($listItem->payrollItem->type==1)
+                        $grossPay += $listItem->total;
+                      else
+                        $netDeductions += $listItem->total;
+                  @endphp
+                  {{ number_format($grossPay,2,'.',',') }}
                 </td>
+                <td>{{ number_format($netDeductions,2,'.',',') }}</td>
+                <td>{{ number_format($grossPay - $netDeductions,2,'.',',') }}</td>
                 <td></td>
-                <td> @php $gross = $generation->monthlySalaryAmount($generation->payroll_date); echo number_format($gross,2,'.',','); @endphp </td>
-                <td> @php $grossd = $generation->monthlyDeductionAmount($generation->payroll_date);  echo number_format($grossd,2,'.',','); @endphp </td>
-                <td> @php echo number_format($gross-$grossd,2,'.',',') @endphp </td>
-                <td>
-                  <div class="btn-group dropdown">
-                    <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Manage </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{{ url('admin/payrolls/generations/payslip/'.Carbon\Carbon::parse($generation->payroll_date)->toDateString()) }}">View payslips</a>
-                      <hr>  
-                      <a class="dropdown-item text-danger" onclick="buttonCRUD('payroll_generations','{{ $generation->payroll_date }}',3)">Delete</a>
-                    </div>
-                  </div>
-                </td>
-              </tr> --}}
+              </tr>
             @endforeach
             </tbody>
           </table>
@@ -77,12 +73,12 @@
       </div>
       <div class="modal-body">
         <div class="row mb-3">
-          <div class="col-12">
+          <div class="col-md-12">
             <label>Department/Project</label><br>
-            <select name="project_id" class="form-control">
+            <select name="project_id" class="form-control w-100" required>
               <option disabled selected>Please select project...</option>
               @foreach($projects as $project)
-              <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+                <option value="{{ $project->id }}">{{ $project->project_name }}</option>
               @endforeach
             </select>
           </div>
@@ -90,11 +86,11 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label>Date Start</label>
-            <input name="date_start" type="date" class="form-control" />
+            <input name="date_start" type="date" class="form-control" required />
           </div>
           <div class="col-md-6">
             <label>Date End</label>
-            <input name="date_end" type="date" class="form-control" />
+            <input name="date_end" type="date" class="form-control" required />
           </div>
         </div>
       </div>
@@ -116,7 +112,7 @@
   $(document).ready(function() {
 
     $('#table').DataTable();
-    $('select').select2();
+    $('select').select2({ width: '100%'});
 
     changelabels() 
 
