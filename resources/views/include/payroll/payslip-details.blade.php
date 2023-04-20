@@ -1,92 +1,142 @@
+@php
+    $grossPay = 0;
+    $totalDeductions = 0;
+@endphp
 <div class="column">
     <table>
         <tr>
-            <td colspan="3" style="font-size: 16px"><center><b><u>NORTHFLASH POWER AND BUILDS, INC.</u></b></center></td>
+            <td colspan="2">
+                <img src="http://localhost/northflash/public/assets/images/nfpb.jpg" width="120px"/>
+            </td>
+            <td colspan="6">
+                <p>
+                    <center>
+                        <b class="title">NORTHFLASH POWER AND BUILDS, INC.</b><br>
+                        <span class="sub-title">Dacuycuy St., Centro 3, Claveria, Cagayan</span>
+                    </center>
+                </p>
+            </td>
         </tr>
         <tr>
-            <td colspan="3"><center><b>
-                @if(Carbon\Carbon::parse($emp->payroll_date)->day==1)
-                    {{ Carbon\Carbon::parse($emp->payroll_date)->format('F') }} 1-15, {{ Carbon\Carbon::parse($emp->payroll_date)->year }} Payslip
+            <td colspan="8" class="bordered-top">
+                <center>
+                    <b class="sub-title">Payslip for the period {{ Carbon\Carbon::parse($payrollGeneration->date_start)->format('M') }} {{ Carbon\Carbon::parse($payrollGeneration->date_start)->day }} to {{ Carbon\Carbon::parse($payrollGeneration->date_end)->toFormattedDateString() }}</b>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" class="bordered-top sub-title"><center><b>{{ $payrollGeneration->project->project_name }}</b></center></td>
+        </tr>
+        <tr><td class="bordered-top" colspan="8"></td></tr>
+        <tr>
+            <td class="sub-title">Name: </td>
+            <td class="sub-title" colspan="4">{{ $employeePayroll->employee->last_name }}, {{ $employeePayroll->employee->first_name }} {{ $employeePayroll->employee->middle_name ?? $employeePayroll->middle_name[0] ?? '' }}</td>
+            <td class="sub-title">
+                @if($employeePayroll->employee->employment->salary->monthly)
+                    Salary:
                 @else
-                    {{ Carbon\Carbon::parse($emp->payroll_date)->format('F') }} 16-{{ Carbon\Carbon::parse($emp->payroll_date)->endOfMonth()->day }}, {{ Carbon\Carbon::parse($emp->payroll_date)->year }} Payslip
+                    Daily Rate:
                 @endif
-            </b></center></td>
-        </tr>
-        <tr><td colspan="3"></td></tr>
-        <tr>
-            <td>Employee ID:</td>
-            <td colspan="2" >{{ $emp->employee_id }}</td>
-        </tr>
-        <tr>
-            <td>Name:</td>
-            <td colspan="2"> {{ title_case($emp->employeeInfo->last_name) }}, {{ title_case($emp->employeeInfo->first_name) }} {{ $emp->employeeInfo->middle_name[0] ?? '' }}</td>
-        </tr>
-        <tr>
-            <td colspan="3" style="border-top: solid"><i>Additions</i></td>
-        </tr>
-        @php $totalAdd = $totalDeduct = 0; @endphp
-        @foreach($emp->getPayslipDetails($emp->payroll_date,$emp->employee_id)->where('type',1)->orderBy('payroll_item','desc')->get() as $payroll)
-        <tr>
-            <td class="first">{{ $payroll->item }}:</td>
-            <td class="right mid">
-            @php
-                if($payroll->payroll_item==8)
-                    $salary = $payroll->amount;
-                $pamount = $payroll->amount;
-                
-                echo number_format($pamount,2,'.',',');
-                $totalAdd = $totalAdd + $pamount;
-            @endphp
             </td>
-            <td></td>
-        </tr>
-        @endforeach
-        <tr>
-            <td colspan="2" style="text-align:right"><b>Total: </b></td>
-            <td  style="text-align:right"><u><b>
-            @php
-                echo number_format($totalAdd,2,'.',',');
-            @endphp
-            </b></u></td>
-        </tr>
-        <tr>
-            <td colspan="3" style="border-top: solid"><i>Deductions</i></td>
-        </tr>
-        @php $deductcount = 0; @endphp
-        @foreach($emp->getPayslipDetails($emp->payroll_date,$emp->employee_id)->where('type',2)->get() as $k => $payroll)
-        <tr>
-            <td>{{ $payroll->item }}:</td>
-            <td class="right mid">
-            @php
-                $deductcount++;
-                $pdeduct = $payroll->amount;
-                $totalDeduct = $totalDeduct + $pdeduct;
+            <td class="sub-title" colspan="2">
+                @php
+                    $pay = 0;
+                    $qty = 0;
+                    $empPayrollItem = $payrollGeneration->payrollList->where('employee_id',$employeePayroll->employee_id)->where('payroll_item',8)->first();
 
-                echo number_format($pdeduct,2,'.',',');
-            @endphp
+                    if($employeePayroll->employee->employment->salary->monthly)
+                        $pay = $empPayrollItem->total;
+                    else
+                        $pay = $empPayrollItem->amount;
+                    $qty = $empPayrollItem->qty;
+                    $grossPay += $empPayrollItem->total
+                @endphp
+                {{ number_format($pay,2,'.',',') }}
             </td>
-            <td></td>
+        </tr>
+        <tr><td class="bordered-top" colspan="8"></td></tr>
+        <tr>
+            <td class="sub-title">Position:</td>
+            <td class="sub-title" colspan="4">{{ $employeePayroll->employee->employment->salary->position->title }}</td>
+            <td class="sub-title" colspan="2">
+                @if($employeePayroll->employee->employment->salary->monthly)
+                    Days Absent:
+                @else
+                    Days Rendered:
+                @endif
+            </td>
+            <td class="sub-title">{{ $qty }}</td>
+        </tr>
+        <tr><td class="blank-line" colspan="8"></td></tr>
+        <tr>
+            <td colspan="2"><b class="sub-title">Earnings</b></td>
+            <td colspan="2"><b class="sub-title">Amount</b></td>
+            <td colspan="2"><b class="sub-title">Deductions</b></td>
+            <td colspan="2"><b class="sub-title">Amount</b></td>
+        </tr>
+        <tr><td class="bordered-top" colspan="8"></td></tr>
+        @php
+            $max = 5;
+            $finalArray = [];
+            $arrRowsAdd = [];
+            $arrRowsDed = [];
+            $empPayrollList = $payrollGeneration->payrollList->where('employee_id',$employeePayroll->employee_id);
+
+            foreach($employeePayroll->employee->payroll as $pItem) {
+                $newPItem = $empPayrollList->where('payroll_item',$pItem->payroll_item)->first();
+                $pushedItem = array(
+                    'item' => $pItem->payrollItem->item,
+                    'val' => ($newPItem ? $newPItem->total : '-')
+                );
+                
+                if($pItem->payrollItem->type==1) {
+                    if($newPItem)
+                        $grossPay+=$newPItem->total;
+                    array_push($arrRowsAdd,$pushedItem);
+                }
+                else {
+                    if($newPItem)
+                        $totalDeductions+=$newPItem->total;
+                    array_push($arrRowsAdd,$pushedItem);
+                }
+            }
+            
+            for($index=0; $index<$max; $index++) {
+                array_push($finalArray, array(
+                    'add' => (count($arrRowsAdd)>$index) ? $arrRowsAdd[$index] : null,
+                    'ded' => (count($arrRowsDed)>$index) ? $arrRowsDed[$index] : null,
+                ));
+            }
+        @endphp
+        @foreach($finalArray as $k => $data)
+        <tr>
+            <td colspan="2" class="sub-title">
+                @if($data['add'] !== null && $data['add']['item'] !== null)
+                    {{ $data['add']['item'] }}
+                @endif
+            </td>
+            <td colspan="2" class="sub-title" align="right">
+                @if($data['add'] !== null && $data['add']['val'] !== null)
+                    {{ $data['add']['val'] }}
+                @endif
+            </td>
+            <td colspan="2" class="sub-title">
+                @if($data['ded'] !== null && $data['ded']['item'] !== null)
+                    {{ $data['ded']['item'] }}
+                @endif
+            </td>
+            <td colspan="2" class="sub-title" align="right">
+                @if($data['ded'] !== null && $data['ded']['val'] !== null)
+                    {{ $data['ded']['val'] }}
+                @endif
+            </td>
         </tr>
         @endforeach
-        @while($deductcount<5)
-            {{ $deductcount++ }}
-            <tr><td colspan="3"><br></td></tr>
-        @endwhile
         <tr>
-            <td colspan="2" style="text-align:right"><b>Total: </b></td>
-            <td  style="text-align:right"><u><b>
-            @php
-                $net = $totalAdd - $totalDeduct;
-                echo number_format($totalDeduct,2,'.',',');
-            @endphp
-            </b></u></td>
-        </tr>
-        <tr><td style="border-top: solid" colspan="3"></td></tr>
-        <tr>
-            <td colspan="2" class="right">Net Pay</td>
-            <td class="right">
-                <u><b>@php echo number_format($net,2,'.',',') @endphp </b></u>
-            </td>
+            <td colspan="3"><b class="sub-title">Gross Pay</b></td>
+            <td><b class="sub-title">{{ number_format($grossPay,2,'.',',') }}</b></td>
+            <td colspan="3"><b class="sub-title">Total Deductions</b></td>
+            <td><b class="sub-title">{{ number_format($totalDeductions,2,'.',',') }}</b></td>
         </tr>
     </table>
 </div>

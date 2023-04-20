@@ -160,10 +160,11 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::get('payrolls', 'PayrollController@index');
     
     Route::post('payroll/add','PayrollController@store');
+    Route::get('payroll/generations/view/{payrollGenerationMasterID}','PayrollController@viewPayrollGeneration');
     Route::get('payrolls/generations', 'PayrollController@generations')->name('generations.index');
-    Route::post('payrolls/generations/add', 'PayrollController@generateview')->name('generations.add');
+    
     Route::post('payrolls/generations/save','PayrollController@save');
-    Route::get('payrolls/generations/payslip/{payroll_date}','PayrollController@payslip');
+    Route::get('payrolls/generations/payslip/{payrollMasterID}','PayrollController@payslip')->name('view.payslip');
     Route::post('payroll/update','PayrollController@update');
 
     Route::get('projects','ProjectController@index')->name('projects.index');
@@ -202,6 +203,13 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
     Route::group(['prefix' => 'set'], function() {
         Route::get('payroll/item/generate/add','PayrollController@savePayrollInput')->name('set.payroll.generation.add');
+        Route::post('payrolls/generations/add', 'PayrollController@generateview')->name('set.generations.add');
+        Route::get('payroll/item/generate/add','PayrollController@savePayrollInput')->name('set.payroll.generation.add');
+        Route::get('payroll/generation/finalize','PayrollController@finalize')->name('set.generation.final');
+    });
+
+    Route::group(['prefix' => 'delete'], function() {
+       Route::get('payroll/generation/{payrollMasterID}','PayrollController@deleteGeneration')->name('delete.generation');
     });
 });
 

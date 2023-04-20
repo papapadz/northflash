@@ -8,7 +8,7 @@
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <a class="btn btn-rounded btn-warning" href="{{ url('admin/payrolls/generations') }}">Generate Payroll</a>
+        <a class="btn btn-warning" href="{{ url('admin/payrolls/generations') }}"><i class="mdi mdi-file-document"></i>View Generated Payrolls</a>
         <hr>
         <div class="table-responsive">
           <table id="table" class="table table-striped">
@@ -28,32 +28,34 @@
               <tr class="py-1">
                 <td>{{ $e->employee_id }}</td>
                 <td>{{ $e->last_name }}, {{ $e->first_name }} {{ $e->middle_name[0] ?? ''}}</td>
-                <td class="row">
+                <td>
                   @if(count($e->payroll)>0)
-                  <div class="col-md-6">
-                    <span class="text-success">Additions (+)</span>
-                    <div class="row">
-                      @foreach($e->payroll as $additions)
-                        @if($additions->payrollItem->type==1)
-                        <div class="col-md-6">{{$additions->payrollItem->item}}: </div>
-                          <div class="col-md-6 text-right">
-                            {{ number_format($additions->amount,2,'.',',') }}
-                          </div>
-                        @endif
-                      @endforeach
+                  <div class="row">
+                    <div class="col-md-6">
+                      <span class="text-success">Additions (+)</span>
+                      <div class="row">
+                        @foreach($e->payroll as $additions)
+                          @if($additions->payrollItem->type==1)
+                          <div class="col-md-6">{{$additions->payrollItem->item}}: </div>
+                            <div class="col-md-6 text-right">
+                              {{ number_format($additions->amount,2,'.',',') }}
+                            </div>
+                          @endif
+                        @endforeach
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <span class="text-danger">Deductions (-)</span>
-                    <div class="row">
-                      @foreach($e->payroll as $deductions)
-                        @if($deductions->payrollItem->type==2)
-                        <div class="col-md-6">{{$deductions->payrollItem->item}}: </div>
-                          <div class="col-md-6 text-right">
-                            {{ number_format($deductions->amount,2,'.',',') }}
-                          </div>
-                        @endif
-                      @endforeach
+                    <div class="col-md-6">
+                      <span class="text-danger">Deductions (-)</span>
+                      <div class="row">
+                        @foreach($e->payroll as $deductions)
+                          @if($deductions->payrollItem->type==2)
+                          <div class="col-md-6">{{$deductions->payrollItem->item}}: </div>
+                            <div class="col-md-6 text-right">
+                              {{ number_format($deductions->amount,2,'.',',') }}
+                            </div>
+                          @endif
+                        @endforeach
+                      </div>
                     </div>
                   </div>
                   @else
@@ -61,7 +63,7 @@
                   @endif
                 </td>
                 <td>
-                  <button class="btn btn-rounded btn-success" onclick="openPayrollModal({{$e->employee_id}})">Manage</button>
+                  <button class="btn btn-rounded btn-success" onclick="openPayrollModal({{$e->employee_id}})"><i class="mdi mdi-format-list-checks"></i> Manage</button>
                 </td>
               </tr>
             @endforeach

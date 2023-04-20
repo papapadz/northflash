@@ -38,10 +38,28 @@
             td.mid {
                 width: 40%;
             }
+
+            .title {
+                font-size: 12px;
+            }
+
+            .sub-title {
+                font-size: 10px;
+            }
+
+            .bordered-top {
+                border-top-style: solid;
+            }
+
+            .blank-line {
+                border-top-style: solid;
+                border-bottom-style: solid;
+                height:10px
+            }
         </style>
     </head>
     <body>
-        @foreach($data as $k => $emp)
+        @foreach($payrollGeneration->project->employees as $k => $employeePayroll)
             @if($k%2!=0)
                 @if(($k+1)%4==0)
                     <div class="page-break">

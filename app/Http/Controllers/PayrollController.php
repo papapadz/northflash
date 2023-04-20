@@ -115,25 +115,36 @@ class PayrollController extends Controller
 
     public function generateview(Request $request) {
         
-        // $payroll_date = Carbon::create($request->year,$request->month,$request->period)->toDateString();
-        // $employees = Employment::where([
-        //     ['is_active',true],
-        //     ['date_hired','<=',$payroll_date]
-        // ])->with('employee')->get();
-        
-        $payrollMaster = PayrollGenerationMaster::firstOrCreate([
+        $validatedData = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'date_start' => 'required',
+            'date_end' => 'required'
+        ]);
+
+        return $payrollMaster = PayrollGenerationMaster::firstOrCreate([
             'project_id' => $request->project_id,
             'date_start' => $request->date_start,
             'date_end' => $request->date_end
         ],[
             'generated_by' => Auth::User()->id
         ]);
+    } 
 
+    public function viewPayrollGeneration($payrollGenerationMasterID) {
+
+        $payrollMaster = PayrollGenerationMaster::find($payrollGenerationMasterID);
+        
         return view('pages.admin.payroll.generations.generate')
-            ->with([
-                'payrollMaster' => $payrollMaster,
-                'payroll_items' => PayrollItem::where('is_manual_entry',true)->orderBy('type')->get()
-            ]);
+        ->with([
+            'payrollMaster' => $payrollMaster,
+            'payroll_items' => PayrollItem::where('is_manual_entry',true)->orderBy('type')->get()
+        ]);
+    }
+
+    public function finalize(Request $request) {
+        PayrollGenerationMaster::where('id',$request->id)->update([
+            'is_final' => true
+        ]);
     }
 
     public function savePayrollInput(Request $request) {
@@ -238,12 +249,13 @@ class PayrollController extends Controller
         );
     }
 
-    public function payslip($payroll_date) {
-        $data = PayrollGeneration::select('employee_id','payroll_date')->whereDate('payroll_date',$payroll_date)->groupBy('employee_id','payroll_date')->get();
+    public function payslip($payrollMasterID) {
         
-        $payslip = 'payslip-'.$payroll_date.'.pdf';
-        $pdf = DOMPdf::loadView('include.payroll.payslip',compact('data'))->setPaper('letter', 'portrait');
-        return $pdf->download($payslip);
+        $data = array(
+            'payrollGeneration' => PayrollGenerationMaster::find($payrollMasterID)
+        );
+        $pdf = DOMPdf::setPaper('letter')->loadView('include.payroll.payslip', $data)->stream();
+        return $pdf;
     }
 
     public static function deletePayroll($employee_id) {
@@ -289,5 +301,13 @@ class PayrollController extends Controller
         else
             $rate = (floatval($employee->employment->salary->amount)/8);
         return $rate;
+    }
+
+    public function deleteGeneration($payrollMasterID) {
+        
+        PayrollGenerationMaster::where('id',$payrollMasterID)->delete();
+        PayrollGeneration::where('payroll_master_id',$payrollMasterID)->delete();
+
+        return redirect()->back()->with('danger','Payroll Generation has been deleted!');
     }
 }
