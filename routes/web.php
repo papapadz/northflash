@@ -206,6 +206,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
         Route::post('payrolls/generations/add', 'PayrollController@generateview')->name('set.generations.add');
         Route::get('payroll/item/generate/add','PayrollController@savePayrollInput')->name('set.payroll.generation.add');
         Route::get('payroll/generation/finalize','PayrollController@finalize')->name('set.generation.final');
+        Route::get('sync','EmployeeController@sync')->name('data.sync');
     });
 
     Route::group(['prefix' => 'delete'], function() {

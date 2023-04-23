@@ -32,18 +32,18 @@
             @foreach($employees as $emp)
               <tr class="py-1">
                 <td>
-                  <img src="{{ url('assets/images/faces-clipart/pic-1.png') }}" alt="image" />
+                  <img src="{{ $emp->avatar->url }}" alt="image" />
                 </td>
                 <td>{{ $emp->employee_id }}</td>
                 <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</td>
-                <td>{{ $emp->employment->title }}</td>
+                <td>{{ $emp->employment->salary->position->title }}</td>
                 <td>
-                  {{ number_format($emp->employment->amount,2,'.',',') }}
-                  @if($emp->employment->monthly)
-                    /month
+                  @if($emp->employment->salary->monthly)
+                    @php $ssalary = $emp->employment->salary->amount; @endphp
                   @else
-                    /day
+                    @php $ssalary = $emp->employment->salary->amount; @endphp
                   @endif
+                  {{ $ssalary }} @if($emp->employment->salary->monthly) <span>/month</span> @else <span>/day</span> @endif
                 </td>
                 <td>{{ $emp->employment->status }}</td>
                 <td>

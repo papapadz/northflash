@@ -11,14 +11,15 @@ use App\Models\Salary;
 use App\Models\LicenseType;
 use App\Models\License;
 use App\Models\Payroll;
+use App\Models\FileHandler;
+use App\Models\Education;
+use App\Models\Family;
 
 class EmployeeController extends Controller
 {
     public function index() {
 
-        $employees = Employee::select()
-            ->orderBy('last_name')
-            ->get();
+        $employees = Employee::get();
         $positions = Position::orderBy('title')->get();
 
         return view('pages.admin.employee.index')
@@ -54,8 +55,182 @@ class EmployeeController extends Controller
         
         return view('pages.admin.employee.index2')
         ->with([
-            'employees' => $employees
+            'employees' => $employees,
+            'existingEmployees' => Employee::all()
         ]);
+    }
+
+    public function sync() {
+        $dateNow = Carbon::now();
+        // Initialize cURL.
+        $ch = curl_init();
+        // Set the URL that you want to GET by using the CURLOPT_URL option.
+        //curl_setopt($ch, CURLOPT_URL, 'http://localhost/nfpbv2/public/api/v2/get/registered');
+        curl_setopt($ch, CURLOPT_URL, 'https://nfpb.binarybee.org/api/v2/get/registered');
+        // Set CURLOPT_RETURNTRANSFER so that the content is returned as a variable.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Set CURLOPT_FOLLOWLOCATION to true to follow redirects.
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        // Execute the request.
+        $data = curl_exec($ch);
+        // Close the cURL handle.
+        curl_close($ch);
+        // // Print the data out onto the page.
+        // echo $data;
+        $employees = json_decode($data);
+
+        foreach($employees as $employee) {
+            
+            $employee_id = $dateNow->year.'-'.''.str_pad(count(Employee::get())+1, 4, '0', STR_PAD_LEFT);
+
+            $empData = Employee::where([
+                ['first_name', title_case($employee->first_name)],
+                ['middle_name', title_case($employee->middle_name)],
+                ['last_name', title_case($employee->last_name)],
+                ['birthdate', $employee->birthdate,]
+            ])->first();
+
+            if($empData)
+                $employee_id = $empData->employee_id;
+
+            $avatar = FileHandler::create([
+                'file_type' => $employee->avatar->file_type,
+                'url' => $employee->avatar->url
+            ]);
+
+            $emp = Employee::updateOrCreate([
+                'employee_id' => $employee_id
+            ],[
+                'first_name' => title_case($employee->first_name),
+                'middle_name' => title_case($employee->middle_name),
+                'last_name' => title_case($employee->last_name),
+                'birthdate' => $employee->birthdate,
+                'gender' => $employee->gender,
+                'civil_stat' => $employee->civil_stat,
+                'address' => title_case($employee->address),
+                'email' => $employee->email,
+                'citizenship' => $employee->citizenship,
+                'height' => $employee->height,
+                'weight' => $employee->weight,
+                'bloodType' => $employee->bloodType,
+                'img' => $avatar->id
+            ]);
+
+            if($employee->education)
+                foreach($employee->education as $education) {
+                    Education::updateOrcreate([
+                        'employee_id' => $employee_id,
+                        'level' => $education->level,
+                        'year' => $education->year
+                    ],[
+                        'school' => $education->school
+                    ]);
+                }
+
+            if($employee->employment)
+                foreach($employee->employment as $employment) {
+                    $position = Position::firstOrCreate([
+                        'title' => title_case($employment->salary->position->title),
+                    ]);
+
+                    $salary = Salary::firstOrCreate([
+                        'position_id' => $position->id,
+                        'amount' => $employment->salary->amount,
+                        'date_effective' => $employment->date_hired,
+                        'monthly' => $employment->salary->monthly,
+                    ]);
+                    
+                    Employment::updateOrcreate([
+                        'employee_id' => $employee_id,
+                        'salary_id' => $salary->id,
+                        'status' => $employment->status,
+                        'company' => title_case($employment->company),
+                        'date_hired' => $employment->date_hired,
+                        'is_active' => $employment->company == "Northflash Power and Builds, Inc." ? true : false
+                    ]);
+                }
+            else {
+                $position = Position::firstOrCreate([
+                    'title' => 'Helper',
+                ]);
+
+                $salary = Salary::firstOrCreate([
+                    'position_id' => $position->id,
+                    'amount' => 450,
+                    'date_effective' => Carbon::now(),
+                    'monthly' => false,
+                ]);
+                
+                Employment::updateOrcreate([
+                    'employee_id' => $employee_id,
+                    'salary_id' => $salary->id,
+                    'status' => 'COSW',
+                    'company' => 'Northflash Power and Builds, Inc.',
+                    'date_hired' => $salary->date_effective,
+                    'is_active' => true
+                ]);
+            }
+            
+            $employmentDetails = Employment::where([['employee_id',$employee_id],['company','Northflash Power and Builds, Inc.']])->first();
+            Payroll::updateOrcreate([
+                'employee_id' => $employee_id,
+                'payroll_item' => 8,
+                'payroll_date_start' => $employmentDetails->date_hired,
+                'amount' => $employmentDetails->salary->amount
+            ]);
+
+            $payrollController = new PayrollController;
+
+            $OTRequest = new Request();
+            $OTRequest->replace([
+                'payroll_item' => 5,
+                'emp_id' => $employee_id
+            ]);
+            Payroll::updateOrcreate([
+                'employee_id' => $employee_id,
+                'payroll_item' => 5,
+                'payroll_date_start' => $employmentDetails->date_hired,
+                'amount' => $payrollController->getPayrollItemAmt($OTRequest)
+            ]);
+
+            $UTRequest = new Request();
+            $UTRequest->replace([
+                'payroll_item' => 6,
+                'emp_id' => $employee_id
+            ]);
+            Payroll::updateOrcreate([
+                'employee_id' => $employee_id,
+                'payroll_item' => 6,
+                'payroll_date_start' => $employmentDetails->date_hired,
+                'amount' => $payrollController->getPayrollItemAmt($UTRequest)
+            ]);
+            
+            if($employee->family)
+            foreach($employee->family as $family) {
+                Family::updateOrCreate([
+                    'employee_id' => $employee_id,
+                    'relationship' => title_case($family->relationship)
+                ],[
+                    'name' => title_case($family->name),
+                    'phone' => $family->phone,
+                    'occupation' => title_case($family->occupation)
+                ]);
+            }
+
+            if($employee->licenses)
+            foreach($employee->licenses as $license) {
+                
+                License::updateOrCreate([
+                    'employee_id' => $employee_id,
+                    'license_type_id' => $license->license_type_id,
+                ],[
+                    'license_no' => title_case($license->license_no),
+                    'date_issued' => $license->date_issued,
+                    'date_expired' => $license->date_expired
+                ]);
+            }
+        }
+        return redirect()->back()->with('success','Sync success!');
     }
 
     public function store(Request $request) {

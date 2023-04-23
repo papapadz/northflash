@@ -25,6 +25,11 @@ class PayrollGeneration extends Model
         return $this->hasOne(PayrollItem::class,'id','payroll_item');
     }
 
+    public function payrollMaster() {
+        return $this->belongsTo(PayrollGenerationMaster::class,'payroll_master_id','id');
+    }
+    
+    /** old */
     public function monthlySalaryAmount($param_date) {
         return $this::join('payroll_items','payroll_items.id','=','payroll_item')
             ->where('payroll_items.type',1)
@@ -45,7 +50,6 @@ class PayrollGeneration extends Model
             ->whereDate('payroll_date',Carbon::parse($param_date)->toDateString());
     }
 
-    /** old */
 
     public function totalEmployees($param_date) {
         

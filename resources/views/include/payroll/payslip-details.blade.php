@@ -30,8 +30,8 @@
         <tr><td class="bordered-top" colspan="8"></td></tr>
         <tr>
             <td class="sub-title">Name: </td>
-            <td class="sub-title" colspan="4">{{ $employeePayroll->employee->last_name }}, {{ $employeePayroll->employee->first_name }} {{ $employeePayroll->employee->middle_name ?? $employeePayroll->middle_name[0] ?? '' }}</td>
-            <td class="sub-title">
+            <td class="sub-title" colspan="3">{{ $employeePayroll->employee->last_name }}, {{ $employeePayroll->employee->first_name }} {{ $employeePayroll->employee->middle_name ?? $employeePayroll->middle_name[0] ?? '' }}</td>
+            <td class="sub-title" colspan="2">
                 @if($employeePayroll->employee->employment->salary->monthly)
                     Salary:
                 @else
@@ -57,8 +57,8 @@
         <tr><td class="bordered-top" colspan="8"></td></tr>
         <tr>
             <td class="sub-title">Position:</td>
-            <td class="sub-title" colspan="4">{{ $employeePayroll->employee->employment->salary->position->title }}</td>
-            <td class="sub-title" colspan="2">
+            <td class="sub-title" colspan="3">{{ $employeePayroll->employee->employment->salary->position->title }}</td>
+            <td class="sub-title" colspan="3">
                 @if($employeePayroll->employee->employment->salary->monthly)
                     Days Absent:
                 @else
@@ -77,6 +77,7 @@
         <tr><td class="bordered-top" colspan="8"></td></tr>
         @php
             $max = 5;
+            $ctr = 0;
             $finalArray = [];
             $arrRowsAdd = [];
             $arrRowsDed = [];
@@ -93,11 +94,10 @@
                     if($newPItem)
                         $grossPay+=$newPItem->total;
                     array_push($arrRowsAdd,$pushedItem);
-                }
-                else {
+                } else {
                     if($newPItem)
                         $totalDeductions+=$newPItem->total;
-                    array_push($arrRowsAdd,$pushedItem);
+                    array_push($arrRowsDed,$pushedItem);
                 }
             }
             
@@ -108,35 +108,56 @@
                 ));
             }
         @endphp
-        @foreach($finalArray as $k => $data)
+        @foreach($finalArray as $data)
         <tr>
-            <td colspan="2" class="sub-title">
-                @if($data['add'] !== null && $data['add']['item'] !== null)
-                    {{ $data['add']['item'] }}
-                @endif
-            </td>
-            <td colspan="2" class="sub-title" align="right">
-                @if($data['add'] !== null && $data['add']['val'] !== null)
-                    {{ $data['add']['val'] }}
-                @endif
-            </td>
-            <td colspan="2" class="sub-title">
-                @if($data['ded'] !== null && $data['ded']['item'] !== null)
-                    {{ $data['ded']['item'] }}
-                @endif
-            </td>
-            <td colspan="2" class="sub-title" align="right">
-                @if($data['ded'] !== null && $data['ded']['val'] !== null)
-                    {{ $data['ded']['val'] }}
-                @endif
-            </td>
+            @if(!empty($data['add']))
+                <td colspan="2" class="sub-title">
+                    @if($data['add'] !== null && $data['add']['item'] !== null)
+                        {{ $data['add']['item'] }}
+                    @endif
+                </td>
+                <td class="sub-title" align="right">
+                    @if($data['add'] !== null && $data['add']['val'] !== null)
+                        {{ number_format(floatVal($data['add']['val']),2,'.',',') }}
+                    @endif
+                </td>
+                <td></td>
+            @else
+                <td colspan="4" class="sub-title">-</td>
+            @endif
+            
+            @if(!empty($data['ded']))
+                <td colspan="2" class="sub-title">
+                    @if($data['ded'] !== null && $data['ded']['item'] !== null)
+                        {{ $data['ded']['item'] }}
+                    @endif
+                </td>
+                <td class="sub-title" align="right">
+                    @if($data['ded'] !== null && $data['ded']['val'] !== null)
+                    {{ number_format(floatVal($data['ded']['val']),2,'.',',') }}
+                    @endif
+                </td>
+                <td></td>
+            @else
+                <td colspan="4" class="sub-title">-</td>
+            @endif
         </tr>
         @endforeach
+        <tr><td class="bordered-top" colspan="8"></td></tr>
         <tr>
-            <td colspan="3"><b class="sub-title">Gross Pay</b></td>
-            <td><b class="sub-title">{{ number_format($grossPay,2,'.',',') }}</b></td>
+            <td colspan="2"><b class="sub-title">Gross Pay</b></td>
+            <td align="right"><b class="sub-title">{{ number_format($grossPay,2,'.',',') }}</b></td>
+            <td></td>
             <td colspan="3"><b class="sub-title">Total Deductions</b></td>
-            <td><b class="sub-title">{{ number_format($totalDeductions,2,'.',',') }}</b></td>
+            <td align="right"><b class="sub-title">{{ number_format($totalDeductions,2,'.',',') }}</b></td>
+        </tr>
+        <tr><td class="blank-line" colspan="8"></td></tr>
+        <tr>
+            <td colspan="2"> <b class="sub-title">Net Pay</b></td>
+            <td colspan="2" align="center" style="border-bottom: 3px double black;"><b class="sub-title">Php {{ number_format($grossPay-$totalDeductions,2,'.',',') }}</b></td>
+            
+            <td colspan="3"><b class="sub-title">Received by:</b></td>
+            <td class="sub-title"></td>
         </tr>
     </table>
 </div>

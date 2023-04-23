@@ -29,4 +29,8 @@ class License extends Model
     {
         return url('/admin/licenses/'.$this->getKey());
     }
+
+    public function type() {
+        return $this->hasOne(LicenseType::class,'id','license_type_id');
+    }
 }

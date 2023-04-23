@@ -23,7 +23,7 @@
             <tbody>
             @foreach($employees as $e)
             @php
-              $employee_salary = $e->employment->amount;
+              $employee_salary = $e->employment->salary->amount;
             @endphp
               <tr class="py-1">
                 <td>{{ $e->employee_id }}</td>

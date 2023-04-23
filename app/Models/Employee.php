@@ -17,14 +17,19 @@ class Employee extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'position',
+        //'position',
         'birthdate',
         'gender',
         'civil_stat',
         'address',
-        'date_hired',
+        //'date_hired',
         'date_expired',
-    
+        'email',
+        'citizenship',
+        'height',
+        'weight',
+        'bloodType',
+        'img'
     ];
     
     
@@ -43,14 +48,39 @@ class Employee extends Model
         return url('/admin/employees/'.$this->getKey());
     }
 
+    /** NEW */
     public function employment() {
-        return $this->hasOne(Employment::class,'employee_id','employee_id')->where('date_expired',null);
+        return $this->hasOne(Employment::class,'employee_id','employee_id')->where('company','Northflash Power And Builds, Inc.');
     }
 
     public function payroll() {
         return $this->hasMany(Payroll::class,'employee_id','employee_id')->with('payrollItem');
     }
+
+    public function payrollGenerations() {
+        return $this->hasMany(PayrollGeneration::class,'employee_id','employee_id');
+    }
     
+    public function education() {
+        return $this->hasMany(Education::class,'employee_id','employee_id');
+    }
+
+    public function employments() {
+        return $this->hasMany(Employment::class,'employee_id','employee_id')->with('salary');
+    }
+
+    public function family() {
+        return $this->hasMany(Family::class,'employee_id','employee_id');
+    }
+
+    public function licenses() {
+        return $this->hasMany(License::class,'employee_id','employee_id')->with('type');
+    }
+
+    public function avatar() {
+        return $this->hasOne(FileHandler::class,'id','img');
+    }
+    /** OLD */
     // public function payroll() {
     //     return $this->hasMany('App\Models\Payroll','employee_id','employee_id')
     //         ->join('payroll_items','payroll_items.id','=','payroll_item')
@@ -64,11 +94,11 @@ class Employee extends Model
     //         ->orderBy('employments.created_at','desc');
     // }
 
-    public function licensenos() {
-        return $this->hasMany('App\Models\License','employee_id','employee_id')
-            ->join('license_types','license_types.id','=','license_type_id')
-            ->orderBy('license_type_id');
-    }
+    // public function licensenos() {
+    //     return $this->hasMany('App\Models\License','employee_id','employee_id')
+    //         ->join('license_types','license_types.id','=','license_type_id')
+    //         ->orderBy('license_type_id');
+    // }
 
     public function generations() {
         return $this->hasMany('App\Models\PayrollGeneration','employee_id','employee_id')
@@ -89,12 +119,12 @@ class Employee extends Model
             ->join('projects','projects.id','=','project_id');
     }
 
-    public function employments() {
-        return $this->hasMany('App\Models\Employment','employee_id','employee_id')
-            ->select('*','employments.id as employment_id')
-            ->join('salary','salary.id','=','salary_id')
-            ->join('positions','positions.id','=','salary.position_id');
-    }
+    // public function employments() {
+    //     return $this->hasMany('App\Models\Employment','employee_id','employee_id')
+    //         ->select('*','employments.id as employment_id')
+    //         ->join('salary','salary.id','=','salary_id')
+    //         ->join('positions','positions.id','=','salary.position_id');
+    // }
 
     public function getEmploymentDetails($id) {
         return $this::select(

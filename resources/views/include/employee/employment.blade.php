@@ -17,7 +17,7 @@
             <tr>
                 <td> 
                     {{ Carbon\Carbon::parse($empl->date_hired)->toFormattedDateString() }}
-                    @if($empl->date_expired!=null)
+                    @if($empl->date_expired)
                         to {{ Carbon\Carbon::parse($empl->date_expired)->toFormattedDateString() }}
                     @else
                         to present
@@ -27,7 +27,7 @@
                 <td> {{ number_format($empl->amount,2,'.',',') }} </td>
                 <td> {{ $empl->status }} </td>
                 <td> 
-                  @if($employee->getEmploymentDetails($empl->employment_id)->date_expired==null)
+                  @if(!$empl->date_expired)
                     <div class="btn-group dropdown">
                         <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Manage </button>
                         <div class="dropdown-menu">
@@ -36,13 +36,13 @@
                             data-toggle="modal" 
                             data-target="#updateEmploymentModal"
                             data-employment_id = "{{ $empl->employment_id }}"
-                            data-position_id = "{{ $employee->getEmploymentDetails($empl->employment_id)->position_id }}"
-                            data-position = "{{ $employee->getEmploymentDetails($empl->employment_id)->title }}"
-                            data-salary_id = "{{ $employee->getEmploymentDetails($empl->employment_id)->salary_id }}"
-                            data-salary = "{{ $employee->getEmploymentDetails($empl->employment_id)->amount }}"
-                            data-status = "{{ $employee->getEmploymentDetails($empl->employment_id)->status }}"
-                            data-date_hired = "{{ Carbon\Carbon::parse($employee->getEmploymentDetails($empl->employment_id)->date_hired)->toDateString() }}"
-                            data-monthly = "{{ $employee->getEmploymentDetails($empl->employment_id)->monthly }}"
+                            data-position_id = "{{ $empl->salary->position_id }}"
+                            data-position = "{{ $empl->salary->position->title }}"
+                            data-salary_id = "{{ $empl->salary_id }}"
+                            data-salary = "{{ $empl->salary->amount }}"
+                            data-status = "{{ $empl->status }}"
+                            data-date_hired = "{{ Carbon\Carbon::parse($empl->date_hired)->toDateString() }}"
+                            data-monthly = "{{ $empl->monthly }}"
                           >Update</a>
                           <hr>
                           <a class="dropdown-item text-danger" onclick="buttonCRUD('employment','{{ $empl->employment_id }}',3)">End Contract</a>

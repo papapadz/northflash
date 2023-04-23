@@ -11,7 +11,9 @@ class Employment extends Model
         'salary_id',
         'status',
         'date_hired',
-        'date_expired'
+        'date_expired',
+        'company',
+        'is_active'
     ];
 
     public function employee() {
@@ -19,6 +21,6 @@ class Employment extends Model
     }
 
     public function salary() {
-        return $this->hasOne(Salary::class,'id','salary_id');
+        return $this->hasOne(Salary::class,'id','salary_id')->with('position');
     }
 }

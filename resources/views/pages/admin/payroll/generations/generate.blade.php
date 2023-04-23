@@ -150,6 +150,7 @@
     </div>
   </div>
 </div>
+@if($payrollMaster->is_final)
 <div class="row mb-3">
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -234,6 +235,7 @@
     </div>
   </div>
 </div>
+@endif
 @endsection
 
 @push('plugin-scripts')

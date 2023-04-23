@@ -10,30 +10,22 @@
         </tr>
         </thead>
         <tbody>
-            @foreach($employee->generations as $generation)
-            <tr>
-                <td>
-                    {{ Carbon\Carbon::parse($generation->payroll_date)->format('M ') }}
-                    @if(Carbon\Carbon::parse($generation->payroll_date)->day == 1)
-                      {{ Carbon\Carbon::parse($generation->payroll_date)->day }} - 15,
+            @foreach($employee->payrollGenerations as $generation)
+                @if($generation->total>0)
+                <tr>
+                    <td>{{ Carbon\Carbon::parse($generation->payrollMaster->date_start)->toDateString() }} to {{ Carbon\Carbon::parse($generation->payrollMaster->date_end)->toDateString() }}</td>
+                    @if($generation->payrollItem->type==1)
+                        <td class="text-success">{{ $generation->payrollItem->item }}</td>
+                        <td align="right">{{ number_format($generation->amount,2,'.',',') }}</td>
+                        <td align="center">{{ $generation->qty }}</td>
+                        <td align="right">{{ number_format($generation->total,2,'.',',') }}</td>
                     @else
-                      16 - {{ Carbon\Carbon::parse($generation->payroll_date)->endOfMonth()->day }},
+                        <td class="text-danger">{{ $generation->payrollItem->item }}</td>
+                        <td align="right">({{ number_format($generation->amount,2,'.',',') }})</td>
+                        <td align="center">{{ $generation->qty }}</td>
+                        <td align="right">({{ number_format($generation->total,2,'.',',') }})</td>
                     @endif
-                    {{ Carbon\Carbon::parse($generation->payroll_date)->year }}
-                </td>
-                <td> {{ $generation->item }} </td>
-                <td class="text-right"> 
-                    <span @if($generation->type==1) class="text-success" @else class="text-danger" @endif>
-                        {{ number_format(findPayroll($generation->payroll_item,$employee->employment->amount,$generation->unit_amount,$employee->employment->status),2,'.',',') }}
-                    </span>
-                </td>
-                <td class="text-right"> {{ $generation->num_days }} </td>
-                <td class="text-right"> 
-                    <span @if($generation->type==1) class="text-success" @else class="text-danger" @endif>
-                        {{ number_format($generation->total_amount,2,'.',',') }} 
-                    </span>
-                </td>
-            </tr>
+                @endif
             @endforeach
         </tbody>
     </table>
