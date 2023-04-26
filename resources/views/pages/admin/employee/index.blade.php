@@ -13,7 +13,8 @@
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <button class="btn btn-rounded btn-success" data-toggle="modal" data-target="#exampleModalCenter">Add Employee</button>
+        {{-- <button class="btn btn-rounded btn-success" data-toggle="modal" data-target="#exampleModalCenter">Add Employee</button> --}}
+        <a class="btn btn-rounded btn-success" href="http://nfpb.binarybee.org/" target="_blank">Add Employee</a>
         <hr>
         <div class="table-responsive">
           <table id="table" class="table table-striped">
