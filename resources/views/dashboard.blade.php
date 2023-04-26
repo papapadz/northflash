@@ -72,7 +72,7 @@
   </div>
 </div>
 <div class="row">
-  <form method="post">
+  <form method="post" action="{{ url('home') }}">
     {{ csrf_field() }}
     <div class="col-12 form-inline">
       <i class="mdi mdi-calendar text-primary icon-lg"></i>

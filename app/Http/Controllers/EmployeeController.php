@@ -52,11 +52,15 @@ class EmployeeController extends Controller
         // // Print the data out onto the page.
         // echo $data;
         $employees = json_decode($data);
+
+        foreach($employees as $k => $emp) {
+            if(Employee::where('last_name',$emp->last_name)->where('first_name',$emp->first_name)->where('birthdate',$emp->birthdate)->first())
+                unset($employees[$k]);
+        }
         
         return view('pages.admin.employee.index2')
         ->with([
-            'employees' => $employees,
-            'existingEmployees' => Employee::all()
+            'employees' => $employees
         ]);
     }
 

@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-md-6">
                     <label>Password</label>
-                    <input value="{{ $account->password }}" name="password" type="password" class="form-control fillables" required>
+                    <input name="password" type="password" class="form-control fillables" required>
                 </div>
             </div>
       </div>

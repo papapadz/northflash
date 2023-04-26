@@ -57,7 +57,7 @@ class ProjectController extends Controller
     }
 
     public function update($id,Request $request) {
-
+        
         Project::where('id',$id)->update([
             'project_name' => $request->project_name,
             'location' => $request->location,
@@ -77,6 +77,6 @@ class ProjectController extends Controller
             ]);
         }
 
-        return redirect()->back()-with('success','Project has been updated!');
+        return redirect()->back()->with('success','Project has been updated!');
     }
 }

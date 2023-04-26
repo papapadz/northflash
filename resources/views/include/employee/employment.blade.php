@@ -7,6 +7,7 @@
         <tr>
             <th> Date </th>
             <th> Position </th>
+            <th> Company </th>
             <th> Salary/Wage </th>
             <th> Status </th>
             <th></th>
@@ -23,9 +24,10 @@
                         to present
                     @endif
                 </td>
-                <td> {{ $empl->title }} </td>
-                <td> {{ number_format($empl->amount,2,'.',',') }} </td>
+                <td> {{ $empl->salary->position->title }} </td>
+                <td> {{ number_format($empl->salary->amount,2,'.',',') }} </td>
                 <td> {{ $empl->status }} </td>
+                <td> {{ $empl->company }} </td>
                 <td> 
                   @if(!$empl->date_expired)
                     <div class="btn-group dropdown">

@@ -17,13 +17,12 @@
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <a class="btn btn-rounded btn-success" href="{{ route('data.sync') }}">Sync Data</a>
+        @if(count($employees)>0)<a class="btn btn-rounded btn-success" href="{{ route('data.sync') }}">Sync Data</a>@endif
         <hr>
         <div class="table-responsive">
           <table id="table" class="table table-striped">
             <thead>
               <tr>
-                <th></th>
                 <th></th>
                 <th> Reference # </th>
                 <th> Name </th>
@@ -38,29 +37,6 @@
             </thead>
             <tbody>
             @foreach($employees as $emp)
-              <tr class="py-1">
-                @php
-                $class = 'bg-success';
-                $text = 'Synced';
-
-                $eee = $existingEmployees->where('last_name',$emp->last_name)
-                ->where('first_name',$emp->first_name)
-                ->where('middle_name',$emp->middle_name)
-                ->where('birthdate',$emp->birthdate)
-                ->first();
-
-                if(!$eee) {
-                  $text = '!';
-                  $class = 'bg-danger>';
-                }
-                @endphp
-                <td>
-                  @if($eee)
-                  <span class="badge badge-success">Synced</span>
-                  @else
-                  <span class="badge badge-danger">!</span>
-                  @endif
-                </td>
                 <td>
                   <img src="{{ $emp->avatar ? $emp->avatar->url : null }}" alt="image" />
                 </td>

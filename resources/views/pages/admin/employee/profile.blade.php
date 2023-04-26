@@ -30,7 +30,7 @@
                                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#licenses" role="tab" aria-controls="profile" aria-selected="false">Docs</a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#family" role="tab" aria-controls="contact" aria-selected="false">Employment</a>
+                                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#fam" role="tab" aria-controls="contact" aria-selected="false">Family Info</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -48,53 +48,43 @@
                                     </li>
                                     <li>
                                         <div class="form-check form-check-flat">
+                                            <label class="form-check-label"><small>Address:</small><b> {{ $employee->address }} </b></label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check form-check-flat">
                                             <label class="form-check-label"><small>Position:</small><b> {{ $employee->employment->salary->position->title }} </b></label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label"><small>Date Hired:</small><b> {{ $employee->employment->date_hired }} </b></label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label"><small>Employment Status:</small><b> {{ $employee->employment->status }} </b></label>
                                         </div>
                                     </li>
                                 </ul>
                               </div>
                               <div class="tab-pane fade" id="licenses" role="tabpanel" aria-labelledby="profile-tab">
-                                <ul class="d-flex flex-column todo-list todo-list-custom col-md-6">
+                                <ul class="d-flex flex-column todo-list todo-list-custom col-md-12">
                                     @forelse($employee->licenses as $license)
-                                    {{ dd($license) }}
-                                    <li><div class="form-check form-check-flat">
-                                        @switch($license->id)
-                                            @case(1)
-                                                <label class="form-check-label"><small>TIN No:</small> <b>{{ $license->license_no }}</b></label>
-                                                @break
-                                            @case(2)
-                                                <label class="form-check-label"><small>SSS No:</small> <b>{{ $license->license_no }}</b></label>
-                                                @break
-                                            @case(3)
-                                                <label class="form-check-label"><small>PhilHEALTH No:</small> <b>{{ $license->license_no }}</b></label>
-                                                @break
-                                            @case(4)
-                                                <label class="form-check-label"><small>Pag-IBIG No:</small> <b>{{ $license->license_no }}</b></label>
-                                                @break
-                                            @case(5)
-                                                <label class="form-check-label"><small>PRC No:</small> <b>{{ $license->license_no }}</b></label>
-                                                @break
-                                            @default
-                                                
-                                        @endswitch
-                                    </div></li>
+                                    
+                                    <li>
+                                      <div class="form-check form-check-flat">
+                                        <label class="form-check-label"><small>{{ $license->type->type }}: </small><b> {{ $license->license_no }} </b></label>
+                                      </div>
+                                    </li>
                                     @empty
                                     <i class="text-danger">No licenses added</i>
                                     @endforelse
                                 </ul>
                               </div>
-                              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                              <div class="tab-pane fade" id="fam" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="d-flex flex-column todo-list todo-list-custom col-md-12">
+                                  @forelse($employee->family as $fam)
                                   
+                                  <li>
+                                    <div class="form-check form-check-flat">
+                                      <label class="form-check-label"><small>{{ $fam->relationship }}: </small><b> {{ $fam->name }} </b></label>
+                                    </div>
+                                  </li>
+                                  @empty
+                                  <i class="text-danger">No Family Background Added</i>
+                                  @endforelse
+                              </ul>
                               </div>
                             </div>
                           </div>
