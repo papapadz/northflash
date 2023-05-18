@@ -24,7 +24,7 @@
                 <th> ID </th>
                 <th> Name </th>
                 <th> Position </th>
-                <th> Salary </th>
+                <th> Docs </th>
                 <th> Status </th>
                 <th></th>
               </tr>
@@ -38,13 +38,23 @@
                 <td>{{ $emp->employee_id }}</td>
                 <td>{{ $emp->last_name }}, {{ $emp->first_name }} {{ $emp->middle_name[0] ?? '' }}</td>
                 <td>{{ $emp->employment->salary->position->title }}</td>
-                <td>
+                {{-- <td>
                   @if($emp->employment->salary->monthly)
                     @php $ssalary = $emp->employment->salary->amount; @endphp
                   @else
                     @php $ssalary = $emp->employment->salary->amount; @endphp
                   @endif
                   {{ $ssalary }} @if($emp->employment->salary->monthly) <span>/month</span> @else <span>/day</span> @endif
+                </td> --}}
+                <td>
+                    @forelse($emp->licenses as $license)
+                    <div class="row mb-2">
+                      <div class="col m2">{{ $license->type->type }}</div>
+                      <div class="col">{{ $license->license_no }}</div>
+                    </div>
+                    @empty
+                    <i class="text-danger">No Record</i>
+                    @endforelse
                 </td>
                 <td>{{ $emp->employment->status }}</td>
                 <td>
