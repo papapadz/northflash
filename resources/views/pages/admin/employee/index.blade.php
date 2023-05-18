@@ -49,8 +49,8 @@
                 <td>
                     @forelse($emp->licenses as $license)
                     <div class="row mb-2">
-                      <div class="col m2">{{ $license->type->type }}</div>
-                      <div class="col">{{ $license->license_no }}</div>
+                      <div class="col-md-6 m2">{{ $license->type->type }}</div>
+                      <div class="col-md-6">{{ $license->license_no }}</div>
                     </div>
                     @empty
                     <i class="text-danger">No Record</i>
