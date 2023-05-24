@@ -10,10 +10,10 @@
             <p class="profile-name">{{ Auth::user()->name }}</p>
             <div class="dropdown" data-display="static">
               <a href="#" class="nav-link d-flex user-switch-dropdown-toggler" id="UsersettingsDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <small class="designation text-muted">Administrator</small>
+                <small class="designation text-muted">{{ Auth::user()->userRole->role }}</small>
                 <span class="status-indicator online"></span>
               </a>
-              <div class="dropdown-menu" aria-labelledby="UsersettingsDropdown">
+              {{-- <div class="dropdown-menu" aria-labelledby="UsersettingsDropdown">
                 <a class="dropdown-item p-0">
                   <div class="d-flex border-bottom">
                     <div class="py-3 px-4 d-flex align-items-center justify-content-center">
@@ -31,7 +31,7 @@
                 <a class="dropdown-item"> Change Password </a>
                 <a class="dropdown-item"> Check Inbox </a>
                 <a class="dropdown-item"> Sign Out </a>
-              </div>
+              </div> --}}
             </div>
           </div>
         </div>
@@ -45,7 +45,6 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
-    <!-- -->
     <li class="nav-item {{ active_class(['admin/employees']) }} {{ active_class(['admin/employee/*']) }}">
       <a class="nav-link" href="{{ url('/admin/employees') }}">
         <i class="menu-icon mdi mdi-account"></i>

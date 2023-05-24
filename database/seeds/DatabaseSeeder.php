@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
                 UsersTableSeeder::class,
                 PayrollItemsSeeder::class,
                 LicenseTypesSeeder::class,
+                RolesSeeder::class,
             ]);
     }
 }
