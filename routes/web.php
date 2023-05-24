@@ -147,6 +147,8 @@ Route::get('logout','AdminController@logout')->middleware('auth');
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
+    Route::post('employee/v2/register/show', 'EmployeeController@store')->name('v2.register.show');
+    Route::post('employee/v2/register', 'EmployeeController@store')->name('v2.register');
     Route::get('registrations','EmployeeController@getRegistrations');
 
     Route::get('employees', 'EmployeeController@index');

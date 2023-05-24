@@ -29,4 +29,15 @@ class PositionController extends Controller
     public static function delete($id) {
         Position::find($id)->delete();
     }
+
+    public function findPosition($title) {
+        $position = Position::select('id')->where('title','like','%'.$title)->first();
+
+        if(!$position) {
+            $position = Position::create([
+                'title' => title_case($title)
+            ]);
+        }
+        return $position;
+    }
 }
