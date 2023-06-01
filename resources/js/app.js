@@ -8,6 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -20,6 +24,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('registration-component', require('./components/Registration.vue').default);
+Vue.component('employee-index-component', require('./components/EmployeeIndex.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

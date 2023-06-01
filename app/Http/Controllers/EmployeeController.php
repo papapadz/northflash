@@ -425,6 +425,8 @@ class EmployeeController extends Controller
     }
 
     public function register(Request $request) {
+
+        dd($request->all());
         
          $employee_id = $dateNow->year.'-'.''.str_pad(count(Employee::get())+1, 4, '0', STR_PAD_LEFT);
          $request->request->add(['employee_id' => $employee_id]);
@@ -629,6 +631,10 @@ class EmployeeController extends Controller
     }
 
     public function registration() {
-        return view('admin.employee.registration.index');
+        return view('pages.admin.employee.registration.index');
+    }
+
+    public function filter(Request $request) {
+
     }
 }

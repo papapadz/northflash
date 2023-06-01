@@ -147,7 +147,7 @@ Route::get('logout','AdminController@logout')->middleware('auth');
 
 Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
 
-    Route::post('employee/v2/register/show', 'EmployeeController@store')->name('v2.register.show');
+    Route::get('employee/v2/register/show', 'EmployeeController@registration')->name('v2.register.show');
     Route::post('employee/v2/register', 'EmployeeController@store')->name('v2.register');
     Route::get('registrations','EmployeeController@getRegistrations');
 
@@ -201,6 +201,7 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'], function() {
     Route::group(['prefix'=>'get'], function() {
         Route::get('employee/payroll/{employee_id}','EmployeeController@getEmployeePayroll')->name('get.employee.payrollItems');
         Route::get('payroll/item','PayrollController@getPayrollItemAmt')->name('get.payrollItem');
+        Route::get('employees/filter','EmployeeController@filter');
     });
 
     Route::group(['prefix' => 'set'], function() {
