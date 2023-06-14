@@ -68,6 +68,15 @@ export default defineComponent({
                     sort: true,
                 },
                 {
+                    label: "Last Name",
+                    name: "name.last_name",
+                    filter: {
+                        type: "simple",
+                        placeholder: "Enter first name"
+                    },
+                    sort: true,
+                },
+                {
                     label: "Email",
                     name: "email",
                     sort: true,

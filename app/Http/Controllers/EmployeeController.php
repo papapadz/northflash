@@ -635,6 +635,48 @@ class EmployeeController extends Controller
     }
 
     public function filter(Request $request) {
+        
+        $dataArray = [];
+        $dataColumns = [];
+        switch($request->flag) {
+            case 1: 
+                $employees = Employee::with('avatar')->get();
+                foreach($employees as $employee) {
+                    array_push($dataArray, array(
+                        'id' => $employee->employee_id,
+                        'name' => array(
+                            'first_name' => $employee->first_name,
+                            'last_name' => $employee->last_name,
+                            'middle_name' => $employee->middle_name
+                        ),
+                        'birthdate' => Carbon::parse($employee->birthdate)->toDateString(),
+                        'gender' => (($employee->gender=='M') ? 'Male' : 'F'),
+                        'address' => $employee->address,
+                        'email' => $employee->email,
+                        'avatar' => $employee->avatar->url
+                    ));
+                }
+                
+                $columns = array(
+                    array(
+                        'label' => 'Employee ID',
+                        'name' => 'employee_id',
+                        'filter' => array('type' => 'simple', 'placeholder' => 'Enter Employee ID'),
+                        'sort' => true
+                    ),
+                    array(
+                        'label' => 'First Name',
+                        'name' => 'name.first',
+                        'filter' => array('type' => 'simple', 'placeholder' => 'Enter Employee ID'),
+                        'sort' => true
+                    ),
+                );
+                return $columns;
+                break;
+        }
+        
 
+
+        return $dataArray;
     }
 }
