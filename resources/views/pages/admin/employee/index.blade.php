@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-<employee-index-component></employee-index-component>
+<employee-index-component employeeList='{{ $employees }}'></employee-index-component>
 @endsection
 
 @push('plugin-scripts')
