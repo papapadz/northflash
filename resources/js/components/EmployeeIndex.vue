@@ -10,8 +10,12 @@ import { defineComponent } from 'vue'
 import VueBootstrap4Table from 'vue-bootstrap4-table'
 
 export default defineComponent({
+    props: ['employeeList'],
     components: {
         VueBootstrap4Table
+    },
+    beforeMount() {
+        console.log(this.$props.employeeList)
     },
     data: function() {
         return {
