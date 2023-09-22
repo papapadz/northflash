@@ -20,6 +20,7 @@ class UpdateEmployeesTable extends Migration
             $table->double('weight',5,2)->nullable();
             $table->enum('bloodType',['A','B','O','AB'])->nullable();
             $table->text('img')->nullable();
+            $table->unsignedBigInteger('entry_by');
         });
     }
 
@@ -37,6 +38,7 @@ class UpdateEmployeesTable extends Migration
             $table->dropColumn('weight');
             $table->dropColumn('bloodType');
             $table->dropColumn('img');
+            $table->dropColumn('entry_by');
         });
     }
 }
